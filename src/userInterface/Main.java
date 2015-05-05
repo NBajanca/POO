@@ -1,5 +1,13 @@
 package userInterface;
 
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+
+
+
+
 public class Main {
 
 	public Main() {
@@ -50,6 +58,37 @@ public class Main {
 			System.out.println("var argument should be a number");
 			System.err.println("[6] INVALID VAR ARGUMENT");
 			System.exit(6);
+		}
+		
+		BufferedReader br=null;
+		String line= "";
+		String csvSplitBy = ",";
+		
+		System.out.println(train);
+	
+		try {
+			 
+			br = new BufferedReader(new FileReader(train));
+			while ((line = br.readLine()) != null) {
+	 
+			        // use comma as separator
+				String[] variaveis = line.split(csvSplitBy);
+				
+				System.out.println("String = " + variaveis[0]  );
+	 
+			}
+		} catch (FileNotFoundException e){
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		} finally {
+			if (br !=null){
+				try{
+					br.close();
+				} catch (IOException e){
+					e.printStackTrace();
+				}
+			}
 		}
 		
 		System.exit(0);
