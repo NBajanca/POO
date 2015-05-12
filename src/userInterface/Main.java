@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
 
 
 
@@ -69,6 +70,22 @@ public class Main {
 		try {
 			 
 			br = new BufferedReader(new FileReader(train));
+			line = br.readLine();
+			
+			int counter = 0, countervirgulas = 0;
+			for( int i=0; i<line.length(); i++ ) {
+			    if( line.charAt(i) == '_' && line.charAt(i+1)=='0' ) {
+			    	counter++;
+			    } 
+			}
+			System.out.println("Numero de zeros =" + counter);
+			for( int i=0; i<line.length(); i++ ) {
+			    if( line.charAt(i) == ',' ) {
+			    	countervirgulas++;
+			    } 
+			}
+			System.out.println("Numero de indices =" + countervirgulas/counter);
+			ArrayList<Integer> DBN = new ArrayList<Integer>(counter*2);
 			while ((line = br.readLine()) != null) {
 	 
 			        // use comma as separator
