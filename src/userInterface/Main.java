@@ -7,7 +7,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.LinkedList;
 
-import bayseanNetwork.Data_set;
+import bayseanNetwork.DataSet;
 
 
 
@@ -66,7 +66,9 @@ public class Main {
 			System.exit(6);
 		}
 		
-	Data_set lista= new Data_set(args[0]);
+	DataSet lista= new DataSet(args[0]);
+	System.out.println(lista.r1[0]+ "," + lista.r1[1]+ ","+ lista.r1[2]);
+	System.out.println();
 		
 	/*BufferedReader br=null;
 		String line= "";

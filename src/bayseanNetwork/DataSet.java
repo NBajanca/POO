@@ -6,14 +6,15 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-public class Data_set {
+public class DataSet {
 
 	
 	public ArrayList data;
-	public int num_de_variaveis;
+	public int num_var;
+	public int[] r1;   /* vector de inteiros r - maximum values each variable*/
 	
 	
-	public Data_set(String nome_ficheiro){
+	public DataSet(String nome_ficheiro){
 		
 		
 		BufferedReader br=null;
@@ -34,7 +35,7 @@ public class Data_set {
 			    } 
 			}
 			System.out.println("Numero de zeros =" + counter);
-			num_de_variaveis= counter;
+			num_var= counter;
 			for( int i=0; i<line.length(); i++ ) {
 			    if( line.charAt(i) == ',' ) {
 			    	countervirgulas++;
@@ -44,6 +45,7 @@ public class Data_set {
 			
 			int[] generico = new int[counter*2];
 			ArrayList<int[]> lista=new ArrayList<int[]>();
+			r1 = new int[counter];
 			
 			
 			while ((line = br.readLine()) != null) {
@@ -60,6 +62,10 @@ public class Data_set {
 						generico[i]=Integer.parseInt(variaveis[j]);
 						
 					}
+					
+					if(generico[0]>r1[0]) r1[0]=generico[0];
+					if(generico[1]>r1[1]) r1[1]=generico[1];
+					if(generico[2]>r1[2]) r1[2]=generico[2];
 					
 					System.out.print(generico[0]);
 					System.out.print(generico[1]);
