@@ -1,15 +1,15 @@
 package bayseanNetwork;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+
 public class DataSet {
 
 	
-	public ArrayList data;
+	public ArrayList<int[]> data;
 	public int num_var;
 	public int[] r1;   /* vector de inteiros r - maximum values each variable*/
 	
