@@ -11,7 +11,7 @@ public class DataSet {
 	
 	public ArrayList<int[]> data;
 	public int num_var;
-	public int[] r1;   /* vector de inteiros r - maximum values each variable*/
+	public int[] ri;   /* vector de inteiros r - maximum values each variable*/
 	
 	
 	public DataSet(String nome_ficheiro){
@@ -45,7 +45,7 @@ public class DataSet {
 			
 			int[] generico = new int[counter*2];
 			ArrayList<int[]> lista=new ArrayList<int[]>();
-			r1 = new int[counter];
+			ri = new int[counter];
 			
 			
 			while ((line = br.readLine()) != null) {
@@ -63,9 +63,9 @@ public class DataSet {
 						
 					}
 					
-					if(generico[0]>r1[0]) r1[0]=generico[0];
-					if(generico[1]>r1[1]) r1[1]=generico[1];
-					if(generico[2]>r1[2]) r1[2]=generico[2];
+					if(generico[0]>ri[0]) ri[0]=generico[0];
+					if(generico[1]>ri[1]) ri[1]=generico[1];
+					if(generico[2]>ri[2]) ri[2]=generico[2];
 					
 					System.out.print(generico[0]);
 					System.out.print(generico[1]);
