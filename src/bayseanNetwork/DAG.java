@@ -41,43 +41,72 @@ public class DAG {
 		
 	}
 	
-	public int[] FromParentConfiguration (int node, int parent_configuration){
-		int[] q;
-		if (node <= this.data_set.num_var){
-			q = new int[1];
-			q[0] = -1; //Empty Configuration
-		}else{
-			int real_node = node - this.data_set.num_var;
-			
-			//calc number of parents
-			int num_parents = 0;
-			for (int i = 0; i < this.data_set.num_var*2 ; i++) {
-				if (dag[i][real_node] == 1){
-					num_parents ++;
-				}
-			}
-			
-			
-			//Find each parent configuration
-			q = new int[num_parents];
-			int [][] ri_parents = new int[num_parents][2];
-			
-			num_parents = 0;
-			for (int i = 0; i < this.data_set.num_var*2 ; i++) {
-				if (dag[i][real_node] == 1){
-					ri_parents [num_parents][0] = i;
-					if (i < data_set.num_var){
-						ri_parents [num_parents][1] = this.data_set.ri[i];
-					}else{
-						ri_parents [num_parents][1] = this.data_set.ri[i-data_set.num_var];
-					}
-					
-					System.out.println(ri_parents [num_parents][0] + ri_parents [num_parents][1]);
-					num_parents ++;
-				}
-			}
-			
+	//Receives Parent Configuration and returns array with parent node number and configuration
+	public int[][] fromParentConfiguration (int node, int parent_configuration) throws PCInvalid, NoParent{
+		if (parent_configuration < 0) throw new PCInvalid("NegativePC");
+		
+		int[][] q;
+		
+		//Check if node is from t+1 (Nodes from t have empty parent configuration)
+		if (node < this.data_set.num_var) throw new NoParent();
+		
+		int real_node = realNode(node);
+		int num_parents = numParents(real_node);
+		
+		if (num_parents == 0) throw new NoParent();
+		
+		q = new int[num_parents][2];
+		
+		int [][] ri_parents = riParents(real_node, num_parents);
+		
+		int max_q = 1;
+		for (int i = 0; i < ri_parents.length; i++) {
+			max_q = max_q * ri_parents [i][1];
+		}
+		
+		if (parent_configuration >= max_q) throw new PCInvalid();
+		
+		int parent_configuration_aux = parent_configuration;
+		for (int i = ri_parents.length - 1; i >= 0 ; i--) {
+			q[i][0] = ri_parents[i][0];
+			q[i][1] = parent_configuration_aux % ri_parents[i][1];
+			System.out.println("parent " + q [i][0] + ", q: " + q [i][1]);
 		}
 		return q;
+	}
+	
+	//Converts t+1 node number to the value in the DAG
+	private int realNode(int node){
+		return node - this.data_set.num_var;
+	}
+	
+	//Calculates the number of parents
+	private int numParents(int real_node){
+		int num_parents = 0;
+		for (int i = 0; i < this.data_set.num_var*2 ; i++) {
+			if (dag[i][real_node] == 1){
+				num_parents ++;
+			}
+		}
+		return num_parents;
+	}
+	
+	//Find the ri of each parent of the node
+	private int [][] riParents(int real_node, int num_parents){
+		int [][] ri_parents = new int[num_parents][2];
+		
+		int j = 0;
+		for (int i = 0; i < this.data_set.num_var*2 ; i++) {
+			if (dag[i][real_node] == 1){
+				ri_parents [j][0] = i;
+				if (i < data_set.num_var){
+					ri_parents [j][1] = this.data_set.ri[i];
+				}else{
+					ri_parents [j][1] = this.data_set.ri[i-data_set.num_var];
+				}
+				j ++;
+			}
+		}
+		return ri_parents;
 	}
 }

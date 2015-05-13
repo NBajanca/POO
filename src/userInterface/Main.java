@@ -1,7 +1,6 @@
 package userInterface;
 
-import bayseanNetwork.DAG;
-import bayseanNetwork.DataSet;
+import bayseanNetwork.*;
 
 public class Main {
 
@@ -58,7 +57,16 @@ public class Main {
 	data_set.dag = new DAG(data_set);
 	System.out.println(data_set.dag.toString());
 	
-	data_set.dag.FromParentConfiguration(4,5);
+	
+	//For test
+	try{
+		data_set.dag.fromParentConfiguration(3,1);
+	}catch (PCInvalid e){
+		e.printStackTrace();
+	} catch (NoParent e) {
+		System.out.println("no parents");
+	}
+	//Delete after debug
 	
 	System.exit(0);
 	}

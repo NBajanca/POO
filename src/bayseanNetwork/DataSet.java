@@ -64,9 +64,9 @@ public class DataSet {
 						
 					}
 					
-					if(generico[0]>ri[0]) ri[0]=generico[0];
-					if(generico[1]>ri[1]) ri[1]=generico[1];
-					if(generico[2]>ri[2]) ri[2]=generico[2];
+					if(generico[0]>=ri[0]) ri[0]=generico[0] + 1;
+					if(generico[1]>=ri[1]) ri[1]=generico[1] + 1;
+					if(generico[2]>=ri[2]) ri[2]=generico[2] + 1;
 					
 					System.out.print(generico[0]);
 					System.out.print(generico[1]);
