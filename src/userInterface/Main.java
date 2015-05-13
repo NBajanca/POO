@@ -1,5 +1,6 @@
 package userInterface;
 
+import bayseanNetwork.DAG;
 import bayseanNetwork.DataSet;
 
 public class Main {
@@ -51,9 +52,11 @@ public class Main {
 			System.exit(6);
 		}
 		
-	DataSet lista= new DataSet(args[0]);
-	System.out.println(lista.ri[0]+ "," + lista.ri[1]+ ","+ lista.ri[2]);
+	DataSet data_set= new DataSet(args[0]);
+	System.out.println(data_set.ri[0]+ "," + data_set.ri[1]+ ","+ data_set.ri[2]);
 	
+	DAG dag = new DAG(data_set);
+	System.out.println(dag.toString());
 	
 	System.exit(0);
 	}
