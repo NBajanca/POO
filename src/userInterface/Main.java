@@ -89,7 +89,7 @@ public class Main {
 			}
 			System.out.println("Numero de indices =" + countervirgulas/counter);
 			
-			int[] generico = new int[counter];
+			int[] generico = new int[counter*2];
 			LinkedList<int[]> lista=new LinkedList<int[]>();
 			
 			
@@ -98,21 +98,28 @@ public class Main {
 			        // use comma as separator
 				String[] variaveis = line.split(csvSplitBy);
 				
-				while(j<variaveis.length){	
-					for(int i=0; i<counter; i++,j++){
+				while(j+counter-1<variaveis.length){	
+					for(int i=0; i<counter*2; i++,j++){
+						if(i==0 && k!=0){
+							j=j-counter;
+						}
+						k=1;
 						generico[i]=Integer.parseInt(variaveis[j]);
 						
 						
-					
 					}
 					
 					System.out.print(generico[0]);
 					System.out.print(generico[1]);
 					System.out.print(generico[2]);
+					System.out.print(generico[3]);
+					System.out.print(generico[4]);
+					System.out.print(generico[5]);
+					
 					System.out.println();
 					
 					lista.add(generico);
-					k++;
+					
 					
 					
 				
