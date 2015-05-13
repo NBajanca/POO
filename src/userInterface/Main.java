@@ -55,8 +55,10 @@ public class Main {
 	DataSet data_set= new DataSet(args[0]);
 	System.out.println(data_set.ri[0]+ "," + data_set.ri[1]+ ","+ data_set.ri[2]);
 	
-	DAG dag = new DAG(data_set);
-	System.out.println(dag.toString());
+	data_set.dag = new DAG(data_set);
+	System.out.println(data_set.dag.toString());
+	
+	data_set.dag.FromParentConfiguration(4,5);
 	
 	System.exit(0);
 	}

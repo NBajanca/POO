@@ -12,6 +12,7 @@ public class DataSet {
 	public ArrayList<int[]> data;
 	public int num_var;
 	public int[] ri;   /* vector de inteiros r - maximum values each variable*/
+	public DAG dag;
 	
 	
 	public DataSet(String nome_ficheiro){
@@ -96,6 +97,14 @@ public class DataSet {
 		}
 		
 		
+	}
+	
+	int NijkCalc(int i, int q, int r){
+		int counter = 0;
+		
+		
+		
+		return counter;
 	}
 	
 	
