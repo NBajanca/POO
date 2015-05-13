@@ -7,6 +7,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.LinkedList;
 
+import bayseanNetwork.Data_set;
+
 
 
 
@@ -64,7 +66,9 @@ public class Main {
 			System.exit(6);
 		}
 		
-		BufferedReader br=null;
+	Data_set lista= new Data_set(args[0]);
+		
+	/*BufferedReader br=null;
 		String line= "";
 		String csvSplitBy = ",";
 		
@@ -141,7 +145,7 @@ public class Main {
 					e.printStackTrace();
 				}
 			}
-		}
+		*/
 		
 		System.exit(0);
 	}
