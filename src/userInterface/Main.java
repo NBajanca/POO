@@ -50,10 +50,16 @@ public class Main {
 			System.err.println("[6] INVALID VAR ARGUMENT");
 			System.exit(6);
 		}
+<<<<<<< HEAD
 		
 	DataSet data_set= new DataSet(args[0]);
 	System.out.println(data_set.ri[0]+ "," + data_set.ri[1]+ ","+ data_set.ri[2]);
 	
+=======
+	
+	DataSet data_set= new DataSet(args[0]);
+	System.out.println(data_set.ri[0]+ "," + data_set.ri[1]+ ","+ data_set.ri[2]);
+>>>>>>> origin/Imran-Branch
 	data_set.dag = new DAG(data_set);
 	System.out.println(data_set.dag.toString());
 	
