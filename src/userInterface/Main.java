@@ -61,7 +61,7 @@ public class Main {
 	//For test
 	int[][] parent_configuration = null;
 	try{
-		parent_configuration = data_set.dag.fromParentConfiguration(4,3);
+		parent_configuration = data_set.dag.fromParentConfiguration(4,2);
 	}catch (PCInvalid e){
 		e.printStackTrace();
 	} catch (NoParent e) {
@@ -77,7 +77,7 @@ public class Main {
 	data_set.dag.toParentConfiguration (4, parent_configuration);
 	//Delete after debug
 	
-	int counter = data_set.calcNijk(3, 1, 1);
+	int counter = data_set.calcNijk(5, 2, 2);
 	System.out.println("Nijk = " + counter);
 	
 	System.exit(0);

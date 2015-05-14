@@ -103,14 +103,35 @@ public class DataSet {
 	
 	public int calcNijk(int i, int q, int r){
 		int counter = 0;
-	
+		
+		int[][] parent_configuration = null;
+		try{
+			parent_configuration = dag.fromParentConfiguration(i,q);
+		}catch (PCInvalid e){
+			e.printStackTrace();
+		} catch (NoParent e) {
+			for (int[] data_line : data) {
+				if(data_line[i] == r){
+					counter++;
+				}
+			}
+			return counter;
+		}
+		int correct_pc = 0;
+		
 		for (int[] data_line : data) {
-			if(data_line[i] == r){
+			for (int j = 0; j < parent_configuration.length; j++) {
+				if (data_line[parent_configuration[j][0]] == parent_configuration[j][1]){
+					correct_pc ++;
+				}else{
+					break;
+				}
+			}
+			if(data_line[i] == r && correct_pc == parent_configuration.length){
 				counter++;
 			}
+			correct_pc = 0;
 		}
-		
-		
 		
 		return counter;
 	}
