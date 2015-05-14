@@ -59,13 +59,22 @@ public class Main {
 	
 	
 	//For test
+	int[][] parent_configuration = null;
 	try{
-		data_set.dag.fromParentConfiguration(5,10);
+		parent_configuration = data_set.dag.fromParentConfiguration(4,3);
 	}catch (PCInvalid e){
 		e.printStackTrace();
 	} catch (NoParent e) {
 		System.out.println("no parents");
 	}
+	
+	for (int i = 0; i < parent_configuration.length; i++) {
+		System.out.println("parent " + parent_configuration[i][0] + ", configuration: " + parent_configuration[i][1]);
+	}
+	
+	
+	
+	data_set.dag.toParentConfiguration (4, parent_configuration);
 	//Delete after debug
 	
 	System.exit(0);
