@@ -20,11 +20,6 @@ public class DataSet {
 		this.data = new ArrayList<int[]>();
 		BufferedReader br=null;
 		String line= "";
-<<<<<<< HEAD
-		int countervirgulas;
-=======
-		//int countervirgulas=0;
->>>>>>> origin/Imran-Branch
 		
 		System.out.println(nome_ficheiro);
 	
@@ -39,24 +34,11 @@ public class DataSet {
 			this.ri = new int[num_var];
 			this.fill_array(br);
 			
-<<<<<<< HEAD
-			num_var = this.obtain_num_variables(line);
-			System.out.println("Numero de zeros =" + num_var);
-			countervirgulas=this.obtain_num_virgulas(line);
-			System.out.println("Numero de indices =" + countervirgulas/num_var);
-			this.ri = new int[num_var];
-			this.fill_array(br);
-			
-		} catch (FileNotFoundException e){
-			e.printStackTrace();
-			System.out.println("O ficheiro" + nome_ficheiro + "nao existe!");
-=======
 		} catch (FileNotFoundException e){
 			e.printStackTrace();
 			System.out.println("O ficheiro" + nome_ficheiro + "nao existe!");
 			System.err.println("[7] FILE NOT FOUND");
 			System.exit(7);
->>>>>>> origin/Imran-Branch
 		} catch (IOException e) {
 			e.printStackTrace();
 		} finally {
@@ -141,83 +123,27 @@ public class DataSet {
 		return countervirgulas;
 	}
 	
-<<<<<<< HEAD
-=======
 	// This function travels the .csv file and calls other functions
 	// to make the correct storage of usefull information in the file
->>>>>>> origin/Imran-Branch
 	void fill_array(BufferedReader br){
 		
 		String line;
 		String csvSplitBy = ",";
-<<<<<<< HEAD
-<<<<<<< HEAD
-		int [] generico = new int[this.num_var*2];
-=======
->>>>>>> d8a0747dadb712fd3e3759c5f42f1e90850001ed
-		ArrayList<int[]> lista = new ArrayList<int[]>();
-		
-			try {
-				while ((line = br.readLine()) != null) {
-					int [] generico = new int[this.num_var*2];
-					int j=0; 
-					int k=0;
-					
-					String[] variaveis = line.split(csvSplitBy);
-					while(j+this.num_var-1<variaveis.length){	
-						
-						for(int i=0; i<num_var*2; i++,j++){
-							
-							if(i==0 && k!=0){
-								j=j-num_var;
-							}
-							k=1;
-							generico[i]=Integer.parseInt(variaveis[j]);
-							
-						}
-						
-						if(generico[0]>=ri[0]) ri[0]=generico[0] + 1;
-						if(generico[1]>=ri[1]) ri[1]=generico[1] + 1;
-						if(generico[2]>=ri[2]) ri[2]=generico[2] + 1;
-						
-						System.out.print(generico[0]);
-						System.out.print(generico[1]);
-						System.out.print(generico[2]);
-						System.out.print(generico[3]);
-						System.out.print(generico[4]);
-						System.out.print(generico[5]);						
-						System.out.println();
-						lista.add(generico);
-					}
-				
-				}
-			} catch (NumberFormatException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-=======
-		
-			try {
-				while ((line = br.readLine()) != null) {
-					String[] variaveis = line.split(csvSplitBy);
-					travel_string_and_store(variaveis);
-				}
-			} catch (NumberFormatException e) {
-				e.printStackTrace();
-			} catch (IOException e) {
->>>>>>> origin/Imran-Branch
-				e.printStackTrace();
-			} catch(NullPointerException e){
-				e.printStackTrace();
-			}
-<<<<<<< HEAD
-		this.data=lista;
-	}
-=======
 
-		
+		try {
+			while ((line = br.readLine()) != null) {
+				String[] variaveis = line.split(csvSplitBy);
+				travel_string_and_store(variaveis);
+			}
+		} catch (NumberFormatException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch(NullPointerException e){
+			e.printStackTrace();
+		}
 	}
+	
 	// This function verifies if the maximum value should be replaced in the stored int []
 	void verify_maximum(int[] generico){
 		if(generico[0]>=this.ri[0]) this.ri[0]=generico[0] + 1;
@@ -243,10 +169,4 @@ public class DataSet {
 			this.data.add(generico);
 		}
 	}
-	
-	
-	
-	
->>>>>>> origin/Imran-Branch
-	
 }
