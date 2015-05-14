@@ -1,27 +1,10 @@
 package userInterface;
 
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.LinkedList;
-
-import bayseanNetwork.DataSet;
-
-
-
-
-
+import bayseanNetwork.*;
 
 public class Main {
 
-	public Main() {
-		// TODO Auto-generated constructor stub
-	}
-
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
 		
 		if (args.length != 5){
 			System.out.println("Correct program call has the following arguments: train test score randrest var");
@@ -51,6 +34,7 @@ public class Main {
 		}
 		
 		try {
+			@SuppressWarnings("unused")
 			int randrest = Integer.parseInt(args[3]);
 		} catch (NumberFormatException e) {
 			System.out.println("randrest argument should be a number");
@@ -59,6 +43,7 @@ public class Main {
 		}
 		
 		try {
+			@SuppressWarnings("unused")
 			int var = Integer.parseInt(args[4]);
 		} catch (NumberFormatException e) {
 			System.out.println("var argument should be a number");
@@ -66,90 +51,24 @@ public class Main {
 			System.exit(6);
 		}
 		
-	DataSet lista= new DataSet(args[0]);
-	System.out.println(lista.r1[0]+ "," + lista.r1[1]+ ","+ lista.r1[2]);
-	System.out.println();
-		
-	/*BufferedReader br=null;
-		String line= "";
-		String csvSplitBy = ",";
-		
-		System.out.println(train);
+	DataSet data_set= new DataSet(args[0]);
+	System.out.println(data_set.ri[0]+ "," + data_set.ri[1]+ ","+ data_set.ri[2]);
 	
-		try {
-			 
-			br = new BufferedReader(new FileReader(train));
-			line = br.readLine();
-			
-			int counter = 0, countervirgulas = 0;
-			for( int i=0; i<line.length(); i++ ) {
-			    if( line.charAt(i) == '_' && line.charAt(i+1)=='0' ) {
-			    	counter++;
-			    } 
-			}
-			System.out.println("Numero de zeros =" + counter);
-			for( int i=0; i<line.length(); i++ ) {
-			    if( line.charAt(i) == ',' ) {
-			    	countervirgulas++;
-			    } 
-			}
-			System.out.println("Numero de indices =" + countervirgulas/counter);
-			
-			int[] generico = new int[counter*2];
-			LinkedList<int[]> lista=new LinkedList<int[]>();
-			
-			
-			while ((line = br.readLine()) != null) {
-				int j=0; int k=0;
-			        // use comma as separator
-				String[] variaveis = line.split(csvSplitBy);
-				
-				while(j+counter-1<variaveis.length){	
-					for(int i=0; i<counter*2; i++,j++){
-						if(i==0 && k!=0){
-							j=j-counter;
-						}
-						k=1;
-						generico[i]=Integer.parseInt(variaveis[j]);
-						
-						
-					}
-					
-					System.out.print(generico[0]);
-					System.out.print(generico[1]);
-					System.out.print(generico[2]);
-					System.out.print(generico[3]);
-					System.out.print(generico[4]);
-					System.out.print(generico[5]);
-					
-					System.out.println();
-					
-					lista.add(generico);
-					
-					
-					
-				
-				System.out.println(lista.getFirst()[0]);
-				
-				}
-				
-			}
-			System.out.println(lista.toString());
-		} catch (FileNotFoundException e){
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		} finally {
-			if (br !=null){
-				try{
-					br.close();
-				} catch (IOException e){
-					e.printStackTrace();
-				}
-			}
-		*/
-		
-		System.exit(0);
+	data_set.dag = new DAG(data_set);
+	System.out.println(data_set.dag.toString());
+	
+	
+	//For test
+	try{
+		data_set.dag.fromParentConfiguration(3,1);
+	}catch (PCInvalid e){
+		e.printStackTrace();
+	} catch (NoParent e) {
+		System.out.println("no parents");
+	}
+	//Delete after debug
+	
+	System.exit(0);
 	}
 
 }
