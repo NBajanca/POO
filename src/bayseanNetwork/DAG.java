@@ -71,6 +71,7 @@ public class DAG {
 			q[i][0] = ri_parents[i][0];
 			q[i][1] = parent_configuration_aux % ri_parents[i][1];
 			System.out.println("parent " + q [i][0] + ", q: " + q [i][1]);
+			parent_configuration_aux = (parent_configuration_aux - q [i][1])/ri_parents[i][1];
 		}
 		return q;
 	}

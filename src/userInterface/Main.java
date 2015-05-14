@@ -60,7 +60,7 @@ public class Main {
 	
 	//For test
 	try{
-		data_set.dag.fromParentConfiguration(3,1);
+		data_set.dag.fromParentConfiguration(5,10);
 	}catch (PCInvalid e){
 		e.printStackTrace();
 	} catch (NoParent e) {
