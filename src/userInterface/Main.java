@@ -65,14 +65,28 @@ public class Main {
 	
 	
 	//For test
+	int[][] parent_configuration = null;
 	try{
-		data_set.dag.fromParentConfiguration(3,1);
+		parent_configuration = data_set.dag.fromParentConfiguration(5,2);
 	}catch (PCInvalid e){
 		e.printStackTrace();
 	} catch (NoParent e) {
 		System.out.println("no parents");
 	}
+	
+	for (int i = 0; i < parent_configuration.length; i++) {
+		System.out.println("parent " + parent_configuration[i][0] + ", configuration: " + parent_configuration[i][1]);
+	}
+	
+	
+	
+	data_set.dag.toParentConfiguration (5, parent_configuration);
 	//Delete after debug
+	
+	int[] counter = data_set.calcNijk(5, 11 , 1);
+	System.out.println("Nijk = " + counter[0] + " Nij = " + counter[1] );
+	
+	ParameterLearning parameter_learning = new ParameterLearning(data_set.dag);
 	
 	System.exit(0);
 	}
