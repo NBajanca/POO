@@ -77,6 +77,9 @@ public class Main {
 	data_set.dag.toParentConfiguration (4, parent_configuration);
 	//Delete after debug
 	
+	int counter = data_set.calcNijk(3, 1, 1);
+	System.out.println("Nijk = " + counter);
+	
 	System.exit(0);
 	}
 

@@ -44,12 +44,13 @@ public class DataSet {
 			}
 			System.out.println("Numero de indices =" + countervirgulas/counter);
 			
-			int[] generico = new int[counter*2];
+			
 			ArrayList<int[]> lista=new ArrayList<int[]>();
 			ri = new int[counter];
 			
 			
 			while ((line = br.readLine()) != null) {
+				int[] generico = new int[counter*2];
 				int j=0; int k=0;
 			        // use comma as separator
 				String[] variaveis = line.split(csvSplitBy);
@@ -78,10 +79,11 @@ public class DataSet {
 					System.out.println();
 					
 					lista.add(generico);
-					data=lista;
+					
 				}
-		
+				
 			}
+			data=lista;
 		} catch (FileNotFoundException e){
 			e.printStackTrace();
 		} catch (IOException e) {
@@ -99,8 +101,14 @@ public class DataSet {
 		
 	}
 	
-	int NijkCalc(int i, int q, int r){
+	public int calcNijk(int i, int q, int r){
 		int counter = 0;
+	
+		for (int[] data_line : data) {
+			if(data_line[i] == r){
+				counter++;
+			}
+		}
 		
 		
 		

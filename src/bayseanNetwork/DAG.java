@@ -40,6 +40,7 @@ public class DAG {
 	void reverse(){ //Tem que gerar uma excepção quando não é possível
 		
 	}
+	
 	//Receives Parents Configuration and returns int with parent configuration
 	public int toParentConfiguration (int node, int[][] parent_configuration){
 		int j= 1; //empty configuration standart
