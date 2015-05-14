@@ -20,7 +20,7 @@ public class DataSet {
 		this.data = new ArrayList<int[]>();
 		BufferedReader br=null;
 		String line= "";
-		int countervirgulas;
+		//int countervirgulas=0;
 		
 		System.out.println(nome_ficheiro);
 	
@@ -30,7 +30,7 @@ public class DataSet {
 			line = br.readLine();
 			num_var = this.obtain_num_variables(line);
 			/*System.out.println("Numero de zeros =" + num_var);*/
-			countervirgulas=this.obtain_num_virgulas(line);
+			//countervirgulas=this.obtain_num_virgulas(line);
 			/*System.out.println("Numero de indices =" + countervirgulas/num_var);*/
 			this.ri = new int[num_var];
 			this.fill_array(br);
@@ -89,6 +89,8 @@ public class DataSet {
 		return countervirgulas;
 	}
 	
+	// This function travels the .csv file and calls other functions
+	// to make the correct storage of usefull information in the file
 	void fill_array(BufferedReader br){
 		
 		String line;
@@ -96,36 +98,12 @@ public class DataSet {
 		
 			try {
 				while ((line = br.readLine()) != null) {
-					int j=0; 
-					int k=0;
-					
 					String[] variaveis = line.split(csvSplitBy);
-					
-					while(j+this.num_var-1<variaveis.length){
-						int [] generico = new int[this.num_var*2];
-						for(int i=0; i<num_var*2; i++,j++){
-							
-							if(i==0 && k!=0){
-								j=j-num_var;
-							}
-							k=1;
-							generico[i]=Integer.parseInt(variaveis[j]);
-							
-						}
-						
-						if(generico[0]>=ri[0]) ri[0]=generico[0] + 1;
-						if(generico[1]>=ri[1]) ri[1]=generico[1] + 1;
-						if(generico[2]>=ri[2]) ri[2]=generico[2] + 1;
-						
-						this.data.add(generico);
-					}
-				
+					travel_string_and_store(variaveis);
 				}
 			} catch (NumberFormatException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			} catch(NullPointerException e){
 				e.printStackTrace();
@@ -133,6 +111,34 @@ public class DataSet {
 
 		
 	}
+	// This function verifies if the maximum value should be replaced in the stored int []
+	void verify_maximum(int[] generico){
+		if(generico[0]>=this.ri[0]) this.ri[0]=generico[0] + 1;
+		if(generico[1]>=this.ri[1]) this.ri[1]=generico[1] + 1;
+		if(generico[2]>=this.ri[2]) this.ri[2]=generico[2] + 1;
+	}
+	// This function travels the string[] and stores each 
+	//	group of 2*num_var fields in the array
+	void travel_string_and_store(String[] variaveis){
+		int j=0; 
+		int k=0;
+		while(j+this.num_var-1<variaveis.length){
+			int [] generico = new int[this.num_var*2];
+			for(int i=0; i<num_var*2; i++,j++){
+				
+				if(i==0 && k!=0){
+					j=j-num_var;
+				}
+				k=1;
+				generico[i]=Integer.parseInt(variaveis[j]);	
+			}
+			verify_maximum(generico);
+			this.data.add(generico);
+		}
+	}
+	
+	
+	
 	
 	
 }
