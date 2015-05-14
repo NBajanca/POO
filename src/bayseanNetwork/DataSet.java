@@ -17,7 +17,7 @@ public class DataSet {
 	
 	public DataSet(String nome_ficheiro){
 		
-		
+		this.data = new ArrayList<int[]>();
 		BufferedReader br=null;
 		String line= "";
 		int countervirgulas;
@@ -28,17 +28,18 @@ public class DataSet {
 			 
 			br = new BufferedReader(new FileReader(nome_ficheiro));
 			line = br.readLine();
-			
 			num_var = this.obtain_num_variables(line);
-			System.out.println("Numero de zeros =" + num_var);
+			/*System.out.println("Numero de zeros =" + num_var);*/
 			countervirgulas=this.obtain_num_virgulas(line);
-			System.out.println("Numero de indices =" + countervirgulas/num_var);
+			/*System.out.println("Numero de indices =" + countervirgulas/num_var);*/
 			this.ri = new int[num_var];
 			this.fill_array(br);
 			
 		} catch (FileNotFoundException e){
 			e.printStackTrace();
 			System.out.println("O ficheiro" + nome_ficheiro + "nao existe!");
+			System.err.println("[7] FILE NOT FOUND");
+			System.exit(7);
 		} catch (IOException e) {
 			e.printStackTrace();
 		} finally {
@@ -92,8 +93,6 @@ public class DataSet {
 		
 		String line;
 		String csvSplitBy = ",";
-		int [] generico = new int[this.num_var*2];
-		ArrayList<int[]> lista = new ArrayList<int[]>();
 		
 			try {
 				while ((line = br.readLine()) != null) {
@@ -101,8 +100,9 @@ public class DataSet {
 					int k=0;
 					
 					String[] variaveis = line.split(csvSplitBy);
-					while(j+this.num_var-1<variaveis.length){	
-						
+					
+					while(j+this.num_var-1<variaveis.length){
+						int [] generico = new int[this.num_var*2];
 						for(int i=0; i<num_var*2; i++,j++){
 							
 							if(i==0 && k!=0){
@@ -117,14 +117,7 @@ public class DataSet {
 						if(generico[1]>=ri[1]) ri[1]=generico[1] + 1;
 						if(generico[2]>=ri[2]) ri[2]=generico[2] + 1;
 						
-						System.out.print(generico[0]);
-						System.out.print(generico[1]);
-						System.out.print(generico[2]);
-						System.out.print(generico[3]);
-						System.out.print(generico[4]);
-						System.out.print(generico[5]);						
-						System.out.println();
-						lista.add(generico);
+						this.data.add(generico);
 					}
 				
 				}
@@ -137,9 +130,9 @@ public class DataSet {
 			} catch(NullPointerException e){
 				e.printStackTrace();
 			}
-		this.data=lista;
-		System.out.println(",,,,");
-		System.out.println("....");
+
+		
 	}
+	
 	
 }
