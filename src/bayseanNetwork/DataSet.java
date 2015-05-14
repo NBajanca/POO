@@ -29,63 +29,6 @@ public class DataSet {
 			br = new BufferedReader(new FileReader(nome_ficheiro));
 			line = br.readLine();
 			
-<<<<<<< HEAD
-			int counter = 0, countervirgulas = 0;
-			for( int i=0; i<line.length(); i++ ) {
-			    if( line.charAt(i) == '_' && line.charAt(i+1)=='0' ) {
-			    	counter++;
-			    } 
-			}
-			System.out.println("Numero de zeros =" + counter);
-			num_var= counter;
-			for( int i=0; i<line.length(); i++ ) {
-			    if( line.charAt(i) == ',' ) {
-			    	countervirgulas++;
-			    } 
-			}
-			System.out.println("Numero de indices =" + countervirgulas/counter);
-			
-			
-			ArrayList<int[]> lista=new ArrayList<int[]>();
-			ri = new int[counter];
-			
-			
-			while ((line = br.readLine()) != null) {
-				int[] generico = new int[counter*2];
-				int j=0; int k=0;
-			        // use comma as separator
-				String[] variaveis = line.split(csvSplitBy);
-				
-				while(j+counter-1<variaveis.length){	
-					for(int i=0; i<counter*2; i++,j++){
-						if(i==0 && k!=0){
-							j=j-counter;
-						}
-						k=1;
-						generico[i]=Integer.parseInt(variaveis[j]);
-						
-					}
-					
-					if(generico[0]>=ri[0]) ri[0]=generico[0] + 1;
-					if(generico[1]>=ri[1]) ri[1]=generico[1] + 1;
-					if(generico[2]>=ri[2]) ri[2]=generico[2] + 1;
-					
-					System.out.print(generico[0]);
-					System.out.print(generico[1]);
-					System.out.print(generico[2]);
-					System.out.print(generico[3]);
-					System.out.print(generico[4]);
-					System.out.print(generico[5]);
-					
-					System.out.println();
-					
-					lista.add(generico);
-					
-				}
-				
-			}
-			data=lista;
-=======
 			num_var = this.obtain_num_variables(line);
 			System.out.println("Numero de zeros =" + num_var);
 			countervirgulas=this.obtain_num_virgulas(line);
@@ -93,7 +36,6 @@ public class DataSet {
 			this.ri = new int[num_var];
 			this.fill_array(br);
 			
->>>>>>> origin/master
 		} catch (FileNotFoundException e){
 			e.printStackTrace();
 			System.out.println("O ficheiro" + nome_ficheiro + "nao existe!");
@@ -185,11 +127,11 @@ public class DataSet {
 		
 		String line;
 		String csvSplitBy = ",";
-		int [] generico = new int[this.num_var*2];
 		ArrayList<int[]> lista = new ArrayList<int[]>();
 		
 			try {
 				while ((line = br.readLine()) != null) {
+					int [] generico = new int[this.num_var*2];
 					int j=0; 
 					int k=0;
 					
