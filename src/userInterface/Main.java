@@ -74,10 +74,10 @@ public class Main {
 	
 	
 	
-	data_set.dag.toParentConfiguration (4, parent_configuration);
+	data_set.dag.toParentConfiguration (5, parent_configuration);
 	//Delete after debug
 	
-	int[] counter = data_set.calcNijk(4, 2 , 1);
+	int[] counter = data_set.calcNijk(5, 2 , 2);
 	System.out.println("Nijk = " + counter[0] + " Nij = " + counter[1] );
 	
 	System.exit(0);
