@@ -71,8 +71,7 @@ public class DAG {
 		
 		int[][] q;
 		
-		//Check if node is from t+1 (Nodes from t have empty parent configuration)
-		if (node < this.data_set.num_var) throw new NoParent();
+		if (parent_configuration >= maxq(node)) throw new PCInvalid();
 		
 		int real_node = realNode(node);
 		int num_parents = numParents(real_node);
@@ -80,15 +79,7 @@ public class DAG {
 		if (num_parents == 0) throw new NoParent();
 		
 		q = new int[num_parents][2];
-		
 		int [][] ri_parents = riParents(real_node, num_parents);
-		
-		int max_q = 1;
-		for (int i = 0; i < ri_parents.length; i++) {
-			max_q = max_q * ri_parents [i][1];
-		}
-		
-		if (parent_configuration >= max_q) throw new PCInvalid();
 		
 		int parent_configuration_aux = parent_configuration;
 		for (int i = ri_parents.length - 1; i >= 0 ; i--) {
@@ -132,5 +123,25 @@ public class DAG {
 			}
 		}
 		return ri_parents;
+	}
+
+
+	int maxq(int node) throws NoParent {
+		//Check if node is from t+1 (Nodes from t have empty parent configuration)
+		if (node < this.data_set.num_var) throw new NoParent();
+		
+		int real_node = realNode(node);
+		int num_parents = numParents(real_node);
+		
+		if (num_parents == 0) throw new NoParent();
+		
+		int [][] ri_parents = riParents(real_node, num_parents);
+		
+		int max_q = 1;
+		for (int i = 0; i < ri_parents.length; i++) {
+			max_q = max_q * ri_parents [i][1];
+		}
+		
+		return max_q;
 	}
 }
