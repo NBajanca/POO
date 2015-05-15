@@ -77,6 +77,26 @@ public class ParameterLearning {
 //	}
 	
 	
-	
+	//Calculates the prob given all the information
+	public double calcProb(int[] data, int node, int value){
+		double prob;
+		int parent_configuration = 0;
+		
+		int real_node = dag.realNode(node);
+		int num_parents = dag.numParents(real_node);
+		
+		if (num_parents != 0){
+			int [][] ri_parents = dag.riParents(real_node, num_parents);
+			
+			for (int i = 0; i < ri_parents.length; i++) {
+				ri_parents[i][1] = data[ri_parents[i][0]];
+			}	
+			parent_configuration = dag.toParentConfiguration(node, ri_parents);
+		}
+		
+		prob = learned_parameters.get(real_node)[parent_configuration][value];
+		
+		return prob;
+	}
 
 }

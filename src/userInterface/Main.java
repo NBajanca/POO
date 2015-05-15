@@ -103,6 +103,10 @@ public class Main {
 //	}
 	//Delete after debug
 	
+	int[] test_data = new int[]{1,0,2,1,2,2};
+	
+	System.out.println(parameter_learning.calcProb(test_data, 4 , 0));
+	
 	System.exit(0);
 	}
 

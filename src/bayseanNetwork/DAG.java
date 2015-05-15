@@ -86,7 +86,7 @@ public void add(int origem, int destino){ //Tem que gerar uma excepção quando nã
 	
 	//Receives Parents Configuration and returns int with parent configuration
 	public int toParentConfiguration (int node, int[][] parent_configuration){
-		int j= 1; //empty configuration standart
+		int j= 0; //empty configuration standart
 		
 		//Check if node is from t+1 (Nodes from t have empty parent configuration)
 		if (node < this.data_set.num_var) return j;
