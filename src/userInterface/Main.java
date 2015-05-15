@@ -52,35 +52,56 @@ public class Main {
 		}
 		
 	DataSet data_set= new DataSet(args[0]);
-	System.out.println(data_set.ri[0]+ "," + data_set.ri[1]+ ","+ data_set.ri[2]);
 	
-	data_set.dag = new DAG(data_set);
-	System.out.println(data_set.dag.toString());
-	
-	
-	//For test
-	int[][] parent_configuration = null;
-	try{
-		parent_configuration = data_set.dag.fromParentConfiguration(5,2);
-	}catch (PCInvalid e){
-		e.printStackTrace();
-	} catch (NoParent e) {
-		System.out.println("no parents");
-	}
-	
-	for (int i = 0; i < parent_configuration.length; i++) {
-		System.out.println("parent " + parent_configuration[i][0] + ", configuration: " + parent_configuration[i][1]);
-	}
-	
-	
-	
-	data_set.dag.toParentConfiguration (5, parent_configuration);
+	//Debug only
+//	System.out.println(data_set.ri[0]+ "," + data_set.ri[1]+ ","+ data_set.ri[2]);
 	//Delete after debug
 	
-	int[] counter = data_set.calcNijk(5, 2 , 2);
-	System.out.println("Nijk = " + counter[0] + " Nij = " + counter[1] );
+	data_set.dag = new DAG(data_set);
+	
+	//Debug only
+//	System.out.println(data_set.dag.toString());
+	//Delete after debug
+	
+	//For test
+//	int[][] parent_configuration = null;
+//	try{
+//		parent_configuration = data_set.dag.fromParentConfiguration(5,2);
+//	}catch (PCInvalid e){
+//		e.printStackTrace();
+//	} catch (NoParent e) {
+//		System.out.println("no parents");
+//	}
+//	
+//	for (int i = 0; i < parent_configuration.length; i++) {
+//		System.out.println("parent " + parent_configuration[i][0] + ", configuration: " + parent_configuration[i][1]);
+//	}
+//	
+//	
+//	
+//	data_set.dag.toParentConfiguration (5, parent_configuration);
+	//Delete after debug
+	
+	//Debug only
+//	int[] counter = data_set.calcNijk(5, 2 , 2);
+//	System.out.println("Nijk = " + counter[0] + " Nij = " + counter[1] );
+	//Delete after debug
+	
 	
 	ParameterLearning parameter_learning = new ParameterLearning(data_set.dag);
+	parameter_learning.learnTeta();
+	
+	//Debug only
+//	int i = 0;
+//	for (double[][] learned_node : parameter_learning.learned_parameters) {
+//		for (int j = 0; j < learned_node.length; j++) {
+//			for (int k = 0; k < learned_node[j].length; k++) {
+//				System.out.println("Teta"+i+j+k+ " = " + learned_node[j][k]);
+//			}
+//		}
+//		i++;
+//	}
+	//Delete after debug
 	
 	System.exit(0);
 	}

@@ -20,8 +20,6 @@ public class DataSet {
 		this.data = new ArrayList<int[]>();
 		BufferedReader br=null;
 		String line= "";
-		
-		System.out.println(nome_ficheiro);
 	
 		try {
 			 
