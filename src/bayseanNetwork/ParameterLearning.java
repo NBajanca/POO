@@ -38,6 +38,14 @@ public class ParameterLearning {
 		}
 	}
 	
+	int [] calcInference(int[] data_t0){
+		int[] data_t1 = new int[data_t0.length];
+		
+		
+		
+		return data_t1;
+	}
+	
 	
 	
 
