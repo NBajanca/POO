@@ -50,37 +50,38 @@ public class Main {
 			System.err.println("[6] INVALID VAR ARGUMENT");
 			System.exit(6);
 		}
-		
+	
 	DataSet data_set= new DataSet(args[0]);
 	System.out.println(data_set.ri[0]+ "," + data_set.ri[1]+ ","+ data_set.ri[2]);
-	
 	data_set.dag = new DAG(data_set);
 	System.out.println(data_set.dag.toString());
 	
 	
 	//For test
-	int[][] parent_configuration = null;
 	try{
-		parent_configuration = data_set.dag.fromParentConfiguration(5,2);
+		data_set.dag.fromParentConfiguration(3,1);
 	}catch (PCInvalid e){
 		e.printStackTrace();
 	} catch (NoParent e) {
 		System.out.println("no parents");
 	}
-	
-	for (int i = 0; i < parent_configuration.length; i++) {
-		System.out.println("parent " + parent_configuration[i][0] + ", configuration: " + parent_configuration[i][1]);
-	}
-	
-	
-	
-	data_set.dag.toParentConfiguration (5, parent_configuration);
 	//Delete after debug
 	
-	int[] counter = data_set.calcNijk(5, 2 , 2);
-	System.out.println("Nijk = " + counter[0] + " Nij = " + counter[1] );
-	
-	ParameterLearning parameter_learning = new ParameterLearning(data_set.dag);
+	/*DAG daga = new DAG(data_set);
+	System.out.println(daga.dag[0][1]);
+	daga.add(4,4);
+	daga.add(0, 3);
+	daga.add(0, 4);
+	daga.add(0, 5);
+	daga.add(1, 3);
+	daga.add(1, 4);
+	daga.add(1, 5);
+	daga.add(2, 3);
+	daga.add(2, 4);
+	daga.add(2, 5);
+	daga.add(4, 3);
+	daga.add(5, 4);
+	daga.add(3,5);*/
 	
 	System.exit(0);
 	}

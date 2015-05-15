@@ -20,6 +20,7 @@ public class DataSet {
 		this.data = new ArrayList<int[]>();
 		BufferedReader br=null;
 		String line= "";
+		//int countervirgulas=0;
 		
 		System.out.println(nome_ficheiro);
 	
@@ -54,45 +55,10 @@ public class DataSet {
 		
 	}
 	
-	
-	//Returns Nijk in [0] and Nij in [1]
-	public int[] calcNijk(int i, int q, int r){
-		int[] counter = new int[2];
+	int NijkCalc(int i, int q, int r){
+		int counter = 0;
 		
-		int[][] parent_configuration = null;
-		try{
-			parent_configuration = dag.fromParentConfiguration(i,q);
-		}catch (PCInvalid e){
-			e.printStackTrace();
-		} catch (NoParent e) {
-			//If there are no parents the calc is direct
-			for (int[] data_line : data) {
-				counter[1]++;
-				if(data_line[i] == r){
-					counter[0]++;
-				}
-			}
-			return counter;
-		}
-		int correct_pc = 0;
 		
-		//The trains-set is iterated and the Nijk and Nij are calc
-		for (int[] data_line : data) {
-			for (int j = 0; j < parent_configuration.length; j++) {
-				if (data_line[parent_configuration[j][0]] == parent_configuration[j][1]){
-					correct_pc ++;
-				}else{
-					break;
-				}
-			}
-			if (correct_pc == parent_configuration.length){
-				counter[1]++;
-				if(data_line[i] == r){
-					counter[0]++;
-				}
-			}
-			correct_pc = 0;
-		}
 		
 		return counter;
 	}
@@ -129,21 +95,22 @@ public class DataSet {
 		
 		String line;
 		String csvSplitBy = ",";
-
-		try {
-			while ((line = br.readLine()) != null) {
-				String[] variaveis = line.split(csvSplitBy);
-				travel_string_and_store(variaveis);
+		
+			try {
+				while ((line = br.readLine()) != null) {
+					String[] variaveis = line.split(csvSplitBy);
+					travel_string_and_store(variaveis);
+				}
+			} catch (NumberFormatException e) {
+				e.printStackTrace();
+			} catch (IOException e) {
+				e.printStackTrace();
+			} catch(NullPointerException e){
+				e.printStackTrace();
 			}
-		} catch (NumberFormatException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		} catch(NullPointerException e){
-			e.printStackTrace();
-		}
+
+		
 	}
-	
 	// This function verifies if the maximum value should be replaced in the stored int []
 	void verify_maximum(int[] generico){
 		if(generico[0]>=this.ri[0]) this.ri[0]=generico[0] + 1;
@@ -169,4 +136,9 @@ public class DataSet {
 			this.data.add(generico);
 		}
 	}
+	
+	
+	
+	
+	
 }
