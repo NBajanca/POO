@@ -134,12 +134,12 @@ public void add(int origem, int destino){ //Tem que gerar uma excepção quando nã
 	}
 	
 	//Converts t+1 node number to the value in the DAG
-	private int realNode(int node){
+	int realNode(int node){
 		return node - this.data_set.num_var;
 	}
 	
 	//Calculates the number of parents
-	private int numParents(int real_node){
+	int numParents(int real_node){
 		int num_parents = 0;
 		for (int i = 0; i < this.data_set.num_var*2 ; i++) {
 			if (dag[i][real_node] == true){
@@ -150,7 +150,7 @@ public void add(int origem, int destino){ //Tem que gerar uma excepção quando nã
 	}
 	
 	//Find the ri of each parent of the node
-	private int [][] riParents(int real_node, int num_parents){
+	int [][] riParents(int real_node, int num_parents){
 		int [][] ri_parents = new int[num_parents][2];
 		
 		int j = 0;
