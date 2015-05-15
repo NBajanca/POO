@@ -92,15 +92,15 @@ public class Main {
 	parameter_learning.learnTeta();
 	
 	//Debug only
-//	int i = 0;
-//	for (double[][] learned_node : parameter_learning.learned_parameters) {
-//		for (int j = 0; j < learned_node.length; j++) {
-//			for (int k = 0; k < learned_node[j].length; k++) {
-//				System.out.println("Teta"+i+j+k+ " = " + learned_node[j][k]);
-//			}
-//		}
-//		i++;
-//	}
+	int i = 0;
+	for (double[][] learned_node : parameter_learning.learned_parameters) {
+		for (int j = 0; j < learned_node.length; j++) {
+			for (int k = 0; k < learned_node[j].length; k++) {
+				System.out.println("Teta"+i+j+k+ " = " + learned_node[j][k]);
+			}
+		}
+		i++;
+	}
 	//Delete after debug
 	
 	System.exit(0);

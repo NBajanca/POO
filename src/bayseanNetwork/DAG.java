@@ -4,18 +4,18 @@ import java.util.Arrays;
 
 public class DAG {
 	//Matriz de Adjacências e respectivos métodos
-	int[][] dag;
-	DataSet data_set;
+	public boolean [][] dag;
+	public DataSet data_set;
 	
 	public DAG(DataSet data_set){
-		dag = new int[data_set.num_var*2][data_set.num_var];
+		dag = new boolean[data_set.num_var*2][data_set.num_var];
 		this.data_set = data_set;
 		
 		//For test purpose
-		dag[0][1] = 1;
-		dag[1][2] = 1;
-		dag[2][2] = 1;
-		dag[3][1] = 1;
+		dag[0][1] = true;
+		dag[1][2] = true;
+		dag[2][2] = true;
+		dag[3][1] = true;
 		//To delete after implementation
 	}
 	
@@ -29,12 +29,55 @@ public class DAG {
 	}
 
 
-	void add(){ //Tem que gerar uma excepção quando não é possível
+public void add(int origem, int destino){ //Tem que gerar uma excepção quando não é possível
+		
+		if(this.dag[origem][convertDestination(destino)]==true){
+			System.out.println("Vector ja adicionado!");
+			return;
+		}
+		if(origem==destino){ 
+			System.out.println("origem é igual ao destino");
+			dag.toString();
+			return; /* nao pode meter true*/
+		}
+		if(origem<this.data_set.num_var){
+			System.out.println("Vector correctamente adicionado1");
+			this.dag[origem][convertDestination(destino)]=true;
+			return;
+		}
+		if (origem>=this.data_set.num_var){
+			if (dag[destino][origem-this.data_set.num_var]==true){
+				System.out.println("A aresta contrario já se encontra preenchida!");
+				return;
+			}
+		}else{
+			
+			if (dag[convertDestination(destino)][origem]==true){
+				System.out.println("A aresta contrario já se encontra preenchida!");
+				dag.toString();
+				return; /*nao pode meter true*/
+			}
+		}
+		
+		boolean[] visitedVector = new boolean[2*this.data_set.num_var];
+		for(int j=0;j<this.data_set.num_var;j++) visitedVector[j]=false;
+		if(DFS(origem,destino,visitedVector)){
+			System.out.println("Nao foi possivel adicionar vector");
+			dag.toString();
+		}else{
+			System.out.println("Vector correctamente adicionado");
+			System.out.println(origem + " " + destino);
+			this.dag[origem][convertDestination(destino)]=true;
+		}
+		
+		//perguntar se em vez de ligar de x->y ou y->x faz diferenca no score
+		//verifyDag();
 		
 	}
 	
-	void remove(){ //Tem que gerar uma excepção quando não é possível
+	void remove(int linha, int coluna){ //Tem que gerar uma excepção quando não é possível
 		
+		dag[linha][coluna]=false;
 	}
 	
 	void reverse(){ //Tem que gerar uma excepção quando não é possível
@@ -99,7 +142,7 @@ public class DAG {
 	private int numParents(int real_node){
 		int num_parents = 0;
 		for (int i = 0; i < this.data_set.num_var*2 ; i++) {
-			if (dag[i][real_node] == 1){
+			if (dag[i][real_node] == true){
 				num_parents ++;
 			}
 		}
@@ -112,7 +155,7 @@ public class DAG {
 		
 		int j = 0;
 		for (int i = 0; i < this.data_set.num_var*2 ; i++) {
-			if (dag[i][real_node] == 1){
+			if (dag[i][real_node] == true){
 				ri_parents [j][0] = i;
 				if (i < data_set.num_var){
 					ri_parents [j][1] = this.data_set.ri[i];
@@ -143,5 +186,23 @@ public class DAG {
 		}
 		
 		return max_q;
+	}
+	
+	private int convertDestination(int destino){
+		destino = destino-data_set.num_var;
+		return destino;
+	}
+	
+	private boolean DFS(int origem, int destino,boolean[] visitedVector){
+		
+		for(int i=0; i<this.data_set.num_var; i++){
+			if(this.dag[destino][i]==true && visitedVector[i]==false){
+				if(i+this.data_set.num_var==origem) return true;
+				visitedVector[i+this.data_set.num_var]=true;
+				if(DFS(origem,i+this.data_set.num_var,visitedVector)) return true;
+			}
+			
+		}
+		return false;		
 	}
 }
