@@ -23,8 +23,8 @@ public class ParameterLearning {
 		}
 	}
 	
+	//Learn the parameter for each node combination
 	public void learnTeta(){
-		
 		int i = 0;
 		int [] Nijk;
 		for (double[][] learned_node : learned_parameters) {
@@ -38,8 +38,24 @@ public class ParameterLearning {
 		}
 	}
 	
+	//Returns the most probable value for that node given the t=0 values
+	public int inferNode(int[] data_t0, int node){
+		int node_value = 0;
+		double max_prob = 0, prob_aux = 0;
+		
+		for (int i = 0; i < dag.data_set.ri[dag.realNode(node)]; i++) {
+			prob_aux = calcProb(data_t0, node, i);
+			if (max_prob < prob_aux){
+				max_prob = prob_aux;
+				node_value = i;
+			}
+		}
+		
+		return node_value;
+	}
+	
 	//Calculates the prob of a node in t=1 having a value given the t=0 values
-	public double calcProb(int[] data_t0, int node, int value){
+	private double calcProb(int[] data_t0, int node, int value){
 		double prob = 0;
 		int[] data = new int[dag.data_set.num_var*2];
 		

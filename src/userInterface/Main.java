@@ -105,9 +105,11 @@ public class Main {
 	
 	
 	//Debug only
-	int[] test_data = new int[]{1,0,2};
-	System.out.println(parameter_learning.calcProb(test_data, 3, 1));
+//	int[] test_data = new int[]{1,3,2};
+//	System.out.println(parameter_learning.inferNode(test_data, 5));
 	//Delete after debug
+	
+	
 	
 	System.exit(0);
 	}
