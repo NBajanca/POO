@@ -95,6 +95,21 @@ public class ParameterLearning {
 		}
 		
 		prob = learned_parameters.get(real_node)[parent_configuration][value];
+		for (int i = 0; i < data.length/2; i++) {
+			if (i == dag.realNode(node)) continue;
+			int parent_configuration_aux = 0;
+			int num_parents_aux = dag.numParents(i);
+			
+			if (num_parents_aux != 0){
+				int [][] ri_parents_aux = dag.riParents(i, num_parents_aux);
+				
+				for (int i1 = 0; i1 < ri_parents_aux.length; i1++) {
+					ri_parents_aux[i1][1] = data[ri_parents_aux[i1][0]];
+				}	
+				parent_configuration_aux = dag.toParentConfiguration(dag.generalNode(i), ri_parents_aux);
+			}
+			prob = prob * learned_parameters.get(i)[parent_configuration_aux][data[dag.generalNode(i)]];
+		}
 		
 		return prob;
 	}

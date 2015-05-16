@@ -54,19 +54,19 @@ public class DataSet {
 	
 	
 	//Returns Nijk in [0] and Nij in [1]
-	public int[] calcNijk(int i, int q, int r){
+	public int[] calcNijk(int i, int j, int k){
 		int[] counter = new int[2];
 		
 		int[][] parent_configuration = null;
 		try{
-			parent_configuration = dag.fromParentConfiguration(i,q);
+			parent_configuration = dag.fromParentConfiguration(i,j);
 		}catch (PCInvalid e){
 			e.printStackTrace();
 		} catch (NoParent e) {
 			//If there are no parents the calc is direct
 			for (int[] data_line : data) {
 				counter[1]++;
-				if(data_line[i] == r){
+				if(data_line[i] == k){
 					counter[0]++;
 				}
 			}
@@ -76,8 +76,8 @@ public class DataSet {
 		
 		//The trains-set is iterated and the Nijk and Nij are calc
 		for (int[] data_line : data) {
-			for (int j = 0; j < parent_configuration.length; j++) {
-				if (data_line[parent_configuration[j][0]] == parent_configuration[j][1]){
+			for (int j1 = 0; j1 < parent_configuration.length; j1++) {
+				if (data_line[parent_configuration[j1][0]] == parent_configuration[j1][1]){
 					correct_pc ++;
 				}else{
 					break;
@@ -85,7 +85,7 @@ public class DataSet {
 			}
 			if (correct_pc == parent_configuration.length){
 				counter[1]++;
-				if(data_line[i] == r){
+				if(data_line[i] == k){
 					counter[0]++;
 				}
 			}

@@ -104,7 +104,6 @@ public void add(int origem, int destino){ //Tem que gerar uma excepção quando nã
 			j = j * ri_parents[i][1];
 			j = j + parent_configuration[i][1];
 		}
-		System.out.println("configuration: " + j);
 		return j;
 	}
 	
@@ -136,6 +135,11 @@ public void add(int origem, int destino){ //Tem que gerar uma excepção quando nã
 	//Converts t+1 node number to the value in the DAG
 	int realNode(int node){
 		return node - this.data_set.num_var;
+	}
+	
+	//Converts t+1 node number to the value in the DAG
+	int generalNode(int node){
+		return node + this.data_set.num_var;
 	}
 	
 	//Calculates the number of parents
