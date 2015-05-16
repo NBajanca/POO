@@ -12,11 +12,21 @@ public class DAG {
 		this.data_set = data_set;
 		
 		//For test purpose
+
 		//dag[0][1] = true;
 		//dag[1][2] = true;
 		//dag[2][2] = true;
 		//dag[3][1] = true;
 		//To delete after implementation
+		
+//		dag[0][1] = true;
+//		dag[1][2] = true;
+//		dag[2][2] = true;
+//		dag[3][1] = true;
+		//To delete after implementation
+		
+		//For test purpose
+
 		dag[0][0] = true;
 		dag[0][1] = true;
 		dag[0][2] = true;
@@ -26,12 +36,13 @@ public class DAG {
 		dag[2][1] = true;
 		dag[2][2] = true;
 		dag[4][0] = true;
+
 	}
 	public DAG(DAG master){
 		
-		boolean[][] matriz = new boolean[master.data_set.num_var*2][master.data_set.num_var];
+		this.dag = new boolean[master.data_set.num_var*2][master.data_set.num_var];
 		this.data_set = master.data_set;
-		
+
 	}
 	
 	
