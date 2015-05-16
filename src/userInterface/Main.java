@@ -81,11 +81,11 @@ public class Main {
 	printNetwork(1, data_set);
 	
 	System.out.println("=== Scores");
-	Score score_algorithm_aux = new LL(data_set.dag);
-	System.out.println("LL " + score_algorithm_aux.compute());
+	Score score_algorithm_aux = new LL();
+	System.out.println("LL " + score_algorithm_aux.compute(data_set.dag));
 	
-	score_algorithm_aux = new MDL(data_set.dag);
-	System.out.println("MDL " + score_algorithm_aux.compute());
+	score_algorithm_aux = new MDL();
+	System.out.println("MDL " + score_algorithm_aux.compute(data_set.dag));
 	
 	
 	

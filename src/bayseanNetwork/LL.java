@@ -1,14 +1,8 @@
 package bayseanNetwork;
 
 public class LL implements Score {
-	protected DAG dag;
-
-	public LL(DAG dag) {
-		this.dag = dag;
-	}
-
 	@Override
-	public double compute() {
+	public double compute(DAG dag) {
 		double ll = 0;
 		for (int i = 0; i < dag.data_set.num_var * 2; i++) {
 			int maxq;
