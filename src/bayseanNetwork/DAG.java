@@ -3,7 +3,7 @@ package bayseanNetwork;
 import java.util.Arrays;
 
 public class DAG {
-	//Matriz de Adjacências e respectivos métodos
+	//Matriz de Adjacï¿½ncias e respectivos mï¿½todos
 	public boolean [][] dag;
 	public DataSet data_set;
 	
@@ -12,11 +12,26 @@ public class DAG {
 		this.data_set = data_set;
 		
 		//For test purpose
-		dag[0][1] = true;
-		dag[1][2] = true;
-		dag[2][2] = true;
-		dag[3][1] = true;
+		//dag[0][1] = true;
+		//dag[1][2] = true;
+		//dag[2][2] = true;
+		//dag[3][1] = true;
 		//To delete after implementation
+		dag[0][0] = true;
+		dag[0][1] = true;
+		dag[0][2] = true;
+		dag[1][0] = true;
+		dag[1][1] = true;
+		dag[1][2] = true;
+		dag[2][1] = true;
+		dag[2][2] = true;
+		dag[4][0] = true;
+	}
+	public DAG(DAG master){
+		
+		boolean[][] matriz = new boolean[master.data_set.num_var*2][master.data_set.num_var];
+		this.data_set = master.data_set;
+		
 	}
 	
 	
@@ -29,7 +44,7 @@ public class DAG {
 	}
 
 
-	public void add(int origem, int destino) throws IlegalOperation{ //Tem que gerar uma excepção quando não é possível
+	public void add(int origem, int destino) throws IlegalOperation{ //Tem que gerar uma excepï¿½ï¿½o quando nï¿½o ï¿½ possï¿½vel
 		
 		if(destino<this.data_set.num_var) throw new IlegalOperation();
 		if(this.dag[origem][convertDestination(destino)]==true) throw new IlegalOperation("Edge already exists!");
@@ -58,7 +73,7 @@ public class DAG {
 		
 	}
 	
-	public	void remove(int linha, int coluna){ //Tem que gerar uma excepção quando não é possível
+	public	void remove(int linha, int coluna){ //Tem que gerar uma excepï¿½ï¿½o quando nï¿½o ï¿½ possï¿½vel
 		
 		if(coluna<this.data_set.num_var) return;
 		try{
@@ -68,13 +83,13 @@ public class DAG {
 			}
 		}
 	
-	public void reverse(int origem, int destino) throws IlegalOperation{ //Tem que gerar uma excepção quando não é possível
+	public void reverse(int origem, int destino) throws IlegalOperation{ //Tem que gerar uma excepï¿½ï¿½o quando nï¿½o ï¿½ possï¿½vel
 		
 		if(destino<this.data_set.num_var) throw new IlegalOperation();
 		if(origem==destino) throw new IlegalOperation ();
 		
 		if(origem<this.data_set.num_var){
-			System.out.println("Não é possivel reverter o nó");
+			System.out.println("Nï¿½o ï¿½ possivel reverter o nï¿½");
 		}
 		if(this.dag[origem][convertDestination(destino)]==true){
 			this.dag[origem][convertDestination(destino)]=false;
@@ -82,11 +97,11 @@ public class DAG {
 			for(int j=0;j<this.data_set.num_var;j++) visitedVector[j]=false;
 			if(DFS(destino,origem,visitedVector)){
 				this.dag[origem][convertDestination(destino)] = true;
-				System.out.println("Não é possivel reverter a ligação");
+				System.out.println("Nï¿½o ï¿½ possivel reverter a ligaï¿½ï¿½o");
 			}
 			else{
 				this.dag[destino][convertDestination(origem)]=true;
-				System.out.println("Nó correctamente revertido");
+				System.out.println("Nï¿½ correctamente revertido");
 			}
 		}
 		
@@ -161,7 +176,7 @@ public class DAG {
 	}
 	
 	//Calculates the number of parents
-	int numParents(int real_node){
+	public int numParents(int real_node){
 		int num_parents = 0;
 		for (int i = 0; i < this.data_set.num_var*2 ; i++) {
 			if (dag[i][real_node] == true){
@@ -172,7 +187,7 @@ public class DAG {
 	}
 	
 	//Find the ri of each parent of the node
-	int [][] riParents(int real_node, int num_parents){
+	public int [][] riParents(int real_node, int num_parents){
 		int [][] ri_parents = new int[num_parents][2];
 		
 		int j = 0;
@@ -227,4 +242,18 @@ public class DAG {
 		}
 		return false;		
 	}
+
+
+	@Override
+	protected DAG clone() throws CloneNotSupportedException {
+		DAG objecto = new DAG(this);
+		for(int n=0; n<this.data_set.num_var*2;n++){
+			for(int j=0; j<this.data_set.num_var;j++){
+				objecto.dag[n][j]=this.dag[n][j];
+			}
+		}
+		return objecto;
+	}
+	
+	
 }

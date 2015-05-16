@@ -33,37 +33,61 @@ public class Main {
 			System.exit(4);
 		}
 		
+		int randrest = 0;
 		try {
-			@SuppressWarnings("unused")
-			int randrest = Integer.parseInt(args[3]);
+			randrest = Integer.parseInt(args[3]);
 		} catch (NumberFormatException e) {
 			System.out.println("randrest argument should be a number");
 			System.err.println("[5] INVALID RANDREST ARGUMENT");
 			System.exit(5);
 		}
 		
+		int var = 0;
 		try {
-			@SuppressWarnings("unused")
-			int var = Integer.parseInt(args[4]);
+			var = Integer.parseInt(args[4]);
 		} catch (NumberFormatException e) {
 			System.out.println("var argument should be a number");
 			System.err.println("[6] INVALID VAR ARGUMENT");
 			System.exit(6);
 		}
-		
-	DataSet data_set= new DataSet(args[0]);
-	TestData test_data = new TestData(args[1],data_set.num_var);
+	
+	// Print parameters
+	System.out.println("Paramaters: " + train + " " +  test + " " + score + " " + randrest + " " + var);
+	
+	//Read Files
+	DataSet data_set= new DataSet(train);
+	TestData test_data = new TestData(test,data_set.num_var);
 	
 	//Debug only
 //	data_set.toString();
 //	test_data.toString();
 	//Delete after debug
 	
-	//Debug only
-//	System.out.println(data_set.ri[0]+ "," + data_set.ri[1]+ ","+ data_set.ri[2]);
-	//Delete after debug
-	
+	//Building the DAG
+	long start_time = System.nanoTime();
 	data_set.dag = new DAG(data_set);
+	long end_time = System.nanoTime();
+	
+	//Printing DAG Time
+	System.out.println("Building DBN: " + (end_time - start_time)/1000000 + "ms");
+	
+	//Pirnting Transition network
+	System.out.println("Transition network:");
+	
+	System.out.println("=== Inter-slice connectivity");
+	printNetwork(0, data_set);
+	
+	System.out.println("=== Intra-slice connectivity");
+	printNetwork(1, data_set);
+	
+	System.out.println("=== Scores");
+	Score score_algorithm_aux = new LL();
+	System.out.println("LL " + score_algorithm_aux.compute(data_set.dag));
+	
+	score_algorithm_aux = new MDL();
+	System.out.println("MDL " + score_algorithm_aux.compute(data_set.dag));
+	
+	
 	
 	//Debug only
 //	System.out.println(data_set.dag.toString());
@@ -94,8 +118,16 @@ public class Main {
 	//Delete after debug
 	
 	
+	//Starting Inference
+	start_time = System.nanoTime();
+	System.out.println("Performing inference: ");
 	ParameterLearning parameter_learning = new ParameterLearning(data_set.dag);
 	parameter_learning.learnTeta();
+	
+	end_time = System.nanoTime();
+	
+	//Printing DAG Time
+	System.out.println("Infering with DBN: " + (end_time - start_time)/1000000 + "ms");
 	
 	//Debug only
 //	int i = 0;
@@ -111,14 +143,43 @@ public class Main {
 	
 	
 	//Debug only
-//	int[] test_data = new int[]{1,3,2};
-//	System.out.println(parameter_learning.inferNode(test_data, 5));
+//	int[] test_data1 = new int[]{1,3,2};
+//	System.out.println(parameter_learning.inferNode(test_data1, 5));
 	//Delete after debug
-	Score score_algorithm = new LL(data_set.dag);
-	System.out.println(score_algorithm.compute());
+	
+	
+//	Score score_algorithm = new LL(data_set.dag);
+//	System.out.println("LL: " + score_algorithm.compute());
+//	
+//	score_algorithm = new MDL(data_set.dag);
+//	System.out.println("MDL: " + score_algorithm.compute());
 	
 	
 	System.exit(0);
+	}
+
+	private static void printNetwork(int network, DataSet data_set) {
+		for (int i = 0; i < data_set.num_var; i++) {
+			System.out.print(i +  " : ");
+			int num_parents = data_set.dag.numParents(i);
+			int first_time = 0;
+			
+			//no parents means empty parent configuration
+			if (num_parents == 0){
+				System.out.println("");
+			}else{
+				int [][] ri_parents = data_set.dag.riParents(i, num_parents);
+				for (int j = 0; j < ri_parents.length; j++) {
+					if (ri_parents[j][0] >= data_set.num_var && network == 0) break;
+					if (ri_parents[j][0] < data_set.num_var && network == 1) continue;
+					else first_time ++;
+					if ( (j !=0 && network == 0) || (first_time > 1 && network == 1)) System.out.print(" , ");
+					System.out.print(ri_parents[j][0]);
+				}
+				System.out.println("");
+			}
+		}
+		
 	}
 
 }
