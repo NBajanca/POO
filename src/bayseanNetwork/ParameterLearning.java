@@ -38,44 +38,6 @@ public class ParameterLearning {
 		}
 	}
 	
-//	double calcProb(int[] data_t0, int node, int value){
-//		double prob = 0, prob_aux = 1, parent_configuration = 1;
-//		
-//		int real_node = dag.realNode(node), real_node_aux;
-//		int num_parents = dag.numParents(real_node), num_parents_aux;
-//		
-//		//if (num_parents == 0)
-//		int [][] ri_parents = dag.riParents(real_node, num_parents);
-//		int [][] ri_parents_aux;
-//		
-//		for (int i = 0; i < dag.data_set.num_var ; i++) {
-//			if (i == node) continue;
-//			for (int j = 0; j < dag.data_set.ri[i]; j++) {
-//				for (int i1 = 0; i1 < dag.data_set.num_var ; i1++) {
-//					if (i1 == node) continue;
-//					real_node_aux = dag.realNode(i1);
-//					num_parents_aux = dag.numParents(real_node_aux); //falta para sem pais
-//					ri_parents_aux = dag.riParents(real_node_aux, num_parents_aux);
-//					
-//					for (int k = 0; k < ri_parents_aux.length; k++) {
-//						if (k < dag.data_set.num_var){
-//							ri_parents_aux[k][1] = data_t0[k];
-//						}else{
-//							ri_parents_aux[k][1] = 
-//						}
-//					}
-//					
-//					parent_configuration = dag.toParentConfiguration( real_node_aux, parent_configuration)
-//					prob_aux = 
-//				}
-//			}
-//			
-//		}
-//		
-//		
-//		return prob;
-//	}
-	
 	//Calculates the prob of a node in t=1 having a value given the t=0 values
 	public double calcProb(int[] data_t0, int node, int value){
 		double prob = 0;
@@ -126,7 +88,7 @@ public class ParameterLearning {
 	}
 
 	//Calculates the prob of a node t=1 having a value given all the information (values of t=0 and t=1)
-	public double calcProbNode(int[] data, int node){
+	private double calcProbNode(int[] data, int node){
 		double prob;
 		int parent_configuration = 0;
 		
