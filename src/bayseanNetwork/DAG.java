@@ -12,10 +12,10 @@ public class DAG {
 		this.data_set = data_set;
 		
 		//For test purpose
-		dag[0][1] = true;
-		dag[1][2] = true;
-		dag[2][2] = true;
-		dag[3][1] = true;
+		//dag[0][1] = true;
+		//dag[1][2] = true;
+		//dag[2][2] = true;
+		//dag[3][1] = true;
 		//To delete after implementation
 	}
 	
@@ -29,58 +29,66 @@ public class DAG {
 	}
 
 
-public void add(int origem, int destino){ //Tem que gerar uma excepção quando não é possível
+	public void add(int origem, int destino) throws IlegalOperation{ //Tem que gerar uma excepção quando não é possível
 		
-		if(this.dag[origem][convertDestination(destino)]==true){
-			System.out.println("Vector ja adicionado!");
-			return;
-		}
-		if(origem==destino){ 
-			System.out.println("origem é igual ao destino");
-			dag.toString();
-			return; /* nao pode meter true*/
-		}
+		if(destino<this.data_set.num_var) throw new IlegalOperation();
+		if(this.dag[origem][convertDestination(destino)]==true) throw new IlegalOperation("Edge already exists!");
+		if(origem==destino) throw new IlegalOperation ();
 		if(origem<this.data_set.num_var){
 			System.out.println("Vector correctamente adicionado1");
 			this.dag[origem][convertDestination(destino)]=true;
 			return;
 		}
 		if (origem>=this.data_set.num_var){
-			if (dag[destino][origem-this.data_set.num_var]==true){
-				System.out.println("A aresta contrario já se encontra preenchida!");
-				return;
-			}
+			if (dag[destino][origem-this.data_set.num_var]==true) throw new IlegalOperation();
 		}else{
 			
-			if (dag[convertDestination(destino)][origem]==true){
-				System.out.println("A aresta contrario já se encontra preenchida!");
-				dag.toString();
-				return; /*nao pode meter true*/
-			}
+			if (dag[convertDestination(destino)][origem]==true) throw new IlegalOperation();
 		}
 		
 		boolean[] visitedVector = new boolean[2*this.data_set.num_var];
 		for(int j=0;j<this.data_set.num_var;j++) visitedVector[j]=false;
 		if(DFS(origem,destino,visitedVector)){
 			System.out.println("Nao foi possivel adicionar vector");
-			dag.toString();
 		}else{
 			System.out.println("Vector correctamente adicionado");
 			System.out.println(origem + " " + destino);
 			this.dag[origem][convertDestination(destino)]=true;
 		}
 		
-		//perguntar se em vez de ligar de x->y ou y->x faz diferenca no score
-		//verifyDag();
-		
 	}
 	
-	void remove(int linha, int coluna){ //Tem que gerar uma excepção quando não é possível
-		
-		dag[linha][coluna]=false;
-	}
+	public	void remove(int linha, int coluna){ //Tem que gerar uma excepção quando não é possível
+			
+		try{
+				dag[linha][coluna-this.data_set.num_var]=false;
+			} catch (ArrayIndexOutOfBoundsException e){
+				System.out.println("ArrayIndexOutOfBounds");
+			}
+		}
 	
-	void reverse(){ //Tem que gerar uma excepção quando não é possível
+	public void reverse(int origem, int destino) throws IlegalOperation{ //Tem que gerar uma excepção quando não é possível
+		
+		if(destino<this.data_set.num_var) throw new IlegalOperation();
+		if(origem==destino) throw new IlegalOperation ();
+		
+		if(origem<this.data_set.num_var){
+			System.out.println("Não é possivel reverter o nó");
+		}
+		if(this.dag[origem][convertDestination(destino)]==true){
+			this.dag[origem][convertDestination(destino)]=false;
+			boolean[] visitedVector = new boolean[2*this.data_set.num_var];
+			for(int j=0;j<this.data_set.num_var;j++) visitedVector[j]=false;
+			if(DFS(destino,origem,visitedVector)){
+				this.dag[origem][convertDestination(destino)] = true;
+				System.out.println("Não é possivel reverter a ligação");
+			}
+			else{
+				this.dag[destino][convertDestination(origem)]=true;
+				System.out.println("Nó correctamente revertido");
+			}
+		}
+		
 		
 	}
 	
