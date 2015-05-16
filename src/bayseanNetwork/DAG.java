@@ -28,14 +28,21 @@ public class DAG {
 		//For test purpose
 
 		dag[0][0] = true;
-		dag[0][1] = true;
+		//dag[0][1] = true;
 		dag[0][2] = true;
-		dag[1][0] = true;
+		//dag[1][0] = true;
 		dag[1][1] = true;
 		dag[1][2] = true;
 		dag[2][1] = true;
 		dag[2][2] = true;
+		//
+		dag[2][0] = true;
+		//
+		//dag[4][0] = true;
+		//
 		dag[4][0] = true;
+		dag[5][1] = true;
+		//
 
 	}
 	public DAG(DAG master){
@@ -178,8 +185,8 @@ public class DAG {
 	}
 	
 	//Converts t+1 node number to the value in the DAG
-	int generalNode(int node){
-		if (node >= this.data_set.num_var){
+	public int generalNode(int node){
+		if (node < this.data_set.num_var){
 			return node + this.data_set.num_var;
 		}else{
 			return node;

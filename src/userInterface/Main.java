@@ -6,7 +6,7 @@ public class Main {
 
 	public static void main(String[] args) {
 		
-		if (args.length != 5){
+		if (args.length < 4){
 			System.out.println("Correct program call has the following arguments: train test score randrest var");
 			System.err.println("[1] NUMBER OF ARGUMENTS IS INVALID");
 			System.exit(1);
@@ -49,6 +49,8 @@ public class Main {
 			System.out.println("var argument should be a number");
 			System.err.println("[6] INVALID VAR ARGUMENT");
 			System.exit(6);
+		}catch (ArrayIndexOutOfBoundsException e){
+			var = -1;
 		}
 	
 	// Print parameters
@@ -124,6 +126,15 @@ public class Main {
 	ParameterLearning parameter_learning = new ParameterLearning(data_set.dag);
 	parameter_learning.learnTeta();
 	
+	if (var != -1){
+		System.out.println("node: " + data_set.dag.generalNode(var));
+		parameter_learning.predictNode(test_data, data_set.dag.generalNode(var));
+		printInference(test_data,  data_set.dag.generalNode(var));
+	}else{
+		parameter_learning.predictAll(test_data);
+		printInference(test_data);
+	}
+	
 	end_time = System.nanoTime();
 	
 	//Printing DAG Time
@@ -156,6 +167,28 @@ public class Main {
 	
 	
 	System.exit(0);
+	}
+
+	private static void printInference(TestData test_data) {
+		int i = 1;
+		for (int [] data : test_data.data) {
+			System.out.print("-> instance " + i + ": ");
+			for (int j = test_data.num_var; j < data.length; j++) {
+				if (j != test_data.num_var) System.out.print(" , ");
+				System.out.print(data[j]);
+			}
+			System.out.println("");
+			i++;
+		}
+	}
+
+	private static void printInference(TestData test_data, int generalNode) {
+		int i = 1;
+		for (int [] data : test_data.data) {
+			System.out.println("-> instance " + i + ": " + data[generalNode]);
+			i++;
+		}
+		
 	}
 
 	private static void printNetwork(int network, DataSet data_set) {

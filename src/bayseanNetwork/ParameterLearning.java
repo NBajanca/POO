@@ -54,6 +54,24 @@ public class ParameterLearning {
 		return node_value;
 	}
 	
+	public void predictNode(TestData test_data, int node){
+		int [] data_t0 = new int[test_data.num_var];
+		
+		for (int[] data : test_data.data) {
+			for (int i = 0; i < data_t0.length; i++) {
+				data_t0[i] = data[i];
+				data[node] =  inferNode(data_t0, node);
+			}
+		}
+	}
+	
+	public void predictAll(TestData test_data) {
+		for (int i = 0; i < test_data.num_var; i++) {
+			predictNode(test_data, dag.generalNode(i));
+		}
+		
+	}
+	
 	//Calculates the prob of a node in t=1 having a value given the t=0 values
 	private double calcProb(int[] data_t0, int node, int value){
 		double prob = 0;
@@ -139,5 +157,7 @@ public class ParameterLearning {
 		
 		return prob;
 	}
+
+	
 
 }
