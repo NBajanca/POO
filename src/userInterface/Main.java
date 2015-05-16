@@ -52,6 +52,9 @@ public class Main {
 		}
 		
 	DataSet data_set= new DataSet(args[0]);
+	TestData test_data = new TestData(args[1],data_set.num_var);
+	data_set.toString();
+	test_data.toString();
 	
 	//Debug only
 //	System.out.println(data_set.ri[0]+ "," + data_set.ri[1]+ ","+ data_set.ri[2]);

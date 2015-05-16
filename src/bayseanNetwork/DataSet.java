@@ -6,7 +6,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 
-public class DataSet {
+public class DataSet implements EstablishArray{
 
 	
 	public ArrayList<int[]> data;
@@ -123,7 +123,7 @@ public class DataSet {
 	
 	// This function travels the .csv file and calls other functions
 	// to make the correct storage of usefull information in the file
-	void fill_array(BufferedReader br){
+	public void fill_array(BufferedReader br){
 		
 		String line;
 		String csvSplitBy = ",";
@@ -150,7 +150,7 @@ public class DataSet {
 	}
 	// This function travels the string[] and stores each 
 	//	group of 2*num_var fields in the array
-	void travel_string_and_store(String[] variaveis){
+	public void travel_string_and_store(String[] variaveis){
 		int j=0; 
 		int k=0;
 		while(j+this.num_var-1<variaveis.length){
@@ -167,4 +167,20 @@ public class DataSet {
 			this.data.add(generico);
 		}
 	}
+
+
+	@Override
+	public String toString() {
+		System.out.println("");
+		for(int i=0;i<this.data.size();i++){
+			System.out.print("[");
+			for (int j=0; j<this.num_var*2; j++){
+				System.out.print(this.data.get(i)[j] +" ");
+			}
+			System.out.println("]");
+			
+		}
+		return "";
+	}
+	
 }

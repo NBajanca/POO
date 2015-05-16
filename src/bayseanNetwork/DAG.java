@@ -59,7 +59,8 @@ public class DAG {
 	}
 	
 	public	void remove(int linha, int coluna){ //Tem que gerar uma excepção quando não é possível
-			
+		
+		if(coluna<this.data_set.num_var) return;
 		try{
 				dag[linha][coluna-this.data_set.num_var]=false;
 			} catch (ArrayIndexOutOfBoundsException e){
