@@ -115,7 +115,10 @@ public class Main {
 //	System.out.println(parameter_learning.inferNode(test_data, 5));
 	//Delete after debug
 	Score score_algorithm = new LL(data_set.dag);
-	System.out.println(score_algorithm.compute());
+	System.out.println("LL: " + score_algorithm.compute());
+	
+	score_algorithm = new MDL(data_set.dag);
+	System.out.println("MDL: " + score_algorithm.compute());
 	
 	
 	System.exit(0);

@@ -12,10 +12,22 @@ public class DAG {
 		this.data_set = data_set;
 		
 		//For test purpose
+//		dag[0][1] = true;
+//		dag[1][2] = true;
+//		dag[2][2] = true;
+//		dag[3][1] = true;
+		//To delete after implementation
+		
+		//For test purpose
+		dag[0][0] = true;
 		dag[0][1] = true;
+		dag[0][2] = true;
+		dag[1][0] = true;
+		dag[1][1] = true;
 		dag[1][2] = true;
+		dag[2][1] = true;
 		dag[2][2] = true;
-		dag[3][1] = true;
+		dag[4][0] = true;
 		//To delete after implementation
 	}
 	

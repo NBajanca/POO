@@ -1,7 +1,7 @@
 package bayseanNetwork;
 
 public class LL implements Score {
-	private DAG dag;
+	protected DAG dag;
 
 	public LL(DAG dag) {
 		this.dag = dag;
