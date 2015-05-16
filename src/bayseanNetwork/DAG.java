@@ -12,10 +12,10 @@ public class DAG {
 		this.data_set = data_set;
 		
 		//For test purpose
-		//dag[0][1] = true;
-		//dag[1][2] = true;
-		//dag[2][2] = true;
-		//dag[3][1] = true;
+		dag[0][1] = true;
+		dag[1][2] = true;
+		dag[2][2] = true;
+		dag[3][1] = true;
 		//To delete after implementation
 	}
 	
@@ -143,12 +143,21 @@ public class DAG {
 	
 	//Converts t+1 node number to the value in the DAG
 	int realNode(int node){
-		return node - this.data_set.num_var;
+		if (node >= this.data_set.num_var){
+			return node - this.data_set.num_var;
+		}else{
+			return node;
+		}
+		
 	}
 	
 	//Converts t+1 node number to the value in the DAG
 	int generalNode(int node){
-		return node + this.data_set.num_var;
+		if (node >= this.data_set.num_var){
+			return node + this.data_set.num_var;
+		}else{
+			return node;
+		}
 	}
 	
 	//Calculates the number of parents

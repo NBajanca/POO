@@ -114,7 +114,8 @@ public class Main {
 //	int[] test_data = new int[]{1,3,2};
 //	System.out.println(parameter_learning.inferNode(test_data, 5));
 	//Delete after debug
-	
+	Score score_algorithm = new LL(data_set.dag);
+	System.out.println(score_algorithm.compute());
 	
 	
 	System.exit(0);
