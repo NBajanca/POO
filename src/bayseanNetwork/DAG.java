@@ -173,7 +173,7 @@ public class DAG {
 	}
 	
 	//Calculates the number of parents
-	int numParents(int real_node){
+	public int numParents(int real_node){
 		int num_parents = 0;
 		for (int i = 0; i < this.data_set.num_var*2 ; i++) {
 			if (dag[i][real_node] == true){
@@ -184,7 +184,7 @@ public class DAG {
 	}
 	
 	//Find the ri of each parent of the node
-	int [][] riParents(int real_node, int num_parents){
+	public int [][] riParents(int real_node, int num_parents){
 		int [][] ri_parents = new int[num_parents][2];
 		
 		int j = 0;
