@@ -1,26 +1,47 @@
 package bayseanNetwork;
 
-import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Random;
 
 public class DAG {
 	//Matriz de Adjac�ncias e respectivos m�todos
 	public boolean [][] dag;
 	public DataSet data_set;
 	
-	public DAG(DataSet data_set, Score score){
+	public DAG(DataSet data_set, Score score, int randrest){
 		dag = new boolean[data_set.num_var*2][data_set.num_var];
+		
 		this.data_set = data_set;
 		data_set.dag=this;
+		
+		ganerateRandomDAG();
+		
 	
-		new GHC(this,score);
+		new GHC(this,score, randrest);
 
 	}
 	
+	
+
 	public DAG(DAG master){	
 		this.dag = master.dag;
 		this.data_set = master.data_set;
 
+	}
+	
+	protected void ganerateRandomDAG() {
+		Random random = new Random();
+		for (int i = 0; i < data_set.num_var*2; i++) {
+			for (int j = 0; j < data_set.num_var; j++) {
+				if(random.nextInt(data_set.num_var) == 0){
+					try {
+						add(i, generalNode(j));
+					} catch (IlegalOperation e) {
+					}
+				}
+			}
+		}
+		
 	}
 	
 	

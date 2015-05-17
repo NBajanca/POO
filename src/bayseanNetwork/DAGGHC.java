@@ -31,6 +31,16 @@ public class DAGGHC extends DAG {
 		DAGGHC dag_test =  new DAGGHC (objecto , this.score);
 		return dag_test;
 	}
+	
+	protected DAGGHC random()  {
+		DAG objecto = new DAG(this);
+		objecto.data_set = new DataSet (this.data_set, objecto);
+		objecto.dag = new boolean[this.data_set.num_var*2][this.data_set.num_var];
+		objecto.ganerateRandomDAG();
+		
+		DAGGHC dag_test =  new DAGGHC (objecto , this.score);
+		return dag_test;
+	}
 
 	
 }

@@ -75,7 +75,7 @@ public class Main {
 	//Building the DAG
 	long start_time = System.nanoTime();
 	Score score_algorithm_aux1 = new LL();
-	data_set.dag = new DAG(data_set,score_algorithm_aux1);
+	data_set.dag = new DAG(data_set,score_algorithm_aux1, randrest);
 	long end_time = System.nanoTime();
 	
 	//Printing DAG Time

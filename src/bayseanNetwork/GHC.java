@@ -2,13 +2,17 @@ package bayseanNetwork;
 
 public class GHC {
 	private DAG dag;
+	private int randrest = 0;
+	private DAGGHC dag_randrest;
 	private DAGGHC dag_best;
 	private DAGGHC dag_best_iteration;
 	private DAGGHC dag_test;
 	
-	public GHC(DAG dag, Score score){
+	public GHC(DAG dag, Score score, int randrest){
 		this.dag = dag;
-		dag_best = new DAGGHC (dag,  score);
+		this.randrest = randrest;
+		dag_randrest = new DAGGHC (dag,  score); 
+		dag_best = new DAGGHC (dag.clone(),  score);
 		dag_best_iteration =  new DAGGHC (dag.clone(),  score);
 		dag_test =  new DAGGHC (dag.clone(),  score);
 		
@@ -18,7 +22,7 @@ public class GHC {
 	private void calcGHC(Score score) {
 		while(true){
 			for (int i = 0; i < dag_best.data_set.num_var*2; i++) {
-				for (int i1 = 0; i1 < dag_best.data_set.num_var*2; i1++) {
+				for (int i1 = dag_best.data_set.num_var; i1 < dag_best.data_set.num_var*2; i1++) {
 					try{
 						dag_test.add(i, i1);
 						scoreVerify(score.compute(dag_test));
@@ -54,8 +58,7 @@ public class GHC {
 			dag_best_iteration = dag_best.clone();
 			dag_test = dag_best.clone();
 		}else{
-			dag.dag = dag_best.dag;
-			return true;
+			return randomRestart();
 		}
 			
 		return false;
@@ -68,6 +71,19 @@ public class GHC {
 		}
 		dag_test = dag_best.clone();
 		
+	}
+	
+	private boolean randomRestart(){
+		if (dag_randrest.score < dag_best.score){
+			dag_randrest = dag_best;
+			dag.dag = dag_randrest.dag;
+		}
+		
+		if (randrest == 0) return true;
+		else randrest --;
+		dag_best = dag_randrest.random();
+		
+		return false;
 	}
 	
 
