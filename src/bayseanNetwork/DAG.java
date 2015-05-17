@@ -31,24 +31,24 @@ public class DAG {
 		
 		//For test purpose
 
-<<<<<<< HEAD
-		dag[0][0] = true;
-		//dag[0][1] = true;
-		dag[0][2] = true;
-		//dag[1][0] = true;
-		dag[1][1] = true;
-		dag[1][2] = true;
-		dag[2][1] = true;
-		dag[2][2] = true;
+
+//		dag[0][0] = true;
+//		//dag[0][1] = true;
+//		dag[0][2] = true;
+//		//dag[1][0] = true;
+//		dag[1][1] = true;
+//		dag[1][2] = true;
+//		dag[2][1] = true;
+//		dag[2][2] = true;
+//		//
+//		dag[2][0] = true;
+//		//
+//		//dag[4][0] = true;
+//		//
+//		dag[4][0] = true;
+//		dag[5][1] = true;
 		//
-		dag[2][0] = true;
-		//
-		//dag[4][0] = true;
-		//
-		dag[4][0] = true;
-		dag[5][1] = true;
-		//
-=======
+
 //		dag[0][0] = true;
 //		dag[0][1] = true;
 //		dag[0][2] = true;
@@ -58,7 +58,7 @@ public class DAG {
 //		dag[2][1] = true;
 //		dag[2][2] = true;
 //		dag[4][0] = true;
->>>>>>> origin/master
+
 
 	}
 	public DAG(DAG master){

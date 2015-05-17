@@ -35,7 +35,6 @@ public class GHC {
 		System.out.println(besttillnow.dag);
 		System.out.println(test.dag);
 		int k=0;
-		boolean exit=false;
 		
 		while(true){
 			for(int n=0; n<this.dag.data_set.num_var*2;n++){
