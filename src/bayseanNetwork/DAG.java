@@ -12,12 +12,17 @@ public class DAG {
 		dag = new boolean[data_set.num_var*2][data_set.num_var];
 		this.data_set = data_set;
 		data_set.dag=this;
-
-		 dag[0][1] = true;
-		 dag[0][2] = true;
-		 dag[0][0] = true;
-		 dag[3][1] = true;
-		
+//
+//		 dag[0][0] = true;
+//		 dag[0][2] = true;
+//		 dag[1][1] = true;
+//		 dag[1][2] = true;
+//		 dag[2][0] = true;
+//		 dag[2][1] = true;
+//		 dag[2][2] = true;
+//		 dag[4][0] = true;
+//		 dag[5][1] = true;
+//		
 		GHC ghcgenerico = new GHC(this,score);
 		//For test purpose
 
@@ -31,6 +36,7 @@ public class DAG {
 		
 		//For test purpose
 
+<<<<<<< HEAD
 
 //		dag[0][0] = true;
 //		//dag[0][1] = true;
@@ -49,16 +55,40 @@ public class DAG {
 //		dag[5][1] = true;
 		//
 
+=======
+//<<<<<<< HEAD
+>>>>>>> origin/master
 //		dag[0][0] = true;
-//		dag[0][1] = true;
+//		//dag[0][1] = true;
 //		dag[0][2] = true;
-//		dag[1][0] = true;
+//		//dag[1][0] = true;
 //		dag[1][1] = true;
 //		dag[1][2] = true;
 //		dag[2][1] = true;
 //		dag[2][2] = true;
+//		//
+//		dag[2][0] = true;
+//		//
+//		//dag[4][0] = true;
+//		//
 //		dag[4][0] = true;
+<<<<<<< HEAD
 
+=======
+//		dag[5][1] = true;
+//		//
+//=======
+////		dag[0][0] = true;
+////		dag[0][1] = true;
+////		dag[0][2] = true;
+////		dag[1][0] = true;
+////		dag[1][1] = true;
+////		dag[1][2] = true;
+////		dag[2][1] = true;
+////		dag[2][2] = true;
+////		dag[4][0] = true;
+//>>>>>>> origin/master
+>>>>>>> origin/master
 
 	}
 	public DAG(DAG master){
@@ -87,7 +117,7 @@ public class DAG {
 		if(this.dag[origem][convertDestination(destino)]==true) throw new IlegalOperation("Edge already exists!");
 		if(origem==destino) throw new IlegalOperation ();
 		if(origem<this.data_set.num_var){
-			System.out.println("Vector correctamente adicionado1");
+			//System.out.println("Vector correctamente adicionado1");
 			this.dag[origem][convertDestination(destino)]=true;
 			return;
 		}
@@ -101,10 +131,10 @@ public class DAG {
 		boolean[] visitedVector = new boolean[2*this.data_set.num_var];
 		for(int j=0;j<this.data_set.num_var;j++) visitedVector[j]=false;
 		if(DFS(origem,destino,visitedVector)){
-			System.out.println("Nao foi possivel adicionar vector");
+			//System.out.println("Nao foi possivel adicionar vector");
 		}else{
-			System.out.println("Vector correctamente adicionado");
-			System.out.println(origem + " " + destino);
+			//System.out.println("Vector correctamente adicionado");
+			//System.out.println(origem + " " + destino);
 			this.dag[origem][convertDestination(destino)]=true;
 		}
 		
@@ -116,7 +146,6 @@ public class DAG {
 		try{
 				dag[linha][coluna-this.data_set.num_var]=false;
 			} catch (ArrayIndexOutOfBoundsException e){
-				System.out.println("ArrayIndexOutOfBounds");
 			}
 		}
 	
@@ -128,7 +157,7 @@ public class DAG {
 		if(origem==destino) throw new IlegalOperation ();
 		
 		if(origem<this.data_set.num_var){
-			System.out.println("N�o � possivel reverter o n�");
+			//System.out.println("N�o � possivel reverter o n�");
 		}
 		if(this.dag[origem][convertDestination(destino)]==true){
 			this.dag[origem][convertDestination(destino)]=false;
@@ -136,11 +165,11 @@ public class DAG {
 			for(int j=0;j<this.data_set.num_var;j++) visitedVector[j]=false;
 			if(DFS(destino,origem,visitedVector)){
 				this.dag[origem][convertDestination(destino)] = true;
-				System.out.println("N�o � possivel reverter a liga��o");
+				//System.out.println("N�o � possivel reverter a liga��o");
 			}
 			else{
 				this.dag[destino][convertDestination(origem)]=true;
-				System.out.println("N� correctamente revertido");
+				//System.out.println("N� correctamente revertido");
 			}
 		}
 		
@@ -291,7 +320,6 @@ public class DAG {
 				objecto.dag[n][j]=this.dag[n][j];
 			}
 		}
-		System.out.println(objecto.toString());
 		return objecto;
 	}
 	
