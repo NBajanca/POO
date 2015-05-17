@@ -4,11 +4,11 @@ package bayseanNetwork;
 public class IlegalOperation extends Exception {
 	
 	public IlegalOperation(String message){
-		System.out.println(message);
+		//System.out.println(message);
 	}
 	
 	public IlegalOperation(){
-		System.out.println("Ilegal Operation");
+		//System.out.println("Ilegal Operation");
 	}
 
 }
