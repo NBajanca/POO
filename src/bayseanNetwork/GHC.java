@@ -1,109 +1,74 @@
 package bayseanNetwork;
 
 public class GHC {
-	
-	public DAG dag;
-	double score;
+	private DAG dag;
+	private DAGGHC dag_best;
+	private DAGGHC dag_best_iteration;
+	private DAGGHC dag_test;
 	
 	public GHC(DAG dag, Score score){
-		
 		this.dag = dag;
-		// compute score for this.dag here ...
-		// call function executeGHC
-		this.score = score.compute(this.dag);
+		dag_best = new DAGGHC (dag,  score);
+		dag_best_iteration =  new DAGGHC (dag.clone(),  score);
+		dag_test =  new DAGGHC (dag.clone(),  score);
 		
-		executeGHC(score);
-		
-		
+		calcGHC(score);
 	}
-	
-	public GHC(GHC ghc){
-		
-		this.dag = ghc.dag.clone();
-		this.score = ghc.score;
-		
-	}
-	
-	public void executeGHC(Score score){
-		
-		GHC besttillnow = new GHC(this);
-		GHC test = new GHC(this);
-		
-		int k=0;
-		
+
+	private void calcGHC(Score score) {
 		while(true){
-			for(int n=0; n<this.dag.data_set.num_var*2;n++){
-				for(int j=this.dag.data_set.num_var;j<this.dag.data_set.num_var*2;j++){
-				
-					try {
-						test.dag.add(n, j);
-						test.score = score.compute(test.dag);
-						if(test.score>besttillnow.score){
-							besttillnow.dag.add(n, j);
-							besttillnow.score = test.score;//check if reset test is ok???
-						}
-							test.dag = this.dag.clone();
-							test.score = this.score;
-					} catch (IlegalOperation e) {
+			for (int i = 0; i < dag_best.data_set.num_var*2; i++) {
+				for (int i1 = 0; i1 < dag_best.data_set.num_var*2; i1++) {
+					try{
+						dag_test.add(i, i1);
+						scoreVerify(score.compute(dag_test));
+						
+					}catch(IlegalOperation e){
+						
 					}
-					
-					
-				}
-			
-			}
-			for (int n=0; n<this.dag.data_set.num_var*2;n++){
-				for(int j=this.dag.data_set.num_var; j<this.dag.data_set.num_var*2;j++){
-					test.dag.remove(n, j);
-					test.score = score.compute(test.dag);
-					if (besttillnow.score<test.score){
-						besttillnow.dag.remove(n, j);
-						besttillnow.score = test.score;
+					try{
+						dag_test.remove(i, i1);
+						scoreVerify(score.compute(dag_test));
+						
+					}catch(IlegalOperation e){
+						
 					}
-							test.dag = this.dag.clone();
-							test.score = this.score;
+					try{
+						dag_test.reverse(i, i1);
+						scoreVerify(score.compute(dag_test));
+						
+					}catch(IlegalOperation e){
+						
 					}
-					
-				}
-			for (int n=this.dag.data_set.num_var; n<this.dag.data_set.num_var*2;n++){
-				for (int j=this.dag.data_set.num_var; j<this.dag.data_set.num_var*2;j++){
-					try {
-						test.dag.reverse(n,j);
-						test.score = score.compute(test.dag);
-						if (besttillnow.score<test.score){
-							besttillnow.dag.reverse(n,j);
-							besttillnow.score=test.score;
-						}
-						test.dag = this.dag.clone();
-						test.score = this.score;
-					} catch (IlegalOperation e) {
-					}
-					
 				}
 			}
-			if(besttillnow.score>this.score){
-				this.score=besttillnow.score;
-				this.dag.dag= besttillnow.dag.dag.clone();
-				k++;
-				continue;
-			}else{
-				k++;
-				break;
-			}
-			
+			if (stopCondition()) break;
 		}
+		
+		
 	}
-	
-	
+
+	private boolean stopCondition() {
+		if(dag_best_iteration.score > dag_best.score){
+			dag_best = dag_best_iteration;
+			dag_best_iteration = dag_best.clone();
+			dag_test = dag_best.clone();
+		}else{
+			dag.dag = dag_best.dag;
+			return true;
+		}
+			
+		return false;
+	}
+
+	private void scoreVerify(double score) {
+		dag_test.score = score;
+		if (score > dag_best_iteration.score){
+			dag_best_iteration = dag_test;
+		}
+		dag_test = dag_best.clone();
 		
-		
-		
-		
-		
-		
-	
-	
-	
-	
+	}
 	
 
 }

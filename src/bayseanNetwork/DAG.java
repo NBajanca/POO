@@ -13,13 +13,13 @@ public class DAG {
 		this.data_set = data_set;
 		data_set.dag=this;
 	
-		GHC ghcgenerico = new GHC(this,score);
+		new GHC(this,score);
 
 	}
-	public DAG(DAG master){
-		
-		this.dag = new boolean[master.data_set.num_var*2][master.data_set.num_var];
-		this.data_set = new DataSet(master.data_set, this);
+	
+	public DAG(DAG master){	
+		this.dag = master.dag;
+		this.data_set = master.data_set;
 
 	}
 	
@@ -65,20 +65,22 @@ public class DAG {
 		
 	}
 	
-	public	void remove(int linha, int coluna){ //Tem que gerar uma excep��o quando n�o � poss�vel
+	public	void remove(int linha, int coluna) throws IlegalOperation{ //Tem que gerar uma excep��o quando n�o � poss�vel
 		
-		if(coluna<this.data_set.num_var) return;
-		try{
-				dag[linha][coluna-this.data_set.num_var]=false;
-			} catch (ArrayIndexOutOfBoundsException e){
-			}
+		if(coluna<this.data_set.num_var) throw new IlegalOperation();
+		if (dag[linha][coluna-this.data_set.num_var] == false ) throw new IlegalOperation();
+		else{
+			dag[linha][coluna-this.data_set.num_var]=false;
 		}
+		
+	}
 	
 	public void reverse(int origem, int destino) throws IlegalOperation{ //Tem que gerar uma excep��o quando n�o � poss�vel
 		
 		
 		if(destino<this.data_set.num_var) throw new IlegalOperation();
-		if(destino<this.data_set.num_var) throw new IlegalOperation();
+		if(origem<this.data_set.num_var) throw new IlegalOperation();
+		if(numParents(realNode(origem))>=3) throw new IlegalOperation();
 		if(origem==destino) throw new IlegalOperation ();
 		
 		if(origem<this.data_set.num_var){
@@ -96,6 +98,8 @@ public class DAG {
 				this.dag[destino][convertDestination(origem)]=true;
 				//System.out.println("N� correctamente revertido");
 			}
+		}else{
+			throw new IlegalOperation();
 		}
 		
 		
@@ -240,8 +244,10 @@ public class DAG {
 	@Override
 	protected DAG clone()  {
 		DAG objecto = new DAG(this);
-		for(int n=0; n<this.data_set.num_var*2;n++){
-			for(int j=0; j<this.data_set.num_var;j++){
+		objecto.data_set = new DataSet (this.data_set, objecto);
+		objecto.dag = new boolean[this.data_set.num_var*2][this.data_set.num_var];
+		for(int n=0; n<objecto.data_set.num_var*2;n++){
+			for(int j=0; j<objecto.data_set.num_var;j++){
 				objecto.dag[n][j]=this.dag[n][j];
 			}
 		}

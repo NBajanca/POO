@@ -54,7 +54,14 @@ public class Main {
 		}
 	
 	// Print parameters
-	System.out.println("Paramaters: " + train + " " +  test + " " + score + " " + randrest + " " + var);
+	System.out.print("Paramaters: " + train + " " +  test + " " + score + " " + randrest);
+	
+	if (var != -1){
+		System.out.println(" " + var);
+	}else{
+		System.out.println("");
+	}
+	
 	
 	//Read Files
 	DataSet data_set= new DataSet(train);
@@ -129,7 +136,6 @@ public class Main {
 	parameter_learning.learnTeta();
 	
 	if (var != -1){
-		System.out.println("node: " + data_set.dag.generalNode(var));
 		parameter_learning.predictNode(test_data, data_set.dag.generalNode(var));
 		printInference(test_data,  data_set.dag.generalNode(var));
 	}else{

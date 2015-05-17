@@ -53,27 +53,10 @@ public class DataSet implements EstablishArray{
 	}
 	
 	public DataSet(DataSet master, DAG new_dag){
-		
-		
 		this.data = master.data;
 		this.num_var = master.num_var;
 		this.ri = master.ri;
 		this.dag = new_dag;
-//		this.data= new
-//		for(int i=0;i<master.data.size();i++){
-//			int generico[] = new int [master.num_var*2];
-//			for (int j=0; j<this.num_var*2; j++){
-//				generico[j] = master.data.get(i);
-//				System.out.println("imprime: " +generico[j]);
-//			}
-//			this.data.add(generico);
-//		
-//		}
-//		this.ri = new int[master.num_var];
-//		for (int l=0; l<master.num_var;l++){
-//			this.ri[l]=master.ri[l];
-//		}
-//		this.num_var = master.num_var;
 	}
 	
 	
@@ -168,9 +151,13 @@ public class DataSet implements EstablishArray{
 	
 	// This function verifies if the maximum value should be replaced in the stored int []
 	void verify_maximum(int[] generico){
-		if(generico[0]>=this.ri[0]) this.ri[0]=generico[0] + 1;
-		if(generico[1]>=this.ri[1]) this.ri[1]=generico[1] + 1;
-		if(generico[2]>=this.ri[2]) this.ri[2]=generico[2] + 1;
+		for (int i = 0; i < this.num_var; i++) {
+			if(generico[i]>=this.ri[i]) this.ri[i]=generico[i] + 1;
+		}
+		
+//		if(generico[0]>=this.ri[0]) this.ri[0]=generico[0] + 1;
+//		if(generico[1]>=this.ri[1]) this.ri[1]=generico[1] + 1;
+//		if(generico[2]>=this.ri[2]) this.ri[2]=generico[2] + 1;
 	}
 	// This function travels the string[] and stores each 
 	//	group of 2*num_var fields in the array
@@ -185,6 +172,7 @@ public class DataSet implements EstablishArray{
 					j=j-num_var;
 				}
 				k=1;
+				variaveis[j] = variaveis[j].replaceAll("\\s","");
 				generico[i]=Integer.parseInt(variaveis[j]);	
 			}
 			verify_maximum(generico);

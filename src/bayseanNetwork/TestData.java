@@ -65,6 +65,7 @@ public class TestData implements EstablishArray {
 	public void travel_string_and_store(String[] variaveis){
 		int [] generico = new int[this.num_var*2];
 		for(int i=0; i<this.num_var; i++){
+			variaveis[i] = variaveis[i].replaceAll("\\s","");
 			generico[i]=Integer.parseInt(variaveis[i]);
 		}
 		this.data.add(generico);
