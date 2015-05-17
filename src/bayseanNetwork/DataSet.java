@@ -13,9 +13,9 @@ public class DataSet implements EstablishArray{
 	public int num_var;/* inteiro numero de variaveis*/
 	public int[] ri;   /* vector de inteiros r - maximum values each variable*/
 	
-	
+	//Data general set constructor 
 	public DataSet(String nome_ficheiro){
-		
+
 		this.data = new ArrayList<int[]>();
 		BufferedReader br=null;
 		String line= null;
@@ -38,7 +38,7 @@ public class DataSet implements EstablishArray{
 			}
 		}	
 	}
-	
+	// DataSet constructor for other purposes
 	public DataSet(DataSet master){
 		this.data = master.data;
 		this.num_var = master.num_var;
@@ -100,7 +100,6 @@ public class DataSet implements EstablishArray{
 			this.data.add(generico);
 		}
 	}
-
 
 	@Override
 	public String toString() {

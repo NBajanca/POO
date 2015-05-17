@@ -12,6 +12,7 @@ public class TestData implements EstablishArray {
 	public ArrayList<int[]> data;  /*Array list para guardar valores do ficheiro .csv*/
 	public int num_var; /* inteiro numero de variaveis*/
 
+	// TestData constructor
 	public TestData(String nome_ficheiro, int numvar){
 		
 		this.data = new ArrayList<int[]>();
@@ -37,6 +38,8 @@ public class TestData implements EstablishArray {
 		}
 	}
 	
+	// This function travels the .csv file and calls other functions
+	// to make the correct storage of usefull information in the file
 	public void fillArray(BufferedReader br) {
 		String line=null;
 		String csvSplitBy = ",";

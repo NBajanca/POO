@@ -8,17 +8,20 @@ public class DAG {
 	public boolean [][] dag;
 	public DataSet data_set;
 	
+	//DAG general constructor
 	public DAG(DataSet data_set, Score score, int randrest){
 		dag = new boolean[data_set.num_var*2][data_set.num_var];
 		this.data_set = data_set;
 		ganerateRandomDAG();
 		new GHC(this,score, randrest);
 	}
-
+	
+	// DAG constructor for other purposes
 	public DAG(DAG master){	
 		this.dag = master.dag;
 		this.data_set = master.data_set;
 	}
+	
 	
 	private void ganerateRandomDAG() {
 		Random random = new Random();
@@ -41,8 +44,8 @@ public class DAG {
 		return "DAG \n" + Arrays.toString(dag[0]) + "\n" + Arrays.toString(dag[1]) + "\n" + Arrays.toString(dag[2]) + "\n" + Arrays.toString(dag[3]) + "\n" + Arrays.toString(dag[4]) + "\n" + Arrays.toString(dag[5]);
 	}
 
-	// ADD functions takes as arguments an origin and destination node and verifies if it is possible to add
-	public void add(int origem, int destino) throws IlegalOperation{ //Tem que gerar uma excep��o quando n�o � poss�vel
+	// ADD function takes as arguments an origin and destination node and verifies if it is possible to add
+	public void add(int origem, int destino) throws IlegalOperation{ 
 		if(verifiesIlegalOperationsAdd(origem, destino)) throw new IlegalOperation();
 		if(origem<this.data_set.num_var){ // If origin node
 			this.dag[origem][convertDestination(destino)]=true;
@@ -60,7 +63,7 @@ public class DAG {
 		}
 	}
 	
-	//
+	//Function verifies Ilegal Operations in the ADD method
 	private boolean verifiesIlegalOperationsAdd(int origem, int destino) throws IlegalOperation {
 		if(destino<this.data_set.num_var){
 			return true; //Cannot add to instant t
@@ -76,8 +79,9 @@ public class DAG {
 		}
 		return false;
 	}
-
-	public	void remove(int linha, int coluna) throws IlegalOperation{ //Tem que gerar uma excep��o quando n�o � poss�vel
+	
+	// REMOVEs an edge from DAG 
+	public	void remove(int linha, int coluna) throws IlegalOperation{ 
 		
 		if(coluna<this.data_set.num_var) throw new IlegalOperation();
 		if (dag[linha][coluna-this.data_set.num_var] == false ) throw new IlegalOperation();
@@ -86,6 +90,7 @@ public class DAG {
 		}
 	}
 	
+	// REVERSE function takes as arguments an origin and destination node and verifies if it is possible to reverse edge
 	public void reverse(int origem, int destino) throws IlegalOperation{ //Tem que gerar uma excep��o quando n�o � poss�vel
 
 		if(verifiesIlegalOperationReverse(origem,destino)) throw new IlegalOperation();		
