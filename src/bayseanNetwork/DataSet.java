@@ -52,6 +52,30 @@ public class DataSet implements EstablishArray{
 		
 	}
 	
+	public DataSet(DataSet master, DAG new_dag){
+		
+		
+		this.data = master.data;
+		this.num_var = master.num_var;
+		this.ri = master.ri;
+		this.dag = new_dag;
+//		this.data= new
+//		for(int i=0;i<master.data.size();i++){
+//			int generico[] = new int [master.num_var*2];
+//			for (int j=0; j<this.num_var*2; j++){
+//				generico[j] = master.data.get(i);
+//				System.out.println("imprime: " +generico[j]);
+//			}
+//			this.data.add(generico);
+//		
+//		}
+//		this.ri = new int[master.num_var];
+//		for (int l=0; l<master.num_var;l++){
+//			this.ri[l]=master.ri[l];
+//		}
+//		this.num_var = master.num_var;
+	}
+	
 	
 	//Returns Nijk in [0] and Nij in [1]
 	public int[] calcNijk(int i, int j, int k){

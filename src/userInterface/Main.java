@@ -65,29 +65,37 @@ public class Main {
 	
 	//Building the DAG
 	long start_time = System.nanoTime();
-	data_set.dag = new DAG(data_set);
+	//data_set.dag = new DAG(data_set);
 	long end_time = System.nanoTime();
 	
 	//Printing DAG Time
 	System.out.println("Building DBN: " + (end_time - start_time)/1000000 + "ms");
 	
-	//Pirnting Transition network
-	System.out.println("Transition network:");
+	//Printing Transition network
+//	System.out.println("Transition network:");
+//	
+//	System.out.println("=== Inter-slice connectivity");
+//	printNetwork(0, data_set);
+//	
+//	System.out.println("=== Intra-slice connectivity");
+//	printNetwork(1, data_set);
+//	
+//	System.out.println("=== Scores");
+//	Score score_algorithm_aux = new LL();
+//	System.out.println("LL " + score_algorithm_aux.compute(data_set.dag));
+//	
+//	score_algorithm_aux = new MDL();
+//	System.out.println("MDL " + score_algorithm_aux.compute(data_set.dag));
+//	
 	
-	System.out.println("=== Inter-slice connectivity");
-	printNetwork(0, data_set);
-	
-	System.out.println("=== Intra-slice connectivity");
-	printNetwork(1, data_set);
-	
+	System.out.println("");
 	System.out.println("=== Scores");
-	Score score_algorithm_aux = new LL();
-	System.out.println("LL " + score_algorithm_aux.compute(data_set.dag));
-	
-	score_algorithm_aux = new MDL();
-	System.out.println("MDL " + score_algorithm_aux.compute(data_set.dag));
+	Score score_algorithm_aux1 = new LL();
+	data_set.dag = new DAG(data_set,score_algorithm_aux1);
 	
 	
+//	score_algorithm_aux1 = new MDL();
+//	data_set.dag = new DAG(data_set,score_algorithm_aux1);
 	
 	//Debug only
 //	System.out.println(data_set.dag.toString());

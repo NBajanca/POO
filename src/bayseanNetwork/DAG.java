@@ -1,5 +1,6 @@
 package bayseanNetwork;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 
 public class DAG {
@@ -7,16 +8,19 @@ public class DAG {
 	public boolean [][] dag;
 	public DataSet data_set;
 	
-	public DAG(DataSet data_set){
+	public DAG(DataSet data_set, Score score){
 		dag = new boolean[data_set.num_var*2][data_set.num_var];
 		this.data_set = data_set;
+		data_set.dag=this;
+
+		 dag[0][1] = true;
+		 dag[0][2] = true;
+		 dag[0][0] = true;
+		 dag[3][1] = true;
 		
+		GHC ghcgenerico = new GHC(this,score);
 		//For test purpose
 
-		//dag[0][1] = true;
-		//dag[1][2] = true;
-		//dag[2][2] = true;
-		//dag[3][1] = true;
 		//To delete after implementation
 		
 //		dag[0][1] = true;
@@ -27,21 +31,21 @@ public class DAG {
 		
 		//For test purpose
 
-		dag[0][0] = true;
-		dag[0][1] = true;
-		dag[0][2] = true;
-		dag[1][0] = true;
-		dag[1][1] = true;
-		dag[1][2] = true;
-		dag[2][1] = true;
-		dag[2][2] = true;
-		dag[4][0] = true;
+//		dag[0][0] = true;
+//		dag[0][1] = true;
+//		dag[0][2] = true;
+//		dag[1][0] = true;
+//		dag[1][1] = true;
+//		dag[1][2] = true;
+//		dag[2][1] = true;
+//		dag[2][2] = true;
+//		dag[4][0] = true;
 
 	}
 	public DAG(DAG master){
 		
 		this.dag = new boolean[master.data_set.num_var*2][master.data_set.num_var];
-		this.data_set = master.data_set;
+		this.data_set = new DataSet(master.data_set, this);
 
 	}
 	
@@ -57,7 +61,10 @@ public class DAG {
 
 	public void add(int origem, int destino) throws IlegalOperation{ //Tem que gerar uma excep��o quando n�o � poss�vel
 		
+		
+		
 		if(destino<this.data_set.num_var) throw new IlegalOperation();
+		if(numParents(realNode(destino))>=3) throw new IlegalOperation();
 		if(this.dag[origem][convertDestination(destino)]==true) throw new IlegalOperation("Edge already exists!");
 		if(origem==destino) throw new IlegalOperation ();
 		if(origem<this.data_set.num_var){
@@ -96,6 +103,8 @@ public class DAG {
 	
 	public void reverse(int origem, int destino) throws IlegalOperation{ //Tem que gerar uma excep��o quando n�o � poss�vel
 		
+		
+		if(destino<this.data_set.num_var) throw new IlegalOperation();
 		if(destino<this.data_set.num_var) throw new IlegalOperation();
 		if(origem==destino) throw new IlegalOperation ();
 		
@@ -256,15 +265,23 @@ public class DAG {
 
 
 	@Override
-	protected DAG clone() throws CloneNotSupportedException {
+	protected DAG clone()  {
 		DAG objecto = new DAG(this);
 		for(int n=0; n<this.data_set.num_var*2;n++){
 			for(int j=0; j<this.data_set.num_var;j++){
 				objecto.dag[n][j]=this.dag[n][j];
 			}
 		}
+		System.out.println(objecto.toString());
 		return objecto;
 	}
 	
+	protected void makeThemEqual(boolean[][] original){
+		for(int n=0; n<this.data_set.num_var*2;n++){
+			for(int j=0; j<this.data_set.num_var;j++){
+				this.dag[n][j]=original[n][j];
+			}
+		}
+	}
 	
 }
