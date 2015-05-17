@@ -4,26 +4,20 @@ import java.util.Arrays;
 import java.util.Random;
 
 public class DAG {
-	//Matriz de Adjac�ncias e respectivos m�todos
+	//Matriz de Adjacências e respectivos métodos
 	public boolean [][] dag;
 	public DataSet data_set;
 	
 	public DAG(DataSet data_set, Score score, int randrest){
 		dag = new boolean[data_set.num_var*2][data_set.num_var];
-		
 		this.data_set = data_set;
-		
 		ganerateRandomDAG();
-		
-	
 		new GHC(this,score, randrest);
-
 	}
 
 	public DAG(DAG master){	
 		this.dag = master.dag;
 		this.data_set = master.data_set;
-
 	}
 	
 	private void ganerateRandomDAG() {
@@ -38,51 +32,51 @@ public class DAG {
 				}
 			}
 		}
-		
 	}
 	
 	
-	/* (non-Javadoc)
-	 * @see java.lang.Object#toString()
-	 */
+
 	@Override
 	public String toString() {
 		return "DAG \n" + Arrays.toString(dag[0]) + "\n" + Arrays.toString(dag[1]) + "\n" + Arrays.toString(dag[2]) + "\n" + Arrays.toString(dag[3]) + "\n" + Arrays.toString(dag[4]) + "\n" + Arrays.toString(dag[5]);
 	}
 
-
+	// ADD functions takes as arguments an origin and destination node and verifies if it is possible to add
 	public void add(int origem, int destino) throws IlegalOperation{ //Tem que gerar uma excep��o quando n�o � poss�vel
-		
-		
-		
-		if(destino<this.data_set.num_var) throw new IlegalOperation();
-		if(numParents(realNode(destino))>=3) throw new IlegalOperation();
-		if(this.dag[origem][convertDestination(destino)]==true) throw new IlegalOperation("Edge already exists!");
-		if(origem==destino) throw new IlegalOperation ();
-		if(origem<this.data_set.num_var){
-			//System.out.println("Vector correctamente adicionado1");
+		if(verifiesIlegalOperationsAdd(origem, destino)) throw new IlegalOperation();
+		if(origem<this.data_set.num_var){ // If origin node
 			this.dag[origem][convertDestination(destino)]=true;
 			return;
 		}
 		if (origem>=this.data_set.num_var){
 			if (dag[destino][origem-this.data_set.num_var]==true) throw new IlegalOperation();
 		}else{
-			
 			if (dag[convertDestination(destino)][origem]==true) throw new IlegalOperation();
 		}
-		
 		boolean[] visitedVector = new boolean[2*this.data_set.num_var];
-		for(int j=0;j<this.data_set.num_var;j++) visitedVector[j]=false;
-		if(DFS(origem,destino,visitedVector)){
-			//System.out.println("Nao foi possivel adicionar vector");
+		if(DFS(origem,destino,visitedVector)){	
 		}else{
-			//System.out.println("Vector correctamente adicionado");
-			//System.out.println(origem + " " + destino);
 			this.dag[origem][convertDestination(destino)]=true;
 		}
-		
 	}
 	
+	//
+	private boolean verifiesIlegalOperationsAdd(int origem, int destino) throws IlegalOperation {
+		if(destino<this.data_set.num_var){
+			return true; //Cannot add to instant t
+		}
+		if(numParents(realNode(destino))>=3){
+			return true;//Cannot add if son node has already 3 parents
+		}
+		if(this.dag[origem][convertDestination(destino)]==true){
+			return true;//Edge already exists
+		}
+		if(origem==destino){
+			return true;//Cant make edge to himself
+		}
+		return false;
+	}
+
 	public	void remove(int linha, int coluna) throws IlegalOperation{ //Tem que gerar uma excep��o quando n�o � poss�vel
 		
 		if(coluna<this.data_set.num_var) throw new IlegalOperation();
@@ -90,37 +84,31 @@ public class DAG {
 		else{
 			dag[linha][coluna-this.data_set.num_var]=false;
 		}
-		
 	}
 	
 	public void reverse(int origem, int destino) throws IlegalOperation{ //Tem que gerar uma excep��o quando n�o � poss�vel
-		
-		
-		if(destino<this.data_set.num_var) throw new IlegalOperation();
-		if(origem<this.data_set.num_var) throw new IlegalOperation();
-		if(numParents(realNode(origem))>=3) throw new IlegalOperation();
-		if(origem==destino) throw new IlegalOperation ();
-		
-		if(origem<this.data_set.num_var){
-			//System.out.println("N�o � possivel reverter o n�");
-		}
+
+		if(verifiesIlegalOperationReverse(origem,destino)) throw new IlegalOperation();		
 		if(this.dag[origem][convertDestination(destino)]==true){
 			this.dag[origem][convertDestination(destino)]=false;
 			boolean[] visitedVector = new boolean[2*this.data_set.num_var];
 			for(int j=0;j<this.data_set.num_var;j++) visitedVector[j]=false;
 			if(DFS(destino,origem,visitedVector)){
 				this.dag[origem][convertDestination(destino)] = true;
-				//System.out.println("N�o � possivel reverter a liga��o");
 			}
 			else{
 				this.dag[destino][convertDestination(origem)]=true;
-				//System.out.println("N� correctamente revertido");
 			}
-		}else{
-			throw new IlegalOperation();
-		}
-		
-		
+		}else	throw new IlegalOperation();
+	}
+	
+	//Verifies Ilegal Operations in Reverse method
+	public boolean verifiesIlegalOperationReverse(int origem, int destino){
+		if(destino<this.data_set.num_var) return true;
+		if(origem<this.data_set.num_var) return true;
+		if(numParents(realNode(origem))>=3) return true;
+		if(origem==destino) return true;
+		return false;
 	}
 	
 	//Returns Nijk in [0] and Nij in [1]
@@ -281,12 +269,13 @@ public class DAG {
 		
 		return max_q;
 	}
-	
+	// Just to convert a Destination to its value in matrix structure
 	private int convertDestination(int destino){
 		destino = destino-data_set.num_var;
 		return destino;
 	}
 	
+	// Recursive function used to warranty DAG
 	private boolean DFS(int origem, int destino,boolean[] visitedVector){
 		
 		for(int i=0; i<this.data_set.num_var; i++){
@@ -299,6 +288,5 @@ public class DAG {
 		}
 		return false;		
 	}
-
 	
 }

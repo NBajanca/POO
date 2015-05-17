@@ -6,30 +6,26 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 
+
 public class TestData implements EstablishArray {
 	
-	public ArrayList<int[]> data;
-	public int num_var;
+	public ArrayList<int[]> data;  /*Array list para guardar valores do ficheiro .csv*/
+	public int num_var; /* inteiro numero de variaveis*/
 
 	public TestData(String nome_ficheiro, int numvar){
 		
 		this.data = new ArrayList<int[]>();
 		this.num_var = numvar;
 		BufferedReader br=null;
-		String line= "";
-		
 		try {
-			 
 			br = new BufferedReader(new FileReader(nome_ficheiro));
-			line = br.readLine();
-			this.fill_array(br);	
+			br.readLine();
+			this.fillArray(br);	
 		} catch (FileNotFoundException e){
-			e.printStackTrace();
 			System.out.println("O ficheiro" + nome_ficheiro + "nao existe!");
 			System.err.println("[7] FILE NOT FOUND");
 			System.exit(7);
 		} catch (IOException e) {
-			e.printStackTrace();
 		} finally {
 			if (br !=null){
 				try{
@@ -39,30 +35,23 @@ public class TestData implements EstablishArray {
 				}
 			}
 		}
-		
-	
 	}
 	
-	public void fill_array(BufferedReader br) {
-		
-		String line;
+	public void fillArray(BufferedReader br) {
+		String line=null;
 		String csvSplitBy = ",";
-
 		try {
 			while ((line = br.readLine()) != null) {
 				String[] variaveis = line.split(csvSplitBy);
-				travel_string_and_store(variaveis);
+				travelStringAndStore(variaveis);
 			}
 		} catch (NumberFormatException e) {
-			e.printStackTrace();
 		} catch (IOException e) {
-			e.printStackTrace();
 		} catch(NullPointerException e){
-			e.printStackTrace();
 		}
 	}
-
-	public void travel_string_and_store(String[] variaveis){
+	
+	public void travelStringAndStore(String[] variaveis){
 		int [] generico = new int[this.num_var*2];
 		for(int i=0; i<this.num_var; i++){
 			variaveis[i] = variaveis[i].replaceAll("\\s","");
@@ -85,6 +74,13 @@ public class TestData implements EstablishArray {
 		}
 		return "";
 			
+	}
+	
+	@Override
+	public void print404() {
+		System.out.println("Ficheiro nao existe!");
+		System.err.println("[7] FILE NOT FOUND");
+		System.exit(7);
 	}
 	
 
