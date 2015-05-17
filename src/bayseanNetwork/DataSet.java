@@ -12,7 +12,6 @@ public class DataSet implements EstablishArray{
 	public ArrayList<int[]> data;
 	public int num_var;/* inteiro numero de variaveis*/
 	public int[] ri;   /* vector de inteiros r - maximum values each variable*/
-	public DAG dag;
 	
 	
 	public DataSet(String nome_ficheiro){
@@ -52,54 +51,10 @@ public class DataSet implements EstablishArray{
 		
 	}
 	
-	public DataSet(DataSet master, DAG new_dag){
+	public DataSet(DataSet master){
 		this.data = master.data;
 		this.num_var = master.num_var;
 		this.ri = master.ri;
-		this.dag = new_dag;
-	}
-	
-	
-	//Returns Nijk in [0] and Nij in [1]
-	public int[] calcNijk(int i, int j, int k){
-		int[] counter = new int[2];
-		
-		int[][] parent_configuration = null;
-		try{
-			parent_configuration = dag.fromParentConfiguration(i,j);
-		}catch (PCInvalid e){
-			e.printStackTrace();
-		} catch (NoParent e) {
-			//If there are no parents the calc is direct
-			for (int[] data_line : data) {
-				counter[1]++;
-				if(data_line[i] == k){
-					counter[0]++;
-				}
-			}
-			return counter;
-		}
-		int correct_pc = 0;
-		
-		//The trains-set is iterated and the Nijk and Nij are calc
-		for (int[] data_line : data) {
-			for (int j1 = 0; j1 < parent_configuration.length; j1++) {
-				if (data_line[parent_configuration[j1][0]] == parent_configuration[j1][1]){
-					correct_pc ++;
-				}else{
-					break;
-				}
-			}
-			if (correct_pc == parent_configuration.length){
-				counter[1]++;
-				if(data_line[i] == k){
-					counter[0]++;
-				}
-			}
-			correct_pc = 0;
-		}
-		
-		return counter;
 	}
 	
 	int obtain_num_variables(String line){

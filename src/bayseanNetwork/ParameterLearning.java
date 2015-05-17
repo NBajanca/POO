@@ -30,7 +30,7 @@ public class ParameterLearning {
 		for (double[][] learned_node : learned_parameters) {
 			for (int j = 0; j < learned_node.length; j++) {
 				for (int k = 0; k < learned_node[j].length; k++) {
-					Nijk = dag.data_set.calcNijk(i + this.dag.data_set.num_var , j, k);
+					Nijk = dag.calcNijk(i + this.dag.data_set.num_var , j, k);
 					learned_node[j][k] = ((Nijk[0] + 0.5)/(Nijk[1]+dag.data_set.ri[i]*0.5));
 				}
 			}

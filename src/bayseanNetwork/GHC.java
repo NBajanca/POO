@@ -1,5 +1,8 @@
 package bayseanNetwork;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
 public class GHC {
 	private DAG dag;
 	private int randrest = 0;
@@ -7,14 +10,15 @@ public class GHC {
 	private DAGGHC dag_best;
 	private DAGGHC dag_best_iteration;
 	private DAGGHC dag_test;
+	private ArrayList<Integer> TABU = new ArrayList<Integer>();
 	
-	public GHC(DAG dag, Score score, int randrest){
+	GHC(DAG dag, Score score, int randrest){
 		this.dag = dag;
 		this.randrest = randrest;
 		dag_randrest = new DAGGHC (dag,  score); 
-		dag_best = new DAGGHC (dag.clone(),  score);
-		dag_best_iteration =  new DAGGHC (dag.clone(),  score);
-		dag_test =  new DAGGHC (dag.clone(),  score);
+		dag_best = dag_randrest.clone();
+		dag_best_iteration =  dag_randrest.clone();
+		dag_test =  dag_randrest.clone();
 		
 		calcGHC(score);
 	}
@@ -25,24 +29,24 @@ public class GHC {
 				for (int i1 = dag_best.data_set.num_var; i1 < dag_best.data_set.num_var*2; i1++) {
 					try{
 						dag_test.add(i, i1);
-						scoreVerify(score.compute(dag_test));
-						
+						if (TABUVerify()){
+							scoreVerify(score.compute(dag_test));
+						}
 					}catch(IlegalOperation e){
-						
 					}
 					try{
 						dag_test.remove(i, i1);
-						scoreVerify(score.compute(dag_test));
-						
+						if (TABUVerify()){
+							scoreVerify(score.compute(dag_test));
+						}
 					}catch(IlegalOperation e){
-						
 					}
 					try{
 						dag_test.reverse(i, i1);
-						scoreVerify(score.compute(dag_test));
-						
+						if (TABUVerify()){
+							scoreVerify(score.compute(dag_test));
+						}
 					}catch(IlegalOperation e){
-						
 					}
 				}
 			}
@@ -52,8 +56,17 @@ public class GHC {
 		
 	}
 
+	private boolean TABUVerify() {
+		int hash_dag_test = Arrays.deepHashCode(dag_test.dag);
+		for (Integer hash_dag_tabu : TABU) {
+			if (hash_dag_tabu == hash_dag_test) return false;
+		}
+		return true;
+	}
+
 	private boolean stopCondition() {
 		if(dag_best_iteration.score > dag_best.score){
+			TABU.add(Arrays.deepHashCode(dag_best.dag));
 			dag_best = dag_best_iteration;
 			dag_best_iteration = dag_best.clone();
 			dag_test = dag_best.clone();
@@ -81,7 +94,8 @@ public class GHC {
 		
 		if (randrest == 0) return true;
 		else randrest --;
-		dag_best = dag_randrest.random();
+		dag_best = dag_randrest.clone();
+		dag_best.random();
 		
 		return false;
 	}

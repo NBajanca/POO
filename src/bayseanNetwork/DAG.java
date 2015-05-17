@@ -12,7 +12,6 @@ public class DAG {
 		dag = new boolean[data_set.num_var*2][data_set.num_var];
 		
 		this.data_set = data_set;
-		data_set.dag=this;
 		
 		ganerateRandomDAG();
 		
@@ -20,8 +19,6 @@ public class DAG {
 		new GHC(this,score, randrest);
 
 	}
-	
-	
 
 	public DAG(DAG master){	
 		this.dag = master.dag;
@@ -29,7 +26,7 @@ public class DAG {
 
 	}
 	
-	protected void ganerateRandomDAG() {
+	private void ganerateRandomDAG() {
 		Random random = new Random();
 		for (int i = 0; i < data_set.num_var*2; i++) {
 			for (int j = 0; j < data_set.num_var; j++) {
@@ -124,6 +121,48 @@ public class DAG {
 		}
 		
 		
+	}
+	
+	//Returns Nijk in [0] and Nij in [1]
+	public int[] calcNijk(int i, int j, int k){
+		int[] counter = new int[2];
+		
+		int[][] parent_configuration = null;
+		try{
+			parent_configuration = fromParentConfiguration(i,j);
+		}catch (PCInvalid e){
+			e.printStackTrace();
+		} catch (NoParent e) {
+			//If there are no parents the calc is direct
+			for (int[] data_line : data_set.data) {
+				counter[1]++;
+				if(data_line[i] == k){
+					counter[0]++;
+				}
+			}
+			return counter;
+		}
+		int correct_pc = 0;
+		
+		//The trains-set is iterated and the Nijk and Nij are calc
+		for (int[] data_line : data_set.data) {
+			for (int j1 = 0; j1 < parent_configuration.length; j1++) {
+				if (data_line[parent_configuration[j1][0]] == parent_configuration[j1][1]){
+					correct_pc ++;
+				}else{
+					break;
+				}
+			}
+			if (correct_pc == parent_configuration.length){
+				counter[1]++;
+				if(data_line[i] == k){
+					counter[0]++;
+				}
+			}
+			correct_pc = 0;
+		}
+		
+		return counter;
 	}
 	
 	//Receives Parents Configuration and returns int with parent configuration
@@ -261,26 +300,5 @@ public class DAG {
 		return false;		
 	}
 
-
-	@Override
-	protected DAG clone()  {
-		DAG objecto = new DAG(this);
-		objecto.data_set = new DataSet (this.data_set, objecto);
-		objecto.dag = new boolean[this.data_set.num_var*2][this.data_set.num_var];
-		for(int n=0; n<objecto.data_set.num_var*2;n++){
-			for(int j=0; j<objecto.data_set.num_var;j++){
-				objecto.dag[n][j]=this.dag[n][j];
-			}
-		}
-		return objecto;
-	}
-	
-	protected void makeThemEqual(boolean[][] original){
-		for(int n=0; n<this.data_set.num_var*2;n++){
-			for(int j=0; j<this.data_set.num_var;j++){
-				this.dag[n][j]=original[n][j];
-			}
-		}
-	}
 	
 }

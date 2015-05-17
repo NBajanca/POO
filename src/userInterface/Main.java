@@ -62,20 +62,24 @@ public class Main {
 		System.out.println("");
 	}
 	
-	
 	//Read Files
 	DataSet data_set= new DataSet(train);
 	TestData test_data = new TestData(test,data_set.num_var);
 	
-	//Debug only
-//	data_set.toString();
-//	test_data.toString();
-	//Delete after debug
-	
 	//Building the DAG
 	long start_time = System.nanoTime();
-	Score score_algorithm_aux1 = new LL();
-	data_set.dag = new DAG(data_set,score_algorithm_aux1, randrest);
+	Score score_algorithm = null;
+	
+	switch (score) {
+	case "MDL":
+		score_algorithm = new MDL();
+		break;
+	case "LL":
+		score_algorithm = new LL();
+		break;
+	}
+	
+	DAG dag = new DAG(data_set,score_algorithm, randrest);
 	long end_time = System.nanoTime();
 	
 	//Printing DAG Time
@@ -85,59 +89,27 @@ public class Main {
 	System.out.println("Transition network:");
 	
 	System.out.println("=== Inter-slice connectivity");
-	printNetwork(0, data_set);
+	printNetwork(0, dag);
 	
 	System.out.println("=== Intra-slice connectivity");
-	printNetwork(1, data_set);
+	printNetwork(1, dag);
 	
 	System.out.println("=== Scores");
 	Score score_algorithm_aux = new LL();
-	System.out.println("LL " + score_algorithm_aux.compute(data_set.dag));
+	System.out.println("LL " + score_algorithm_aux.compute(dag));
 	
 	score_algorithm_aux = new MDL();
-	System.out.println("MDL " + score_algorithm_aux.compute(data_set.dag));
-
-//	score_algorithm_aux1 = new MDL();
-//	data_set.dag = new DAG(data_set,score_algorithm_aux1);
-	
-	//Debug only
-//	System.out.println(data_set.dag.toString());
-	//Delete after debug
-	
-	//For test
-//	int[][] parent_configuration = null;
-//	try{
-//		parent_configuration = data_set.dag.fromParentConfiguration(5,2);
-//	}catch (PCInvalid e){
-//		e.printStackTrace();
-//	} catch (NoParent e) {
-//		System.out.println("no parents");
-//	}
-//	
-//	for (int i = 0; i < parent_configuration.length; i++) {
-//		System.out.println("parent " + parent_configuration[i][0] + ", configuration: " + parent_configuration[i][1]);
-//	}
-//	
-//	
-//	
-//	data_set.dag.toParentConfiguration (5, parent_configuration);
-	//Delete after debug
-	
-	//Debug only
-//	int[] counter = data_set.calcNijk(5, 2 , 2);
-//	System.out.println("Nijk = " + counter[0] + " Nij = " + counter[1] );
-	//Delete after debug
-	
+	System.out.println("MDL " + score_algorithm_aux.compute(dag));
 	
 	//Starting Inference
 	start_time = System.nanoTime();
 	System.out.println("Performing inference: ");
-	ParameterLearning parameter_learning = new ParameterLearning(data_set.dag);
+	ParameterLearning parameter_learning = new ParameterLearning(dag);
 	parameter_learning.learnTeta();
 	
 	if (var != -1){
-		parameter_learning.predictNode(test_data, data_set.dag.generalNode(var));
-		printInference(test_data,  data_set.dag.generalNode(var));
+		parameter_learning.predictNode(test_data, dag.generalNode(var));
+		printInference(test_data,  dag.generalNode(var));
 	}else{
 		parameter_learning.predictAll(test_data);
 		printInference(test_data);
@@ -147,32 +119,7 @@ public class Main {
 	
 	//Printing DAG Time
 	System.out.println("Infering with DBN: " + (end_time - start_time)/1000000 + "ms");
-	
-	//Debug only
-//	int i = 0;
-//	for (double[][] learned_node : parameter_learning.learned_parameters) {
-//		for (int j = 0; j < learned_node.length; j++) {
-//			for (int k = 0; k < learned_node[j].length; k++) {
-//				System.out.println("Teta"+i+j+k+ " = " + learned_node[j][k]);
-//			}
-//		}
-//		i++;
-//	}
-	//Delete after debug
-	
-	
-	//Debug only
-//	int[] test_data1 = new int[]{1,3,2};
-//	System.out.println(parameter_learning.inferNode(test_data1, 5));
-	//Delete after debug
-	
-	
-//	Score score_algorithm = new LL(data_set.dag);
-//	System.out.println("LL: " + score_algorithm.compute());
-//	
-//	score_algorithm = new MDL(data_set.dag);
-//	System.out.println("MDL: " + score_algorithm.compute());
-	
+
 	
 	System.exit(0);
 	}
@@ -199,20 +146,20 @@ public class Main {
 		
 	}
 
-	private static void printNetwork(int network, DataSet data_set) {
-		for (int i = 0; i < data_set.num_var; i++) {
+	private static void printNetwork(int network, DAG dag) {
+		for (int i = 0; i < dag.data_set.num_var; i++) {
 			System.out.print(i +  " : ");
-			int num_parents = data_set.dag.numParents(i);
+			int num_parents = dag.numParents(i);
 			int first_time = 0;
 			
 			//no parents means empty parent configuration
 			if (num_parents == 0){
 				System.out.println("");
 			}else{
-				int [][] ri_parents = data_set.dag.riParents(i, num_parents);
+				int [][] ri_parents = dag.riParents(i, num_parents);
 				for (int j = 0; j < ri_parents.length; j++) {
-					if (ri_parents[j][0] >= data_set.num_var && network == 0) break;
-					if (ri_parents[j][0] < data_set.num_var && network == 1) continue;
+					if (ri_parents[j][0] >= dag.data_set.num_var && network == 0) break;
+					if (ri_parents[j][0] < dag.data_set.num_var && network == 1) continue;
 					else first_time ++;
 					if ( (j !=0 && network == 0) || (first_time > 1 && network == 1)) System.out.print(" , ");
 					System.out.print(ri_parents[j][0]);
