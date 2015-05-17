@@ -12,83 +12,8 @@ public class DAG {
 		dag = new boolean[data_set.num_var*2][data_set.num_var];
 		this.data_set = data_set;
 		data_set.dag=this;
-//
-//		 dag[0][0] = true;
-//		 dag[0][2] = true;
-//		 dag[1][1] = true;
-//		 dag[1][2] = true;
-//		 dag[2][0] = true;
-//		 dag[2][1] = true;
-//		 dag[2][2] = true;
-//		 dag[4][0] = true;
-//		 dag[5][1] = true;
-//		
+	
 		GHC ghcgenerico = new GHC(this,score);
-		//For test purpose
-
-		//To delete after implementation
-		
-//		dag[0][1] = true;
-//		dag[1][2] = true;
-//		dag[2][2] = true;
-//		dag[3][1] = true;
-		//To delete after implementation
-		
-		//For test purpose
-
-<<<<<<< HEAD
-
-//		dag[0][0] = true;
-//		//dag[0][1] = true;
-//		dag[0][2] = true;
-//		//dag[1][0] = true;
-//		dag[1][1] = true;
-//		dag[1][2] = true;
-//		dag[2][1] = true;
-//		dag[2][2] = true;
-//		//
-//		dag[2][0] = true;
-//		//
-//		//dag[4][0] = true;
-//		//
-//		dag[4][0] = true;
-//		dag[5][1] = true;
-		//
-
-=======
-//<<<<<<< HEAD
->>>>>>> origin/master
-//		dag[0][0] = true;
-//		//dag[0][1] = true;
-//		dag[0][2] = true;
-//		//dag[1][0] = true;
-//		dag[1][1] = true;
-//		dag[1][2] = true;
-//		dag[2][1] = true;
-//		dag[2][2] = true;
-//		//
-//		dag[2][0] = true;
-//		//
-//		//dag[4][0] = true;
-//		//
-//		dag[4][0] = true;
-<<<<<<< HEAD
-
-=======
-//		dag[5][1] = true;
-//		//
-//=======
-////		dag[0][0] = true;
-////		dag[0][1] = true;
-////		dag[0][2] = true;
-////		dag[1][0] = true;
-////		dag[1][1] = true;
-////		dag[1][2] = true;
-////		dag[2][1] = true;
-////		dag[2][2] = true;
-////		dag[4][0] = true;
-//>>>>>>> origin/master
->>>>>>> origin/master
 
 	}
 	public DAG(DAG master){

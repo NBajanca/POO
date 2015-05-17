@@ -82,7 +82,6 @@ public class Main {
 	
 	System.out.println("=== Intra-slice connectivity");
 	printNetwork(1, data_set);
-<<<<<<< HEAD
 	
 	System.out.println("=== Scores");
 	Score score_algorithm_aux = new LL();
@@ -90,26 +89,9 @@ public class Main {
 	
 	score_algorithm_aux = new MDL();
 	System.out.println("MDL " + score_algorithm_aux.compute(data_set.dag));
-=======
->>>>>>> origin/master
-	
-	System.out.println("=== Scores");
-<<<<<<< HEAD
-=======
-	Score score_algorithm_aux = new LL();
-	System.out.println("LL " + score_algorithm_aux.compute(data_set.dag));
-	
-	score_algorithm_aux = new MDL();
-	System.out.println("MDL " + score_algorithm_aux.compute(data_set.dag));
-	
-//	Score score_algorithm_aux1 = new LL();
+
+//	score_algorithm_aux1 = new MDL();
 //	data_set.dag = new DAG(data_set,score_algorithm_aux1);
->>>>>>> origin/master
-	
-	
-	
-	score_algorithm_aux1 = new MDL();
-	data_set.dag = new DAG(data_set,score_algorithm_aux1);
 	
 	//Debug only
 //	System.out.println(data_set.dag.toString());
