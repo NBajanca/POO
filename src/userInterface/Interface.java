@@ -27,6 +27,7 @@ import java.io.PrintStream;
 import javax.swing.JFileChooser;
 import javax.swing.JTextArea;
 import javax.swing.JScrollBar;
+import javax.swing.SwingConstants;
 public class Interface {
 
 	private JFrame frame;
@@ -64,6 +65,7 @@ public class Interface {
 	 * Initialize the contents of the frame.
 	 * @return 
 	 */
+	@SuppressWarnings("unchecked")
 	private String[] initialize() {
 		
 		String [] arguments = new String[5];
@@ -126,7 +128,7 @@ public class Interface {
 		frame.getContentPane().add(textField_3);
 		
 		JTextArea textArea = new JTextArea();
-		textArea.setBounds(135, 74, 499, 378);
+		textArea.setBounds(6, 0, 574, 417);
 		textArea.setEditable(false);
 		frame.getContentPane().add(textArea);
 		
@@ -164,22 +166,29 @@ public class Interface {
 		JButton btnRun = new JButton("RUN");
 		btnRun.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				final String score = list_1.getSelectedValue();
-				final String randrest = textField.getText();
 				textArea.setText(null);
-				if(textField_1.getText().isEmpty()) Main.main(new String[] {textField_2.getText(), textField_3.getText(), score, randrest});
-				else {
-					final String var = textField_1.getText();
-					Main.main(new String[] {textField_2.getText(), textField_3.getText(), score, randrest, var});
+				if(textField_2.getText().isEmpty() || textField_3.getText().isEmpty() || textField.getText().isEmpty()) System.out.println("Please Input Files and Number of Random Restart!");
+				else{
+					if(textField_1.getText().isEmpty()) Main.main(new String[] {textField_2.getText(), textField_3.getText(), list_1.getSelectedValue(), textField.getText()});
+					else {
+						final String var = textField_1.getText();
+						Main.main(new String[] {textField_2.getText(), textField_3.getText(), list_1.getSelectedValue(), textField.getText(), var});
+					}
 				}
+				
 				
 				
 					
 				
 			}
 		});
-		btnRun.setBounds(370, 17, 200, 50);
+		btnRun.setBounds(325, 6, 193, 60);
 		frame.getContentPane().add(btnRun);
+		
+		JLabel lblNewLabel = new JLabel("POO Project");
+		lblNewLabel.setVerticalAlignment(SwingConstants.TOP);
+		lblNewLabel.setBounds(6, 247, 117, 16);
+		frame.getContentPane().add(lblNewLabel);
 		
 		
 		

@@ -1,7 +1,5 @@
 package userInterface;
 
-import java.io.PrintStream;
-
 import bayseanNetwork.*;
 
 public class Main {
