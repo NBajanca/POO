@@ -62,8 +62,8 @@ public class GHC {
 		//While C is not satisfied
 		while(true){
 			// N'' (dag_best_iteration) = Best from neighbourhood (best of the dag_test)
-			for (int i = 0; i < dag_best.data_set.getNum_var()*2; i++) {
-				for (int i1 = dag_best.data_set.getNum_var(); i1 < dag_best.data_set.getNum_var()*2; i1++) {
+			for (int i = 0; i < dag_best.getData_set().getNum_var()*2; i++) {
+				for (int i1 = dag_best.getData_set().getNum_var(); i1 < dag_best.getData_set().getNum_var()*2; i1++) {
 					try{
 						dag_test.add(i, i1);
 						TABUVerify();
@@ -94,9 +94,9 @@ public class GHC {
 	 */
 	private boolean stopCondition() {
 		
-		if(dag_best_iteration.score > dag_best.score){
+		if(dag_best_iteration.getScore() > dag_best.getScore()){
 			//If score of N''(dag_best_iteration.score) > N_rest(dag_best.score) does Nres = N''
-			TABU.add(Arrays.deepHashCode(dag_best.dag));
+			TABU.add(Arrays.deepHashCode(dag_best.getDag()));
 			dag_best = dag_best_iteration;
 			dag_best_iteration = dag_best.clone();
 			dag_test = dag_best.clone();
@@ -116,9 +116,9 @@ public class GHC {
 	 * @return true, if successful
 	 */
 	private boolean randomRestart(){
-		if (dag_randrest.score < dag_best.score){
+		if (dag_randrest.getScore() < dag_best.getScore()){
 			dag_randrest = dag_best;
-			dag.dag = dag_randrest.dag;
+			dag.setDag(dag_randrest.getDag());
 		}
 		
 		//Stoping Condition (Max Random Restarts reached)
@@ -138,7 +138,7 @@ public class GHC {
 	 * TABU list is implement thrue an hash of the DAG
 	 */
 	private void TABUVerify() {
-		int hash_dag_test = Arrays.deepHashCode(dag_test.dag);
+		int hash_dag_test = Arrays.deepHashCode(dag_test.getDag());
 		for (Integer hash_dag_tabu : TABU) {
 			if (hash_dag_tabu == hash_dag_test) return;
 		}
@@ -154,8 +154,8 @@ public class GHC {
 	 * @param score the score
 	 */
 	private void scoreVerify(double score) {
-		dag_test.score = score;
-		if (score > dag_best_iteration.score){
+		dag_test.setScore(score);
+		if (score > dag_best_iteration.getScore()){
 			dag_best_iteration = dag_test;
 		}
 		dag_test = dag_best.clone();

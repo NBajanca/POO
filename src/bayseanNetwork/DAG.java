@@ -8,13 +8,13 @@ import fileRead.DataSet;
  */
 public class DAG {
 	/** The dag - Adjacency Matrix. Only the nodes t+1 are in the collums because there can't be any connection reaching t nodes */
-	boolean [][] dag;
+	private boolean [][] dag;
 	
 	/** The max_parents. Defined in project guide */
 	private final int max_parents = 3;
 	
 	/** The data_set. */
-	DataSet data_set;
+	private DataSet data_set;
 	
 	/**
 	 * Instantiates a new DAG and runs the GHC alghoritm.
@@ -24,8 +24,8 @@ public class DAG {
 	 * @param randrest the randrest
 	 */
 	public DAG(DataSet data_set, Score score, int randrest){
-		dag = new boolean[data_set.getNum_var()*2][data_set.getNum_var()];
-		this.data_set = data_set;
+		setDag(new boolean[data_set.getNum_var()*2][data_set.getNum_var()]);
+		this.setData_set(data_set);
 		new GHC(this,score, randrest);
 	}
 	
@@ -37,8 +37,8 @@ public class DAG {
 	 * @param master the master
 	 */
 	DAG(DAG master){	
-		this.dag = master.dag;
-		this.data_set = master.data_set;
+		this.setDag(master.getDag());
+		this.setData_set(master.getData_set());
 	}
 
 
@@ -67,9 +67,9 @@ public class DAG {
 	 */
 	private String toStringNetwork(int network) {
 		StringBuilder string = new StringBuilder();
-		String[] var_names = data_set.getVar_names();
+		String[] var_names = getData_set().getVar_names();
 		
-		for (int i = 0; i < data_set.getNum_var(); i++) {
+		for (int i = 0; i < getData_set().getNum_var(); i++) {
 			string.append(var_names[i] +  " : ");
 			int num_parents = numParents(i);
 			int first_time = 0;
@@ -80,8 +80,8 @@ public class DAG {
 			}else{
 				int [][] ri_parents = riParents(i, num_parents);
 				for (int j = 0; j < ri_parents.length; j++) {
-					if (ri_parents[j][0] >= data_set.getNum_var() && network == 0) break;
-					if (ri_parents[j][0] < data_set.getNum_var() && network == 1) continue;
+					if (ri_parents[j][0] >= getData_set().getNum_var() && network == 0) break;
+					if (ri_parents[j][0] < getData_set().getNum_var() && network == 1) continue;
 					else first_time ++;
 					if ( (j !=0 && network == 0) || (first_time > 1 && network == 1)) string.append(" , ");
 					string.append(var_names[realNode(ri_parents[j][0])]);
@@ -104,19 +104,19 @@ public class DAG {
 		verifyIlegalOperationsAdd(origin, destiny);
 		
 		// If origin node is in t no verification is needed
-		if(origin<this.data_set.getNum_var()){ 
-			this.dag[origin][realNode(destiny)]=true;
+		if(origin<this.getData_set().getNum_var()){ 
+			this.getDag()[origin][realNode(destiny)]=true;
 			return;
 		} else {
-			if (dag[destiny][origin-this.data_set.getNum_var()]==true) throw new IlegalOperation();
+			if (getDag()[destiny][origin-this.getData_set().getNum_var()]==true) throw new IlegalOperation();
 		}
 		
 		//Runs DFS to assure new matrix is a DAG
-		boolean[] visitedVector = new boolean[2*this.data_set.getNum_var()];
+		boolean[] visitedVector = new boolean[2*this.getData_set().getNum_var()];
 		if(DFS(origin,destiny,visitedVector)){
 			throw new IlegalOperation();
 		}else{
-			this.dag[origin][realNode(destiny)]=true;
+			this.getDag()[origin][realNode(destiny)]=true;
 		}
 	}
 	
@@ -131,8 +131,8 @@ public class DAG {
 		verifyIlegal(origin, destiny);
 		
 		//Edge doesn't exists
-		if (dag[origin][destiny-this.data_set.getNum_var()] == false ) throw new IlegalOperation();
-		else dag[origin][destiny-this.data_set.getNum_var()]=false;
+		if (getDag()[origin][destiny-this.getData_set().getNum_var()] == false ) throw new IlegalOperation();
+		else getDag()[origin][destiny-this.getData_set().getNum_var()]=false;
 		
 	}
 	
@@ -148,15 +148,15 @@ public class DAG {
 		verifiesIlegalOperationReverse(origin,destiny);
 		
 		//Reverses the connection
-		this.dag[origin][realNode(destiny)]=false;
-		boolean[] visited_vector = new boolean[2*this.data_set.getNum_var()];
+		this.getDag()[origin][realNode(destiny)]=false;
+		boolean[] visited_vector = new boolean[2*this.getData_set().getNum_var()];
 		
 		//Runs DFS to assure new matrix is a DAG
 		if(DFS(destiny,origin,visited_vector)){
-			this.dag[origin][realNode(destiny)] = true;
+			this.getDag()[origin][realNode(destiny)] = true;
 			throw new IlegalOperation();
 		}else{
-			this.dag[destiny][realNode(origin)]=true;
+			this.getDag()[destiny][realNode(origin)]=true;
 		}
 	}
 	
@@ -175,7 +175,7 @@ public class DAG {
 		if(numParents(realNode(destiny)) >=	max_parents) throw new IlegalOperation();
 		
 		//Edge already there
-		if(this.dag[origin][realNode(destiny)]==true) throw new IlegalOperation();
+		if(this.getDag()[origin][realNode(destiny)]==true) throw new IlegalOperation();
 		
 		return;
 	}
@@ -193,13 +193,13 @@ public class DAG {
 		verifyIlegal(origin, destiny);
 		
 		//The origin(future destiny) needs to be t+1
-		if(origin<this.data_set.getNum_var()) throw new IlegalOperation();
+		if(origin<this.getData_set().getNum_var()) throw new IlegalOperation();
 		
 		//Max number of parents
 		if(numParents(realNode(origin)) >= max_parents) throw new IlegalOperation();
 		
 		//Edge doesn't exist
-		if(this.dag[origin][realNode(destiny)]==false) throw new IlegalOperation();
+		if(this.getDag()[origin][realNode(destiny)]==false) throw new IlegalOperation();
 		return;
 	}
 	
@@ -214,7 +214,7 @@ public class DAG {
 	 * @throws IlegalOperation the ilegal operation
 	 */
 	private void verifyIlegal(int origin, int destiny) throws IlegalOperation {
-		if(destiny<this.data_set.getNum_var()) throw new IlegalOperation(); 
+		if(destiny<this.getData_set().getNum_var()) throw new IlegalOperation(); 
 		if(origin==destiny) throw new IlegalOperation(); 
 		return;
 	}
@@ -238,7 +238,7 @@ public class DAG {
 			e.printStackTrace();
 		} catch (NoParent e) {
 			//If there are no parents the calc is direct
-			for (int[] data_line : data_set.getData()) {
+			for (int[] data_line : getData_set().getData()) {
 				counter[1]++;
 				if(data_line[i] == k){
 					counter[0]++;
@@ -249,7 +249,7 @@ public class DAG {
 		int correct_pc = 0;
 		
 		//The trains-set is iterated and the Nijk and Nij are calc
-		for (int[] data_line : data_set.getData()) {
+		for (int[] data_line : getData_set().getData()) {
 			for (int j1 = 0; j1 < parent_configuration.length; j1++) {
 				if (data_line[parent_configuration[j1][0]] == parent_configuration[j1][1]){
 					correct_pc ++;
@@ -279,7 +279,7 @@ public class DAG {
 		int j= 0; //empty configuration standart
 		
 		//Check if node is from t+1 (Nodes from t have empty parent configuration)
-		if (node < this.data_set.getNum_var()) return j;
+		if (node < this.getData_set().getNum_var()) return j;
 		
 		int real_node = realNode(node);
 		int num_parents = numParents(real_node);
@@ -339,8 +339,8 @@ public class DAG {
 	 * @return the int
 	 */
 	int realNode(int node){
-		if (node >= this.data_set.getNum_var()){
-			return node - this.data_set.getNum_var();
+		if (node >= this.getData_set().getNum_var()){
+			return node - this.getData_set().getNum_var();
 		}else{
 			return node;
 		}
@@ -356,8 +356,8 @@ public class DAG {
 	 * @return the int
 	 */
 	public int generalNode(int node){
-		if (node < this.data_set.getNum_var()){
-			return node + this.data_set.getNum_var();
+		if (node < this.getData_set().getNum_var()){
+			return node + this.getData_set().getNum_var();
 		}else{
 			return node;
 		}
@@ -372,8 +372,8 @@ public class DAG {
 	 */
 	int numParents(int real_node){
 		int num_parents = 0;
-		for (int i = 0; i < this.data_set.getNum_var()*2 ; i++) {
-			if (dag[i][real_node] == true){
+		for (int i = 0; i < this.getData_set().getNum_var()*2 ; i++) {
+			if (getDag()[i][real_node] == true){
 				num_parents ++;
 			}
 		}
@@ -393,13 +393,13 @@ public class DAG {
 		int [][] ri_parents = new int[num_parents][2];
 		
 		int j = 0;
-		for (int i = 0; i < this.data_set.getNum_var()*2 ; i++) {
-			if (dag[i][real_node] == true){
+		for (int i = 0; i < this.getData_set().getNum_var()*2 ; i++) {
+			if (getDag()[i][real_node] == true){
 				ri_parents [j][0] = i;
-				if (i < data_set.getNum_var()){
-					ri_parents [j][1] = this.data_set.getRi()[i];
+				if (i < getData_set().getNum_var()){
+					ri_parents [j][1] = this.getData_set().getRi()[i];
 				}else{
-					ri_parents [j][1] = this.data_set.getRi()[i-data_set.getNum_var()];
+					ri_parents [j][1] = this.getData_set().getRi()[i-getData_set().getNum_var()];
 				}
 				j ++;
 			}
@@ -417,7 +417,7 @@ public class DAG {
 	 */
 	int maxq(int node) throws NoParent {
 		//Check if node is from t+1 (Nodes from t have empty parent configuration)
-		if (node < this.data_set.getNum_var()) throw new NoParent();
+		if (node < this.getData_set().getNum_var()) throw new NoParent();
 		
 		int real_node = realNode(node);
 		int num_parents = numParents(real_node);
@@ -446,15 +446,47 @@ public class DAG {
 	 */
 	private boolean DFS(int origin, int destiny ,boolean[] visitedVector){
 		
-		for(int i=0; i<this.data_set.getNum_var(); i++){
-			if(this.dag[destiny][i]==true && visitedVector[i]==false){
-				if(i+this.data_set.getNum_var()==origin) return true;
-				visitedVector[i+this.data_set.getNum_var()]=true;
-				if(DFS(origin,i+this.data_set.getNum_var(),visitedVector)) return true;
+		for(int i=0; i<this.getData_set().getNum_var(); i++){
+			if(this.getDag()[destiny][i]==true && visitedVector[i]==false){
+				if(i+this.getData_set().getNum_var()==origin) return true;
+				visitedVector[i+this.getData_set().getNum_var()]=true;
+				if(DFS(origin,i+this.getData_set().getNum_var(),visitedVector)) return true;
 			}
 			
 		}
 		return false;		
+	}
+
+
+	/**
+	 * @return the data_set
+	 */
+	protected DataSet getData_set() {
+		return data_set;
+	}
+
+
+	/**
+	 * @param data_set the data_set to set
+	 */
+	protected void setData_set(DataSet data_set) {
+		this.data_set = data_set;
+	}
+
+
+	/**
+	 * @return the dag
+	 */
+	protected boolean [][] getDag() {
+		return dag;
+	}
+
+
+	/**
+	 * @param dag the dag to set
+	 */
+	protected void setDag(boolean [][] dag) {
+		this.dag = dag;
 	}
 	
 }

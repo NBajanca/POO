@@ -18,7 +18,6 @@ import java.io.PrintStream;
 
 import javax.swing.JFileChooser;
 import javax.swing.JTextArea;
-import javax.swing.JSpinner;
 public class Interface {
 
 	private JFrame frame;

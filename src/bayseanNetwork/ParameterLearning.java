@@ -31,12 +31,12 @@ public class ParameterLearning {
 		this.test_data = test_data;
 		
 		//Creates a table for each node to record each teta
-		for (int i = 0; i < this.dag.data_set.getNum_var(); i++) {
+		for (int i = 0; i < this.dag.getData_set().getNum_var(); i++) {
 			double [][] learned_parameter;
 			try {
-				learned_parameter = new double[this.dag.maxq(i + this.dag.data_set.getNum_var())][this.dag.data_set.getRi()[i]];
+				learned_parameter = new double[this.dag.maxq(i + this.dag.getData_set().getNum_var())][this.dag.getData_set().getRi()[i]];
 			} catch (NoParent e) {
-				learned_parameter = new double[1][this.dag.data_set.getRi()[i]];
+				learned_parameter = new double[1][this.dag.getData_set().getRi()[i]];
 			}
 			learned_parameters.add(learned_parameter);
 		}
@@ -54,8 +54,8 @@ public class ParameterLearning {
 		for (double[][] learned_node : learned_parameters) {
 			for (int j = 0; j < learned_node.length; j++) {
 				for (int k = 0; k < learned_node[j].length; k++) {
-					Nijk = dag.calcNijk(i + this.dag.data_set.getNum_var() , j, k);
-					learned_node[j][k] = ((Nijk[0] + 0.5)/(Nijk[1]+dag.data_set.getRi()[i]*0.5));
+					Nijk = dag.calcNijk(i + this.dag.getData_set().getNum_var() , j, k);
+					learned_node[j][k] = ((Nijk[0] + 0.5)/(Nijk[1]+dag.getData_set().getRi()[i]*0.5));
 				}
 			}
 			i++;
@@ -101,7 +101,7 @@ public class ParameterLearning {
 		int node_value = 0;
 		double max_prob = 0, prob_aux = 0;
 		
-		for (int i = 0; i < dag.data_set.getRi()[dag.realNode(node)]; i++) {
+		for (int i = 0; i < dag.getData_set().getRi()[dag.realNode(node)]; i++) {
 			prob_aux = calcProb(data_t0, node, i);
 			if (max_prob < prob_aux){
 				max_prob = prob_aux;
@@ -122,7 +122,7 @@ public class ParameterLearning {
 	 */
 	private double calcProb(int[] data_t0, int node, int value){
 		double prob = 0;
-		int[] data = new int[dag.data_set.getNum_var()*2];
+		int[] data = new int[dag.getData_set().getNum_var()*2];
 		
 		//Values in t=0
 		for (int i = 0; i < data_t0.length; i++) {
@@ -132,7 +132,7 @@ public class ParameterLearning {
 		//Value in this hypothese
 		data[node] = value;
 		
-		prob = calcProbAux(data, node, dag.data_set.getNum_var() - 1);
+		prob = calcProbAux(data, node, dag.getData_set().getNum_var() - 1);
 		
 		return prob;
 	}
@@ -152,13 +152,13 @@ public class ParameterLearning {
 		nodes_remaining--;
 		if (nodes_remaining != 0){
 			//if next node is a var t+1
-			for (int i = 0; i < dag.data_set.getRi()[dag.realNode(actual_node)]; i++) {
+			for (int i = 0; i < dag.getData_set().getRi()[dag.realNode(actual_node)]; i++) {
 				data[actual_node] = i;
 				prob += calcProbAux(data, node, nodes_remaining);
 			}
 		}else{
 			//if next node is a leaf
-			for (int i = 0; i < dag.data_set.getRi()[dag.realNode(actual_node)]; i++) {
+			for (int i = 0; i < dag.getData_set().getRi()[dag.realNode(actual_node)]; i++) {
 				data[actual_node] = i;
 				prob += calcProbNode(data, node);
 			}
@@ -219,7 +219,7 @@ public class ParameterLearning {
 	 */
 	private int actualNode(int node, int nodes_remaining) {
 		int actual_node;
-		actual_node = dag.data_set.getNum_var()*2 - nodes_remaining;
+		actual_node = dag.getData_set().getNum_var()*2 - nodes_remaining;
 		
 		if (actual_node <= node){
 			actual_node--;

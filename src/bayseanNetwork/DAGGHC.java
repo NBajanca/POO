@@ -9,7 +9,7 @@ import java.util.Random;
 class DAGGHC extends DAG {
 	
 	/** The score. */
-	double score;
+	private double score;
 
 	/**
 	 * Instantiates a new DAG and computes it's score
@@ -19,7 +19,7 @@ class DAGGHC extends DAG {
 	 */
 	DAGGHC(DAG master, Score score) {
 		super(master);
-		this.score = score.compute(this);
+		this.setScore(score.compute(this));
 	}
 	
 	/**
@@ -30,7 +30,7 @@ class DAGGHC extends DAG {
 	 */
 	DAGGHC(DAG master, double score) {
 		super(master);
-		this.score = score;
+		this.setScore(score);
 	}
 
 	/* (non-Javadoc)
@@ -40,15 +40,15 @@ class DAGGHC extends DAG {
 	protected DAGGHC clone() {
 		
 		DAG objecto = new DAG(this);
-		objecto.data_set = this.data_set;
-		objecto.dag = new boolean[this.data_set.getNum_var()*2][this.data_set.getNum_var()];
-		for(int n=0; n<objecto.data_set.getNum_var()*2;n++){
-			for(int j=0; j<objecto.data_set.getNum_var();j++){
-				objecto.dag[n][j]=this.dag[n][j];
+		objecto.setData_set(this.getData_set());
+		objecto.setDag(new boolean[this.getData_set().getNum_var()*2][this.getData_set().getNum_var()]);
+		for(int n=0; n<objecto.getData_set().getNum_var()*2;n++){
+			for(int j=0; j<objecto.getData_set().getNum_var();j++){
+				objecto.getDag()[n][j]=this.getDag()[n][j];
 			}
 		}
 		
-		DAGGHC dag_test =  new DAGGHC (objecto , this.score);
+		DAGGHC dag_test =  new DAGGHC (objecto , this.getScore());
 		return dag_test;
 	}
 	
@@ -62,9 +62,9 @@ class DAGGHC extends DAG {
 	 */
 	void random() {
 		Random random = new Random();
-		for (int i = 0; i < data_set.getNum_var()*2; i++) {
-			for (int j = 0; j < data_set.getNum_var(); j++) {
-				switch(random.nextInt(2 + data_set.getNum_var())){
+		for (int i = 0; i < getData_set().getNum_var()*2; i++) {
+			for (int j = 0; j < getData_set().getNum_var(); j++) {
+				switch(random.nextInt(2 + getData_set().getNum_var())){
 					case 0:
 						try {
 							add(i, generalNode(j));
@@ -90,6 +90,20 @@ class DAGGHC extends DAG {
 		}
 
 		return;
+	}
+
+	/**
+	 * @return the score
+	 */
+	protected double getScore() {
+		return score;
+	}
+
+	/**
+	 * @param score the score to set
+	 */
+	protected void setScore(double score) {
+		this.score = score;
 	}
 
 	

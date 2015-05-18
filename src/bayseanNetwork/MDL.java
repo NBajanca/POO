@@ -10,20 +10,20 @@ public class MDL extends LL {
 	@Override
 	public double compute(DAG dag) {
 		double value, b = 0;
-		int N =  dag.data_set.getData().size();
+		int N =  dag.getData_set().getData().size();
 		
 		//compute ll
 		value =  super.compute(dag);
 		
 		//For all nodes
-		for (int i = 0; i < dag.data_set.getNum_var()*2; i++) {
+		for (int i = 0; i < dag.getData_set().getNum_var()*2; i++) {
 			int q = 1;
 			try {
 				q = dag.maxq(i);
 			} catch (NoParent e) {
 				q = 1;
 			}
-			b += (dag.data_set.getRi()[dag.realNode(i)]-1)*q;
+			b += (dag.getData_set().getRi()[dag.realNode(i)]-1)*q;
 		}	
 		
 		//MDL function
