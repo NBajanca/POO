@@ -6,13 +6,13 @@ package bayseanNetwork;
  */
 public class DAG {
 	/** The dag - Adjacency Matrix. Only the nodes t+1 are in the collums because there can't be any connection reaching t nodes */
-	public boolean [][] dag;
+	boolean [][] dag;
 	
 	/** The max_parents. Defined in project guide */
 	private final int max_parents = 3;
 	
 	/** The data_set. */
-	public DataSet data_set;
+	DataSet data_set;
 	
 	/**
 	 * Instantiates a new DAG and runs the GHC alghoritm.
@@ -34,7 +34,7 @@ public class DAG {
 	 *
 	 * @param master the master
 	 */
-	public DAG(DAG master){	
+	DAG(DAG master){	
 		this.dag = master.dag;
 		this.data_set = master.data_set;
 	}
@@ -97,7 +97,7 @@ public class DAG {
 	 * @param destiny the destiny
 	 * @throws IlegalOperation the ilegal operation
 	 */
-	public void add(int origin, int destiny) throws IlegalOperation{
+	protected void add(int origin, int destiny) throws IlegalOperation{
 		verifyIlegalOperationsAdd(origin, destiny);
 		
 		// If origin node is in t no verification is needed
@@ -124,7 +124,7 @@ public class DAG {
 	 * @param destiny the destiny
 	 * @throws IlegalOperation the ilegal operation
 	 */
-	public void remove(int origin, int destiny) throws IlegalOperation{ 
+	protected void remove(int origin, int destiny) throws IlegalOperation{ 
 		verifyIlegal(origin, destiny);
 		
 		//Edge doesn't exists
@@ -141,7 +141,7 @@ public class DAG {
 	 * @param destiny the destiny
 	 * @throws IlegalOperation the ilegal operation
 	 */
-	public void reverse(int origin, int destiny) throws IlegalOperation{ //Tem que gerar uma excep��o quando n�o � poss�vel
+	protected void reverse(int origin, int destiny) throws IlegalOperation{ //Tem que gerar uma excep��o quando n�o � poss�vel
 		verifiesIlegalOperationReverse(origin,destiny);
 		
 		//Reverses the connection
@@ -171,7 +171,7 @@ public class DAG {
 		//Max number of parents
 		if(numParents(realNode(destiny)) >=	max_parents) throw new IlegalOperation();
 		
-		//Edge already exists
+		//Edge already there
 		if(this.dag[origin][realNode(destiny)]==true) throw new IlegalOperation();
 		
 		return;
@@ -195,7 +195,7 @@ public class DAG {
 		//Max number of parents
 		if(numParents(realNode(origin)) >= max_parents) throw new IlegalOperation();
 		
-		//Edge already exists
+		//Edge doesn't exist
 		if(this.dag[origin][realNode(destiny)]==false) throw new IlegalOperation();
 		return;
 	}
@@ -225,7 +225,7 @@ public class DAG {
 	 * @param k the k
 	 * @return the int[]
 	 */
-	public int[] calcNijk(int i, int j, int k){
+	int[] calcNijk(int i, int j, int k){
 		int[] counter = new int[2];
 		
 		int[][] parent_configuration = null;
@@ -272,7 +272,7 @@ public class DAG {
 	 * @param parent_configuration the parent_configuration
 	 * @return the int
 	 */
-	public int toParentConfiguration (int node, int[][] parent_configuration){
+	int toParentConfiguration (int node, int[][] parent_configuration){
 		int j= 0; //empty configuration standart
 		
 		//Check if node is from t+1 (Nodes from t have empty parent configuration)
@@ -303,7 +303,7 @@ public class DAG {
 	 * @throws PCInvalid the PC invalid
 	 * @throws NoParent the no parent
 	 */
-	public int[][] fromParentConfiguration (int node, int parent_configuration) throws PCInvalid, NoParent{
+	 int[][] fromParentConfiguration (int node, int parent_configuration) throws PCInvalid, NoParent{
 		if (parent_configuration < 0) throw new PCInvalid("NegativePC");
 		
 		int[][] q;
@@ -367,7 +367,7 @@ public class DAG {
 	 * @param real_node the real_node
 	 * @return the int
 	 */
-	public int numParents(int real_node){
+	int numParents(int real_node){
 		int num_parents = 0;
 		for (int i = 0; i < this.data_set.num_var*2 ; i++) {
 			if (dag[i][real_node] == true){
@@ -386,7 +386,7 @@ public class DAG {
 	 * @param num_parents the num_parents
 	 * @return the int[][]
 	 */
-	public int [][] riParents(int real_node, int num_parents){
+	int [][] riParents(int real_node, int num_parents){
 		int [][] ri_parents = new int[num_parents][2];
 		
 		int j = 0;

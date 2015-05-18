@@ -146,28 +146,4 @@ public class Main {
 		
 	}
 
-	private static void printNetwork(int network, DAG dag) {
-		for (int i = 0; i < dag.data_set.num_var; i++) {
-			System.out.print(i +  " : ");
-			int num_parents = dag.numParents(i);
-			int first_time = 0;
-			
-			//no parents means empty parent configuration
-			if (num_parents == 0){
-				System.out.println("");
-			}else{
-				int [][] ri_parents = dag.riParents(i, num_parents);
-				for (int j = 0; j < ri_parents.length; j++) {
-					if (ri_parents[j][0] >= dag.data_set.num_var && network == 0) break;
-					if (ri_parents[j][0] < dag.data_set.num_var && network == 1) continue;
-					else first_time ++;
-					if ( (j !=0 && network == 0) || (first_time > 1 && network == 1)) System.out.print(" , ");
-					System.out.print(ri_parents[j][0]);
-				}
-				System.out.println("");
-			}
-		}
-		
-	}
-
 }
