@@ -56,6 +56,13 @@ public class DAG {
 		return string.toString();
 	}
 	
+	
+	/**
+	 * To string network.
+	 *
+	 * @param network the network
+	 * @return the string
+	 */
 	private String toStringNetwork(int network) {
 		StringBuilder string = new StringBuilder();
 		
@@ -108,6 +115,7 @@ public class DAG {
 		}else{
 			this.dag[origin][realNode(destiny)]=true;
 		}
+		System.out.println("Added, parents: " + numParents(realNode(destiny)));
 	}
 	
 	/**
@@ -148,6 +156,7 @@ public class DAG {
 		}else{
 			this.dag[destiny][realNode(origin)]=true;
 		}
+		System.out.println("Reversed, parents: " + numParents(realNode(origin)));
 	
 	}
 	

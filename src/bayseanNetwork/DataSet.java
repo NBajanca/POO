@@ -6,14 +6,26 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 
+/**
+ * The Class DataSet.
+ */
 public class DataSet implements EstablishArray{
 
 	
-	public ArrayList<int[]> data; /*Array list para guardar valores do ficheiro .csv*/
-	public int num_var;/* inteiro numero de variaveis*/
-	public int[] ri;   /* vector de inteiros r - maximum values each variable*/
+	/** The data. Array list with the .csv train file values saved like [t(0)...t(n) t+1(0)...t+1(n)] */
+	public ArrayList<int[]> data;
 	
-	//Data general set constructor 
+	/** The num_var. Number of variables */
+	public int num_var;
+	
+	/** The ri. Maximum value each var take*/
+	public int[] ri;
+	
+	/**
+	 * Instantiates a new data set.
+	 *
+	 * @param nome_ficheiro the nome_ficheiro
+	 */
 	public DataSet(String nome_ficheiro){
 
 		this.data = new ArrayList<int[]>();
@@ -38,7 +50,13 @@ public class DataSet implements EstablishArray{
 			}
 		}	
 	}
-	// DataSet constructor for other purposes
+	
+	
+	/**
+	 * Instantiates a new data set.
+	 *
+	 * @param master the master
+	 */
 	public DataSet(DataSet master){
 		this.data = master.data;
 		this.num_var = master.num_var;
@@ -46,6 +64,12 @@ public class DataSet implements EstablishArray{
 	}
 	
 	//This functions obtains the number of variables based on _0
+	/**
+	 * Obtai num variables.
+	 *
+	 * @param line the line
+	 * @return the int
+	 */
 	int obtaiNumVariables(String line){
 		int counter = 0;
 		for( int i=0; i<line.length(); i++ ) {
@@ -58,6 +82,9 @@ public class DataSet implements EstablishArray{
 	
 	// This function travels the .csv file and calls other functions
 	// to make the correct storage of usefull information in the file
+	/* (non-Javadoc)
+	 * @see bayseanNetwork.EstablishArray#fillArray(java.io.BufferedReader)
+	 */
 	public void fillArray(BufferedReader br){
 		
 		String line;
@@ -75,6 +102,11 @@ public class DataSet implements EstablishArray{
 	}
 	
 	// This function verifies if the maximum value should be replaced in the stored int []
+	/**
+	 * Verify maximum.
+	 *
+	 * @param generico the generico
+	 */
 	void verifyMaximum(int[] generico){
 		for (int i = 0; i < this.num_var; i++) {
 			if(generico[i]>=this.ri[i]) this.ri[i]=generico[i] + 1;
@@ -83,6 +115,9 @@ public class DataSet implements EstablishArray{
 	
 	// This function travels the string[] and stores each 
 	//	group of 2*num_var fields in the array
+	/* (non-Javadoc)
+	 * @see bayseanNetwork.EstablishArray#travelStringAndStore(java.lang.String[])
+	 */
 	public void travelStringAndStore(String[] variaveis){
 		int j=0; 
 		int k=0;
@@ -101,6 +136,9 @@ public class DataSet implements EstablishArray{
 		}
 	}
 
+	/* (non-Javadoc)
+	 * @see java.lang.Object#toString()
+	 */
 	@Override
 	public String toString() {
 		StringBuilder string = new StringBuilder();
@@ -116,6 +154,9 @@ public class DataSet implements EstablishArray{
 		return string.toString();
 	}
 	// Just to print FILE NOT FOUND
+	/* (non-Javadoc)
+	 * @see bayseanNetwork.EstablishArray#print404()
+	 */
 	public void print404(){
 		System.out.println("Ficheiro nao existe!");
 		System.err.println("[7] FILE NOT FOUND");
