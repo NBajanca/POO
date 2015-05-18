@@ -66,6 +66,11 @@ public class TestData extends EstablishArray {
 	private void obtaiNameVariables(String line){
 		String csvSplitBy = ",";
 		setVar_names(line.split(csvSplitBy));
+		String[] aux = getVar_names();
+		for(int i=0; i<this.getNum_var(); i++){
+			aux[i] = aux[i].replaceAll("\\s","");
+		}
+		setVar_names(aux);
 		return;
 	}
 
