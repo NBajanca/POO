@@ -16,7 +16,7 @@ public class MDL extends LL {
 		value =  super.compute(dag);
 		
 		//For all nodes
-		for (int i = 0; i < dag.data_set.num_var*2; i++) {
+		for (int i = 0; i < dag.data_set.getNum_var()*2; i++) {
 			int q = 1;
 			try {
 				q = dag.maxq(i);

@@ -13,7 +13,7 @@ public class LL implements Score {
 	public double compute(DAG dag) {
 		double ll = 0;
 		//For all nodes
-		for (int i = 0; i < dag.data_set.num_var * 2; i++) {
+		for (int i = 0; i < dag.data_set.getNum_var() * 2; i++) {
 			int maxq;
 			try {
 				maxq = dag.maxq(i);
@@ -27,8 +27,7 @@ public class LL implements Score {
 					int[] Nijk = dag.calcNijk(i, j, k);
 					//If Nijk or Nij are 0 returns LL  for that equals to 0
 					if (Nijk[0] == 0 || Nijk[1] == 0) continue;
-					ll += Nijk[0] * (Math.log((double)Nijk[0]/Nijk[1])/Math.log(2));
-					
+					ll += Nijk[0] * (Math.log((double)Nijk[0]/Nijk[1])/Math.log(2));					
 				}
 			}
 		}

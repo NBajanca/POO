@@ -66,7 +66,7 @@ public class Main {
 	
 	//Read Files
 	DataSet data_set= new DataSet(train);
-	TestData test_data = new TestData(test,data_set.num_var);
+	TestData test_data = new TestData(test,data_set.getNum_var());
 	
 	//Building the DAG
 	long start_time = System.nanoTime();
@@ -105,11 +105,9 @@ public class Main {
 	ParameterLearning parameter_learning = new ParameterLearning(dag, test_data);
 	
 	if (var != -1){
-		parameter_learning.predictNode(dag.generalNode(var));
-		printInference(test_data,  dag.generalNode(var));
+		parameter_learning.printInference(dag.generalNode(var));
 	}else{
-		parameter_learning.predictAll();
-		printInference(test_data);
+		parameter_learning.printInference();
 	}
 	
 	end_time = System.nanoTime();
@@ -119,26 +117,6 @@ public class Main {
 	
 	}
 
-	private static void printInference(TestData test_data) {
-		int i = 1;
-		for (int [] data : test_data.data) {
-			System.out.print("-> instance " + i + ": ");
-			for (int j = test_data.num_var; j < data.length; j++) {
-				if (j != test_data.num_var) System.out.print(" , ");
-				System.out.print(data[j]);
-			}
-			System.out.println("");
-			i++;
-		}
-	}
-
-	private static void printInference(TestData test_data, int generalNode) {
-		int i = 1;
-		for (int [] data : test_data.data) {
-			System.out.println("-> instance " + i + ": " + data[generalNode]);
-			i++;
-		}
-		
-	}
+	
 
 }

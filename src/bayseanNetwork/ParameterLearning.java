@@ -29,10 +29,10 @@ public class ParameterLearning {
 		this.test_data = test_data;
 		
 		//Creates a table for each node to record each teta
-		for (int i = 0; i < this.dag.data_set.num_var; i++) {
+		for (int i = 0; i < this.dag.data_set.getNum_var(); i++) {
 			double [][] learned_parameter;
 			try {
-				learned_parameter = new double[this.dag.maxq(i + this.dag.data_set.num_var)][this.dag.data_set.ri[i]];
+				learned_parameter = new double[this.dag.maxq(i + this.dag.data_set.getNum_var())][this.dag.data_set.ri[i]];
 			} catch (NoParent e) {
 				learned_parameter = new double[1][this.dag.data_set.ri[i]];
 			}
@@ -53,7 +53,7 @@ public class ParameterLearning {
 		for (double[][] learned_node : learned_parameters) {
 			for (int j = 0; j < learned_node.length; j++) {
 				for (int k = 0; k < learned_node[j].length; k++) {
-					Nijk = dag.calcNijk(i + this.dag.data_set.num_var , j, k);
+					Nijk = dag.calcNijk(i + this.dag.data_set.getNum_var() , j, k);
 					learned_node[j][k] = ((Nijk[0] + 0.5)/(Nijk[1]+dag.data_set.ri[i]*0.5));
 				}
 			}
@@ -67,8 +67,8 @@ public class ParameterLearning {
 	 *
 	 * @param node node to predict
 	 */
-	public void predictNode(int node){
-		int [] data_t0 = new int[test_data.num_var];
+	private void predictNode(int node){
+		int [] data_t0 = new int[test_data.getNum_var()];
 		
 		for (int[] data : test_data.data) {
 			for (int i = 0; i < data_t0.length; i++) {
@@ -82,8 +82,8 @@ public class ParameterLearning {
 	 * Predict value for all nodes.
 	 * Changes data string in test data
 	 */
-	public void predictAll() {
-		for (int i = 0; i < test_data.num_var; i++) {
+	private void predictAll() {
+		for (int i = 0; i < test_data.getNum_var(); i++) {
 			predictNode(dag.generalNode(i));
 		}
 		
@@ -121,7 +121,7 @@ public class ParameterLearning {
 	 */
 	private double calcProb(int[] data_t0, int node, int value){
 		double prob = 0;
-		int[] data = new int[dag.data_set.num_var*2];
+		int[] data = new int[dag.data_set.getNum_var()*2];
 		
 		//Values in t=0
 		for (int i = 0; i < data_t0.length; i++) {
@@ -131,7 +131,7 @@ public class ParameterLearning {
 		//Value in this hypothese
 		data[node] = value;
 		
-		prob = calcProbAux(data, node, dag.data_set.num_var - 1);
+		prob = calcProbAux(data, node, dag.data_set.getNum_var() - 1);
 		
 		return prob;
 	}
@@ -218,13 +218,37 @@ public class ParameterLearning {
 	 */
 	private int actualNode(int node, int nodes_remaining) {
 		int actual_node;
-		actual_node = dag.data_set.num_var*2 - nodes_remaining;
+		actual_node = dag.data_set.getNum_var()*2 - nodes_remaining;
 		
 		if (actual_node <= node){
 			actual_node--;
 		}
 		
 		return actual_node;
+	}
+	
+	public void printInference() {
+		predictAll();
+		int i = 1;
+		for (int [] data : test_data.data) {
+			System.out.print("-> instance " + i + ": ");
+			for (int j = test_data.getNum_var(); j < data.length; j++) {
+				if (j != test_data.getNum_var()) System.out.print(" , ");
+				System.out.print(data[j]);
+			}
+			System.out.println("");
+			i++;
+		}
+	}
+
+	public void printInference(int generalNode) {
+		predictNode(generalNode);
+		int i = 1;
+		for (int [] data : test_data.data) {
+			System.out.println("-> instance " + i + ": " + data[generalNode]);
+			i++;
+		}
+		
 	}
 
 	

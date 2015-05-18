@@ -22,7 +22,7 @@ public class DAG {
 	 * @param randrest the randrest
 	 */
 	public DAG(DataSet data_set, Score score, int randrest){
-		dag = new boolean[data_set.num_var*2][data_set.num_var];
+		dag = new boolean[data_set.getNum_var()*2][data_set.getNum_var()];
 		this.data_set = data_set;
 		new GHC(this,score, randrest);
 	}
@@ -66,7 +66,7 @@ public class DAG {
 	private String toStringNetwork(int network) {
 		StringBuilder string = new StringBuilder();
 		
-		for (int i = 0; i < data_set.num_var; i++) {
+		for (int i = 0; i < data_set.getNum_var(); i++) {
 			string.append(i +  " : ");
 			int num_parents = numParents(i);
 			int first_time = 0;
@@ -77,8 +77,8 @@ public class DAG {
 			}else{
 				int [][] ri_parents = riParents(i, num_parents);
 				for (int j = 0; j < ri_parents.length; j++) {
-					if (ri_parents[j][0] >= data_set.num_var && network == 0) break;
-					if (ri_parents[j][0] < data_set.num_var && network == 1) continue;
+					if (ri_parents[j][0] >= data_set.getNum_var() && network == 0) break;
+					if (ri_parents[j][0] < data_set.getNum_var() && network == 1) continue;
 					else first_time ++;
 					if ( (j !=0 && network == 0) || (first_time > 1 && network == 1)) string.append(" , ");
 					string.append(ri_parents[j][0]);
@@ -101,15 +101,15 @@ public class DAG {
 		verifyIlegalOperationsAdd(origin, destiny);
 		
 		// If origin node is in t no verification is needed
-		if(origin<this.data_set.num_var){ 
+		if(origin<this.data_set.getNum_var()){ 
 			this.dag[origin][realNode(destiny)]=true;
 			return;
 		} else {
-			if (dag[destiny][origin-this.data_set.num_var]==true) throw new IlegalOperation();
+			if (dag[destiny][origin-this.data_set.getNum_var()]==true) throw new IlegalOperation();
 		}
 		
 		//Runs DFS to assure new matrix is a DAG
-		boolean[] visitedVector = new boolean[2*this.data_set.num_var];
+		boolean[] visitedVector = new boolean[2*this.data_set.getNum_var()];
 		if(DFS(origin,destiny,visitedVector)){
 			throw new IlegalOperation();
 		}else{
@@ -128,8 +128,8 @@ public class DAG {
 		verifyIlegal(origin, destiny);
 		
 		//Edge doesn't exists
-		if (dag[origin][destiny-this.data_set.num_var] == false ) throw new IlegalOperation();
-		else dag[origin][destiny-this.data_set.num_var]=false;
+		if (dag[origin][destiny-this.data_set.getNum_var()] == false ) throw new IlegalOperation();
+		else dag[origin][destiny-this.data_set.getNum_var()]=false;
 		
 	}
 	
@@ -146,7 +146,7 @@ public class DAG {
 		
 		//Reverses the connection
 		this.dag[origin][realNode(destiny)]=false;
-		boolean[] visited_vector = new boolean[2*this.data_set.num_var];
+		boolean[] visited_vector = new boolean[2*this.data_set.getNum_var()];
 		
 		//Runs DFS to assure new matrix is a DAG
 		if(DFS(destiny,origin,visited_vector)){
@@ -190,7 +190,7 @@ public class DAG {
 		verifyIlegal(origin, destiny);
 		
 		//The origin(future destiny) needs to be t+1
-		if(origin<this.data_set.num_var) throw new IlegalOperation();
+		if(origin<this.data_set.getNum_var()) throw new IlegalOperation();
 		
 		//Max number of parents
 		if(numParents(realNode(origin)) >= max_parents) throw new IlegalOperation();
@@ -211,7 +211,7 @@ public class DAG {
 	 * @throws IlegalOperation the ilegal operation
 	 */
 	private void verifyIlegal(int origin, int destiny) throws IlegalOperation {
-		if(destiny<this.data_set.num_var) throw new IlegalOperation(); 
+		if(destiny<this.data_set.getNum_var()) throw new IlegalOperation(); 
 		if(origin==destiny) throw new IlegalOperation(); 
 		return;
 	}
@@ -276,7 +276,7 @@ public class DAG {
 		int j= 0; //empty configuration standart
 		
 		//Check if node is from t+1 (Nodes from t have empty parent configuration)
-		if (node < this.data_set.num_var) return j;
+		if (node < this.data_set.getNum_var()) return j;
 		
 		int real_node = realNode(node);
 		int num_parents = numParents(real_node);
@@ -336,8 +336,8 @@ public class DAG {
 	 * @return the int
 	 */
 	int realNode(int node){
-		if (node >= this.data_set.num_var){
-			return node - this.data_set.num_var;
+		if (node >= this.data_set.getNum_var()){
+			return node - this.data_set.getNum_var();
 		}else{
 			return node;
 		}
@@ -353,8 +353,8 @@ public class DAG {
 	 * @return the int
 	 */
 	public int generalNode(int node){
-		if (node < this.data_set.num_var){
-			return node + this.data_set.num_var;
+		if (node < this.data_set.getNum_var()){
+			return node + this.data_set.getNum_var();
 		}else{
 			return node;
 		}
@@ -369,7 +369,7 @@ public class DAG {
 	 */
 	int numParents(int real_node){
 		int num_parents = 0;
-		for (int i = 0; i < this.data_set.num_var*2 ; i++) {
+		for (int i = 0; i < this.data_set.getNum_var()*2 ; i++) {
 			if (dag[i][real_node] == true){
 				num_parents ++;
 			}
@@ -390,13 +390,13 @@ public class DAG {
 		int [][] ri_parents = new int[num_parents][2];
 		
 		int j = 0;
-		for (int i = 0; i < this.data_set.num_var*2 ; i++) {
+		for (int i = 0; i < this.data_set.getNum_var()*2 ; i++) {
 			if (dag[i][real_node] == true){
 				ri_parents [j][0] = i;
-				if (i < data_set.num_var){
+				if (i < data_set.getNum_var()){
 					ri_parents [j][1] = this.data_set.ri[i];
 				}else{
-					ri_parents [j][1] = this.data_set.ri[i-data_set.num_var];
+					ri_parents [j][1] = this.data_set.ri[i-data_set.getNum_var()];
 				}
 				j ++;
 			}
@@ -414,7 +414,7 @@ public class DAG {
 	 */
 	int maxq(int node) throws NoParent {
 		//Check if node is from t+1 (Nodes from t have empty parent configuration)
-		if (node < this.data_set.num_var) throw new NoParent();
+		if (node < this.data_set.getNum_var()) throw new NoParent();
 		
 		int real_node = realNode(node);
 		int num_parents = numParents(real_node);
@@ -443,11 +443,11 @@ public class DAG {
 	 */
 	private boolean DFS(int origin, int destiny ,boolean[] visitedVector){
 		
-		for(int i=0; i<this.data_set.num_var; i++){
+		for(int i=0; i<this.data_set.getNum_var(); i++){
 			if(this.dag[destiny][i]==true && visitedVector[i]==false){
-				if(i+this.data_set.num_var==origin) return true;
-				visitedVector[i+this.data_set.num_var]=true;
-				if(DFS(origin,i+this.data_set.num_var,visitedVector)) return true;
+				if(i+this.data_set.getNum_var()==origin) return true;
+				visitedVector[i+this.data_set.getNum_var()]=true;
+				if(DFS(origin,i+this.data_set.getNum_var(),visitedVector)) return true;
 			}
 			
 		}

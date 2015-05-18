@@ -62,8 +62,8 @@ public class GHC {
 		//While C is not satisfied
 		while(true){
 			// N'' (dag_best_iteration) = Best from neighbourhood (best of the dag_test)
-			for (int i = 0; i < dag_best.data_set.num_var*2; i++) {
-				for (int i1 = dag_best.data_set.num_var; i1 < dag_best.data_set.num_var*2; i1++) {
+			for (int i = 0; i < dag_best.data_set.getNum_var()*2; i++) {
+				for (int i1 = dag_best.data_set.getNum_var(); i1 < dag_best.data_set.getNum_var()*2; i1++) {
 					try{
 						dag_test.add(i, i1);
 						TABUVerify();
