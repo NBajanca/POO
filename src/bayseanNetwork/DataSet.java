@@ -103,15 +103,17 @@ public class DataSet implements EstablishArray{
 
 	@Override
 	public String toString() {
-		System.out.println("");
+		StringBuilder string = new StringBuilder();
+		
+		string.append("\n");
 		for(int i=0;i<this.data.size();i++){
-			System.out.print("[");
+			string.append("[");
 			for (int j=0; j<this.num_var*2; j++){
-				System.out.print(this.data.get(i)[j] +" ");
+				string.append(this.data.get(i)[j] +" ");
 			}
-			System.out.println("]");
+			string.append("]\n");
 		}
-		return "";
+		return string.toString();
 	}
 	// Just to print FILE NOT FOUND
 	public void print404(){

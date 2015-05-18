@@ -1,7 +1,5 @@
 package bayseanNetwork;
 
-import java.util.Arrays;
-
 // TODO: Auto-generated Javadoc
 /**
  * The Class DAG.
@@ -47,7 +45,41 @@ public class DAG {
 	 */
 	@Override
 	public String toString() {
-		return "DAG \n" + Arrays.toString(dag[0]) + "\n" + Arrays.toString(dag[1]) + "\n" + Arrays.toString(dag[2]) + "\n" + Arrays.toString(dag[3]) + "\n" + Arrays.toString(dag[4]) + "\n" + Arrays.toString(dag[5]);
+		StringBuilder string = new StringBuilder();
+		
+		string.append("=== Inter-slice connectivity\n");
+		string.append(toStringNetwork(0));
+		
+		string.append("=== Intra-slice connectivity\n");
+		string.append(toStringNetwork(1));
+		
+		return string.toString();
+	}
+	
+	private String toStringNetwork(int network) {
+		StringBuilder string = new StringBuilder();
+		
+		for (int i = 0; i < data_set.num_var; i++) {
+			string.append(i +  " : ");
+			int num_parents = numParents(i);
+			int first_time = 0;
+			
+			//no parents means empty parent configuration
+			if (num_parents == 0){
+				string.append("\n");
+			}else{
+				int [][] ri_parents = riParents(i, num_parents);
+				for (int j = 0; j < ri_parents.length; j++) {
+					if (ri_parents[j][0] >= data_set.num_var && network == 0) break;
+					if (ri_parents[j][0] < data_set.num_var && network == 1) continue;
+					else first_time ++;
+					if ( (j !=0 && network == 0) || (first_time > 1 && network == 1)) string.append(" , ");
+					string.append(ri_parents[j][0]);
+				}
+				string.append("\n");
+			}
+		}
+		return string.toString();
 	}
 
 	/**

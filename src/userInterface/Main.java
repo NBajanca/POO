@@ -88,11 +88,7 @@ public class Main {
 	//Printing Transition network
 	System.out.println("Transition network:");
 	
-	System.out.println("=== Inter-slice connectivity");
-	printNetwork(0, dag);
-	
-	System.out.println("=== Intra-slice connectivity");
-	printNetwork(1, dag);
+	System.out.print(dag.toString());
 	
 	System.out.println("=== Scores");
 	Score score_algorithm_aux = new LL();
@@ -119,7 +115,6 @@ public class Main {
 	
 	//Printing DAG Time
 	System.out.println("Infering with DBN: " + (end_time - start_time)/1000000 + "ms");
-
 	
 	System.exit(0);
 	}
