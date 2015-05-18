@@ -18,7 +18,7 @@ import java.io.PrintStream;
 
 import javax.swing.JFileChooser;
 import javax.swing.JTextArea;
-import javax.swing.SwingConstants;
+import javax.swing.JSpinner;
 public class Interface {
 
 	private JFrame frame;
@@ -56,10 +56,11 @@ public class Interface {
 	 * Initialize the contents of the frame.
 	 * @return 
 	 */
-	@SuppressWarnings("unchecked")
+	
+	@SuppressWarnings("serial")
 	private void initialize() {
 		
-		frame = new JFrame();
+		frame = new JFrame("Learning Dinamic Bayesian Network");
 		frame.setBounds(100, 100, 660, 495);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
@@ -117,11 +118,6 @@ public class Interface {
 		textField_3.setBounds(129, 38, 193, 28);
 		frame.getContentPane().add(textField_3);
 		
-		JLabel lblNewLabel = new JLabel("POO Project");
-		lblNewLabel.setVerticalAlignment(SwingConstants.TOP);
-		lblNewLabel.setBounds(6, 247, 117, 16);
-		frame.getContentPane().add(lblNewLabel);
-		
 		JTextArea textArea = new JTextArea();
 		textArea.setBounds(6, 0, 574, 417);
 		textArea.setEditable(false);
@@ -130,6 +126,15 @@ public class Interface {
 		JScrollPane scrollPane = new JScrollPane(textArea);
 		scrollPane.setBounds(135, 74, 499, 378);
 		frame.getContentPane().add(scrollPane);
+		
+//		JSpinner spinner = new JSpinner();
+//		spinner.setBounds(6, 269, 37, 28);
+//		frame.getContentPane().add(spinner);
+//		spinner.setValue(3);
+//		
+//		JLabel lblNumberOfParents = new JLabel("Number of Parents");
+//		lblNumberOfParents.setBounds(6, 247, 122, 16);
+//		frame.getContentPane().add(lblNumberOfParents);
 		
 		
 		PrintStream printStream = new PrintStream(new CustomOutputStream(textArea));
@@ -145,12 +150,12 @@ public class Interface {
 		list_1.setVisibleRowCount(2);
 		list_1.setToolTipText("");
 		list_1.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		list_1.setModel(new AbstractListModel() {
+		list_1.setModel(new AbstractListModel<String>() {
 			String[] values = new String[] {"LL", "MDL"};
 			public int getSize() {
 				return values.length;
 			}
-			public Object getElementAt(int index) {
+			public String getElementAt(int index) {
 				return values[index];
 			}
 		});
@@ -179,6 +184,8 @@ public class Interface {
 		});
 		btnRun.setBounds(325, 6, 193, 60);
 		frame.getContentPane().add(btnRun);
+		
+		
 		
 		
 	}
