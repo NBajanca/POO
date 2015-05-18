@@ -115,7 +115,6 @@ public class DAG {
 		}else{
 			this.dag[origin][realNode(destiny)]=true;
 		}
-		System.out.println("Added, parents: " + numParents(realNode(destiny)));
 	}
 	
 	/**
@@ -156,8 +155,6 @@ public class DAG {
 		}else{
 			this.dag[destiny][realNode(origin)]=true;
 		}
-		System.out.println("Reversed, parents: " + numParents(realNode(origin)));
-	
 	}
 	
 	/**
@@ -199,7 +196,7 @@ public class DAG {
 		if(numParents(realNode(origin)) >= max_parents) throw new IlegalOperation();
 		
 		//Edge already exists
-		if(this.dag[origin][realNode(destiny)]==true) throw new IlegalOperation();
+		if(this.dag[origin][realNode(destiny)]==false) throw new IlegalOperation();
 		return;
 	}
 	
