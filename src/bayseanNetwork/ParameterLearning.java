@@ -17,7 +17,7 @@ public class ParameterLearning {
 	private TestData test_data;
 	
 	/** The learned_parameters. List of matrix (One Matrix for each node, One Line for each parent configuration, One Collum for each value possible */
-	private ArrayList<double[][]> learned_parameters = new ArrayList<double[][]>();
+	private ArrayList<double[][]> learned_parameters;
 	
 	/**
 	 * Instantiates a new parameter learning.
@@ -29,6 +29,7 @@ public class ParameterLearning {
 	public ParameterLearning(DAG dag, TestData test_data){
 		this.dag = dag;
 		this.test_data = test_data;
+		this.learned_parameters = new ArrayList<double[][]>(test_data.getNum_var());
 		
 		//Creates a table for each node to record each teta
 		for (int i = 0; i < this.dag.getData_set().getNum_var(); i++) {
@@ -73,9 +74,9 @@ public class ParameterLearning {
 		
 		for (int[] data : test_data.getData()) {
 			for (int i = 0; i < data_t0.length; i++) {
-				data_t0[i] = data[i];
-				data[node] =  inferNode(data_t0, node);
+				data_t0[i] = data[i];				
 			}
+			data[node] =  inferNode(data_t0, node);
 		}
 	}
 	
