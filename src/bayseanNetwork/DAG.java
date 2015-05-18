@@ -1,122 +1,192 @@
 package bayseanNetwork;
 
 import java.util.Arrays;
-import java.util.Random;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class DAG.
+ */
 public class DAG {
-	//Matriz de Adjacências e respectivos métodos
+	/** The dag - Adjacency Matrix. Only the nodes t+1 are in the collums because there can't be any connection reaching t nodes */
 	public boolean [][] dag;
+	
+	/** The max_parents. Defined in project guide */
+	private final int max_parents = 3;
+	
+	/** The data_set. */
 	public DataSet data_set;
 	
-	//DAG general constructor
+	/**
+	 * Instantiates a new DAG and runs the GHC alghoritm.
+	 *
+	 * @param data_set the data_set
+	 * @param score the score
+	 * @param randrest the randrest
+	 */
 	public DAG(DataSet data_set, Score score, int randrest){
 		dag = new boolean[data_set.num_var*2][data_set.num_var];
 		this.data_set = data_set;
-		ganerateRandomDAG();
 		new GHC(this,score, randrest);
 	}
 	
-	// DAG constructor for other purposes
+	
+	/**
+	 * Instantiates a new dag (used for DAGGHC objects)
+	 * Only used to point the variables to the right objects.
+	 *
+	 * @param master the master
+	 */
 	public DAG(DAG master){	
 		this.dag = master.dag;
 		this.data_set = master.data_set;
 	}
-	
-	
-	private void ganerateRandomDAG() {
-		Random random = new Random();
-		for (int i = 0; i < data_set.num_var*2; i++) {
-			for (int j = 0; j < data_set.num_var; j++) {
-				if(random.nextInt(data_set.num_var) == 0){
-					try {
-						add(i, generalNode(j));
-					} catch (IlegalOperation e) {
-					}
-				}
-			}
-		}
-	}
-	
-	
 
+
+	/* (non-Javadoc)
+	 * @see java.lang.Object#toString()
+	 */
 	@Override
 	public String toString() {
 		return "DAG \n" + Arrays.toString(dag[0]) + "\n" + Arrays.toString(dag[1]) + "\n" + Arrays.toString(dag[2]) + "\n" + Arrays.toString(dag[3]) + "\n" + Arrays.toString(dag[4]) + "\n" + Arrays.toString(dag[5]);
 	}
 
-	// ADD function takes as arguments an origin and destination node and verifies if it is possible to add
-	public void add(int origem, int destino) throws IlegalOperation{ 
-		if(verifiesIlegalOperationsAdd(origem, destino)) throw new IlegalOperation();
-		if(origem<this.data_set.num_var){ // If origin node
-			this.dag[origem][convertDestination(destino)]=true;
-			return;
-		}
-		if (origem>=this.data_set.num_var){
-			if (dag[destino][origem-this.data_set.num_var]==true) throw new IlegalOperation();
-		}else{
-			if (dag[convertDestination(destino)][origem]==true) throw new IlegalOperation();
-		}
-		boolean[] visitedVector = new boolean[2*this.data_set.num_var];
-		if(DFS(origem,destino,visitedVector)){	
-		}else{
-			this.dag[origem][convertDestination(destino)]=true;
-		}
-	}
-	
-	//Function verifies Ilegal Operations in the ADD method
-	private boolean verifiesIlegalOperationsAdd(int origem, int destino) throws IlegalOperation {
-		if(destino<this.data_set.num_var){
-			return true; //Cannot add to instant t
-		}
-		if(numParents(realNode(destino))>=3){
-			return true;//Cannot add if son node has already 3 parents
-		}
-		if(this.dag[origem][convertDestination(destino)]==true){
-			return true;//Edge already exists
-		}
-		if(origem==destino){
-			return true;//Cant make edge to himself
-		}
-		return false;
-	}
-	
-	// REMOVEs an edge from DAG 
-	public	void remove(int linha, int coluna) throws IlegalOperation{ 
+	/**
+	 * Adds edge to the DAG after verifing  if it is possible
+	 * Throws exception if add is not possible .
+	 *
+	 * @param origin the origin
+	 * @param destiny the destiny
+	 * @throws IlegalOperation the ilegal operation
+	 */
+	public void add(int origin, int destiny) throws IlegalOperation{
+		verifyIlegalOperationsAdd(origin, destiny);
 		
-		if(coluna<this.data_set.num_var) throw new IlegalOperation();
-		if (dag[linha][coluna-this.data_set.num_var] == false ) throw new IlegalOperation();
-		else{
-			dag[linha][coluna-this.data_set.num_var]=false;
+		// If origin node is in t no verification is needed
+		if(origin<this.data_set.num_var){ 
+			this.dag[origin][realNode(destiny)]=true;
+			return;
+		} else {
+			if (dag[destiny][origin-this.data_set.num_var]==true) throw new IlegalOperation();
+		}
+		
+		//Runs DFS to assure new matrix is a DAG
+		boolean[] visitedVector = new boolean[2*this.data_set.num_var];
+		if(DFS(origin,destiny,visitedVector)){
+			throw new IlegalOperation();
+		}else{
+			this.dag[origin][realNode(destiny)]=true;
 		}
 	}
 	
-	// REVERSE function takes as arguments an origin and destination node and verifies if it is possible to reverse edge
-	public void reverse(int origem, int destino) throws IlegalOperation{ //Tem que gerar uma excep��o quando n�o � poss�vel
-
-		if(verifiesIlegalOperationReverse(origem,destino)) throw new IlegalOperation();		
-		if(this.dag[origem][convertDestination(destino)]==true){
-			this.dag[origem][convertDestination(destino)]=false;
-			boolean[] visitedVector = new boolean[2*this.data_set.num_var];
-			for(int j=0;j<this.data_set.num_var;j++) visitedVector[j]=false;
-			if(DFS(destino,origem,visitedVector)){
-				this.dag[origem][convertDestination(destino)] = true;
-			}
-			else{
-				this.dag[destino][convertDestination(origem)]=true;
-			}
-		}else	throw new IlegalOperation();
+	/**
+	 * Removes an edge from DAG .
+	 *
+	 * @param origin the origin
+	 * @param destiny the destiny
+	 * @throws IlegalOperation the ilegal operation
+	 */
+	public void remove(int origin, int destiny) throws IlegalOperation{ 
+		verifyIlegal(origin, destiny);
+		
+		//Edge doesn't exists
+		if (dag[origin][destiny-this.data_set.num_var] == false ) throw new IlegalOperation();
+		else dag[origin][destiny-this.data_set.num_var]=false;
+		
 	}
 	
-	//Verifies Ilegal Operations in Reverse method
-	public boolean verifiesIlegalOperationReverse(int origem, int destino){
-		if(destino<this.data_set.num_var) return true;
-		if(origem<this.data_set.num_var) return true;
-		if(numParents(realNode(origem))>=3) return true;
-		if(origem==destino) return true;
-		return false;
+	/**
+	 * Reverses edge in the DAG after verifing  if it is possible
+	 * Throws exception if reverse is not possible .
+	 *
+	 * @param origin the origin
+	 * @param destiny the destiny
+	 * @throws IlegalOperation the ilegal operation
+	 */
+	public void reverse(int origin, int destiny) throws IlegalOperation{ //Tem que gerar uma excep��o quando n�o � poss�vel
+		verifiesIlegalOperationReverse(origin,destiny);
+		
+		//Reverses the connection
+		this.dag[origin][realNode(destiny)]=false;
+		boolean[] visited_vector = new boolean[2*this.data_set.num_var];
+		
+		//Runs DFS to assure new matrix is a DAG
+		if(DFS(destiny,origin,visited_vector)){
+			this.dag[origin][realNode(destiny)] = true;
+			throw new IlegalOperation();
+		}else{
+			this.dag[destiny][realNode(origin)]=true;
+		}
+	
 	}
 	
-	//Returns Nijk in [0] and Nij in [1]
+	/**
+	 * Verifies ilegal operations add.
+	 *
+	 * @param origin the origin
+	 * @param destiny the destiny
+	 * @return true, if successful
+	 * @throws IlegalOperation the ilegal operation
+	 */
+	private void verifyIlegalOperationsAdd(int origin, int destiny) throws IlegalOperation {
+		verifyIlegal(origin, destiny);
+		
+		//Max number of parents
+		if(numParents(realNode(destiny)) >=	max_parents) throw new IlegalOperation();
+		
+		//Edge already exists
+		if(this.dag[origin][realNode(destiny)]==true) throw new IlegalOperation();
+		
+		return;
+	}
+	
+	/**
+	 * Verifies ilegal operation reverse.
+	 * The DAG atributes are always assured if this function is used.
+	 *
+	 * @param origin the origin
+	 * @param destiny the destiny
+	 * @return true, if Ilegal
+	 * @throws IlegalOperation the ilegal operation
+	 */
+	private void verifiesIlegalOperationReverse(int origin, int destiny) throws IlegalOperation {
+		verifyIlegal(origin, destiny);
+		
+		//The origin(future destiny) needs to be t+1
+		if(origin<this.data_set.num_var) throw new IlegalOperation();
+		
+		//Max number of parents
+		if(numParents(realNode(origin)) >= max_parents) throw new IlegalOperation();
+		
+		//Edge already exists
+		if(this.dag[origin][realNode(destiny)]==true) throw new IlegalOperation();
+		return;
+	}
+	
+	/**
+	 * Verifies ilegal operation
+	 * The destiny can't be in t
+	 * The origin and destiny need to be diferent nodes.
+	 *
+	 * @param origin the origin
+	 * @param destiny the destiny
+	 * @return true, if Ilegal
+	 * @throws IlegalOperation the ilegal operation
+	 */
+	private void verifyIlegal(int origin, int destiny) throws IlegalOperation {
+		if(destiny<this.data_set.num_var) throw new IlegalOperation(); 
+		if(origin==destiny) throw new IlegalOperation(); 
+		return;
+	}
+	
+	/**
+	 * Calc nijk.
+	 * Returns Nijk in [0] and Nij in [1]
+	 *
+	 * @param i the i
+	 * @param j the j
+	 * @param k the k
+	 * @return the int[]
+	 */
 	public int[] calcNijk(int i, int j, int k){
 		int[] counter = new int[2];
 		
@@ -157,7 +227,13 @@ public class DAG {
 		return counter;
 	}
 	
-	//Receives Parents Configuration and returns int with parent configuration
+	/**
+	 * Receives Parents Configuration and returns int with parent configuration.
+	 *
+	 * @param node the node
+	 * @param parent_configuration the parent_configuration
+	 * @return the int
+	 */
 	public int toParentConfiguration (int node, int[][] parent_configuration){
 		int j= 0; //empty configuration standart
 		
@@ -180,7 +256,15 @@ public class DAG {
 		return j;
 	}
 	
-	//Receives Parent Configuration and returns array with parent node number and configuration
+	/**
+	 * Receives Parent Configuration and returns array with parent node number and configuration.
+	 *
+	 * @param node the node
+	 * @param parent_configuration the parent_configuration
+	 * @return the int[][]
+	 * @throws PCInvalid the PC invalid
+	 * @throws NoParent the no parent
+	 */
 	public int[][] fromParentConfiguration (int node, int parent_configuration) throws PCInvalid, NoParent{
 		if (parent_configuration < 0) throw new PCInvalid("NegativePC");
 		
@@ -205,7 +289,14 @@ public class DAG {
 		return q;
 	}
 	
-	//Converts t+1 node number to the value in the DAG
+	/**
+	 * Real node.
+	 * Converts t+1 node number to the value in the DAG
+	 * If the node is t this function returns the nodes
+	 *
+	 * @param node the node
+	 * @return the int
+	 */
 	int realNode(int node){
 		if (node >= this.data_set.num_var){
 			return node - this.data_set.num_var;
@@ -215,7 +306,14 @@ public class DAG {
 		
 	}
 	
-	//Converts t+1 node number to the value in the DAG
+	/**
+	 * General node.
+	 * Converts t+1 node number in the DAG to the value in the Data-Set
+	 * If the node is t+1 in DataSet this function returns the nodes
+	 *
+	 * @param node the node
+	 * @return the int
+	 */
 	public int generalNode(int node){
 		if (node < this.data_set.num_var){
 			return node + this.data_set.num_var;
@@ -224,7 +322,13 @@ public class DAG {
 		}
 	}
 	
-	//Calculates the number of parents
+	/**
+	 * Num parents.
+	 * Calculates the number of parents
+	 *
+	 * @param real_node the real_node
+	 * @return the int
+	 */
 	public int numParents(int real_node){
 		int num_parents = 0;
 		for (int i = 0; i < this.data_set.num_var*2 ; i++) {
@@ -234,8 +338,16 @@ public class DAG {
 		}
 		return num_parents;
 	}
+
 	
-	//Find the ri of each parent of the node
+	/**
+	 * Ri parents.
+	 * Find the ri of each parent of the node
+	 *
+	 * @param real_node the real_node
+	 * @param num_parents the num_parents
+	 * @return the int[][]
+	 */
 	public int [][] riParents(int real_node, int num_parents){
 		int [][] ri_parents = new int[num_parents][2];
 		
@@ -255,6 +367,13 @@ public class DAG {
 	}
 
 
+	/**
+	 * Returns the q (product of parent's r).
+	 *
+	 * @param node the node
+	 * @return the int
+	 * @throws NoParent the no parent
+	 */
 	int maxq(int node) throws NoParent {
 		//Check if node is from t+1 (Nodes from t have empty parent configuration)
 		if (node < this.data_set.num_var) throw new NoParent();
@@ -273,20 +392,24 @@ public class DAG {
 		
 		return max_q;
 	}
-	// Just to convert a Destination to its value in matrix structure
-	private int convertDestination(int destino){
-		destino = destino-data_set.num_var;
-		return destino;
-	}
-	
-	// Recursive function used to warranty DAG
-	private boolean DFS(int origem, int destino,boolean[] visitedVector){
+
+
+	/**
+	 * Dfs.
+	 * Recursive function used to assure DAG.
+	 *
+	 * @param origin the origin
+	 * @param destiny the destiny
+	 * @param visitedVector the visited vector
+	 * @return true, if successful
+	 */
+	private boolean DFS(int origin, int destiny ,boolean[] visitedVector){
 		
 		for(int i=0; i<this.data_set.num_var; i++){
-			if(this.dag[destino][i]==true && visitedVector[i]==false){
-				if(i+this.data_set.num_var==origem) return true;
+			if(this.dag[destiny][i]==true && visitedVector[i]==false){
+				if(i+this.data_set.num_var==origin) return true;
 				visitedVector[i+this.data_set.num_var]=true;
-				if(DFS(origem,i+this.data_set.num_var,visitedVector)) return true;
+				if(DFS(origin,i+this.data_set.num_var,visitedVector)) return true;
 			}
 			
 		}
