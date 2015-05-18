@@ -102,14 +102,13 @@ public class Main {
 	//Starting Inference
 	start_time = System.nanoTime();
 	System.out.println("Performing inference: ");
-	ParameterLearning parameter_learning = new ParameterLearning(dag);
-	parameter_learning.learnTeta();
+	ParameterLearning parameter_learning = new ParameterLearning(dag, test_data);
 	
 	if (var != -1){
-		parameter_learning.predictNode(test_data, dag.generalNode(var));
+		parameter_learning.predictNode(dag.generalNode(var));
 		printInference(test_data,  dag.generalNode(var));
 	}else{
-		parameter_learning.predictAll(test_data);
+		parameter_learning.predictAll();
 		printInference(test_data);
 	}
 	

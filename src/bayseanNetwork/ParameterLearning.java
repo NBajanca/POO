@@ -2,12 +2,31 @@ package bayseanNetwork;
 
 import java.util.ArrayList;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class ParameterLearning.
+ */
 public class ParameterLearning {
-	private DAG dag;
-	public ArrayList<double[][]> learned_parameters = new ArrayList<double[][]>();
 	
-	public ParameterLearning(DAG dag){
+	/** The dag. */
+	private DAG dag;
+	
+	/** The test_data. */
+	private TestData test_data;
+	
+	/** The learned_parameters. List of matrix (One Matrix for each node, One Line for each parent configuration, One Collum for each value possible */
+	private ArrayList<double[][]> learned_parameters = new ArrayList<double[][]>();
+	
+	/**
+	 * Instantiates a new parameter learning.
+	 * This constructor only ends after all tetas are calculated
+	 *
+	 * @param dag the dag
+	 * @param test_data the test_data
+	 */
+	public ParameterLearning(DAG dag, TestData test_data){
 		this.dag = dag;
+		this.test_data = test_data;
 		
 		//Creates a table for each node to record each teta
 		for (int i = 0; i < this.dag.data_set.num_var; i++) {
@@ -17,14 +36,18 @@ public class ParameterLearning {
 			} catch (NoParent e) {
 				learned_parameter = new double[1][this.dag.data_set.ri[i]];
 			}
-			//Uncoment to see this DAG x and w
-			//System.out.println("w: " + learned_parameter.length + " x: " + learned_parameter[0].length);
 			learned_parameters.add(learned_parameter);
 		}
+		
+		learnTeta();
 	}
 	
-	//Learn the parameter for each node combination
-	public void learnTeta(){
+	/**
+	 * Learn teta for each node combination
+	 * learned_parameter ArrayList is complete after this funtion
+	 * 
+	 */
+	private void learnTeta(){
 		int i = 0;
 		int [] Nijk;
 		for (double[][] learned_node : learned_parameters) {
@@ -38,8 +61,42 @@ public class ParameterLearning {
 		}
 	}
 	
-	//Returns the most probable value for that node given the t=0 values
-	public int inferNode(int[] data_t0, int node){
+	/**
+	 * Predict value for a node.
+	 * Changes data string in test data
+	 *
+	 * @param node node to predict
+	 */
+	public void predictNode(int node){
+		int [] data_t0 = new int[test_data.num_var];
+		
+		for (int[] data : test_data.data) {
+			for (int i = 0; i < data_t0.length; i++) {
+				data_t0[i] = data[i];
+				data[node] =  inferNode(data_t0, node);
+			}
+		}
+	}
+	
+	/**
+	 * Predict value for all nodes.
+	 * Changes data string in test data
+	 */
+	public void predictAll() {
+		for (int i = 0; i < test_data.num_var; i++) {
+			predictNode(dag.generalNode(i));
+		}
+		
+	}
+	
+	/**
+	 * Infer node
+	 *
+	 * @param data_t0 - node values in t=0
+	 * @param node 
+	 * @return most probable value for node
+	 */
+	private int inferNode(int[] data_t0, int node){
 		int node_value = 0;
 		double max_prob = 0, prob_aux = 0;
 		
@@ -54,25 +111,14 @@ public class ParameterLearning {
 		return node_value;
 	}
 	
-	public void predictNode(TestData test_data, int node){
-		int [] data_t0 = new int[test_data.num_var];
-		
-		for (int[] data : test_data.data) {
-			for (int i = 0; i < data_t0.length; i++) {
-				data_t0[i] = data[i];
-				data[node] =  inferNode(data_t0, node);
-			}
-		}
-	}
-	
-	public void predictAll(TestData test_data) {
-		for (int i = 0; i < test_data.num_var; i++) {
-			predictNode(test_data, dag.generalNode(i));
-		}
-		
-	}
-	
-	//Calculates the prob of a node in t=1 having a value given the t=0 values
+	/**
+	 * Calculates the prob of a node in t=1 having a value given the t=0 values.
+	 *
+	 * @param data_t0 - t=0 nodes value
+	 * @param node - node t+1
+	 * @param value - value of the node
+	 * @return the double
+	 */
 	private double calcProb(int[] data_t0, int node, int value){
 		double prob = 0;
 		int[] data = new int[dag.data_set.num_var*2];
@@ -90,17 +136,27 @@ public class ParameterLearning {
 		return prob;
 	}
 	
-	//Recursion Function
+	/**
+	 * Calc prob aux.
+	 * Recursion Function to walk the three. Stop condition is next node being a leaf
+	 *
+	 * @param data - the value of the nodes (the value for the node corresponding to the node where this function is stoping by is changed)
+	 * @param node - node t+1 to calcProb
+	 * @param nodes_remaining - number of node until leaf
+	 * @return the double
+	 */
 	private double calcProbAux(int[] data, int node, int nodes_remaining){
 		double prob = 0;
 		int actual_node = actualNode(node, nodes_remaining);
 		nodes_remaining--;
 		if (nodes_remaining != 0){
+			//if next node is a var t+1
 			for (int i = 0; i < dag.data_set.ri[dag.realNode(actual_node)]; i++) {
 				data[actual_node] = i;
 				prob += calcProbAux(data, node, nodes_remaining);
 			}
 		}else{
+			//if next node is a leaf
 			for (int i = 0; i < dag.data_set.ri[dag.realNode(actual_node)]; i++) {
 				data[actual_node] = i;
 				prob += calcProbNode(data, node);
@@ -109,19 +165,13 @@ public class ParameterLearning {
 		return prob;
 	}
 	
-
-	private int actualNode(int node, int nodes_remaining) {
-		int actual_node;
-		actual_node = dag.data_set.num_var*2 - nodes_remaining;
-		
-		if (actual_node <= node){
-			actual_node--;
-		}
-		
-		return actual_node;
-	}
-
-	//Calculates the prob of a node t=1 having a value given all the information (values of t=0 and t=1)
+	/**
+	 * Calculates the prob of a node t=1 having a value given all the information (values of t=0 and t=1)
+	 *
+	 * @param data - values of t and t+1
+	 * @param node - node
+	 * @return prob
+	 */
 	private double calcProbNode(int[] data, int node){
 		double prob;
 		int parent_configuration = 0;
@@ -158,6 +208,26 @@ public class ParameterLearning {
 		return prob;
 	}
 
+	/**
+	 * Actual node.
+	 * Help function for recursion
+	 *
+	 * @param node the node
+	 * @param nodes_remaining the nodes_remaining
+	 * @return the int
+	 */
+	private int actualNode(int node, int nodes_remaining) {
+		int actual_node;
+		actual_node = dag.data_set.num_var*2 - nodes_remaining;
+		
+		if (actual_node <= node){
+			actual_node--;
+		}
+		
+		return actual_node;
+	}
+
+	
 	
 
 }
