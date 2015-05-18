@@ -7,18 +7,10 @@ import javax.swing.JButton;
 import javax.swing.JList;
 import javax.swing.JScrollPane;
 import javax.swing.ListSelectionModel;
-import javax.swing.border.BevelBorder;
-import javax.swing.border.EtchedBorder;
-import javax.swing.border.TitledBorder;
-import javax.swing.text.JTextComponent;
-import javax.swing.JToggleButton;
 import javax.swing.JTextField;
 import javax.swing.JLabel;
 import javax.swing.AbstractListModel;
 
-import java.awt.Choice;
-import java.awt.Color;
-import java.awt.Font;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.io.File;
@@ -26,7 +18,6 @@ import java.io.PrintStream;
 
 import javax.swing.JFileChooser;
 import javax.swing.JTextArea;
-import javax.swing.JScrollBar;
 import javax.swing.SwingConstants;
 public class Interface {
 
@@ -36,7 +27,7 @@ public class Interface {
 	protected String[] arguments;
 	private JTextField textField_2;
 	private JTextField textField_3;
-	private JTextArea textArea;
+
 
 	/**
 	 * Launch the application.
@@ -66,9 +57,8 @@ public class Interface {
 	 * @return 
 	 */
 	@SuppressWarnings("unchecked")
-	private String[] initialize() {
+	private void initialize() {
 		
-		String [] arguments = new String[5];
 		frame = new JFrame();
 		frame.setBounds(100, 100, 640, 480);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -126,6 +116,11 @@ public class Interface {
 		textField_3.setColumns(10);
 		textField_3.setBounds(129, 38, 193, 28);
 		frame.getContentPane().add(textField_3);
+		
+		JLabel lblNewLabel = new JLabel("POO Project");
+		lblNewLabel.setVerticalAlignment(SwingConstants.TOP);
+		lblNewLabel.setBounds(6, 247, 117, 16);
+		frame.getContentPane().add(lblNewLabel);
 		
 		JTextArea textArea = new JTextArea();
 		textArea.setBounds(6, 0, 574, 417);
@@ -185,18 +180,6 @@ public class Interface {
 		btnRun.setBounds(325, 6, 193, 60);
 		frame.getContentPane().add(btnRun);
 		
-		JLabel lblNewLabel = new JLabel("POO Project");
-		lblNewLabel.setVerticalAlignment(SwingConstants.TOP);
-		lblNewLabel.setBounds(6, 247, 117, 16);
-		frame.getContentPane().add(lblNewLabel);
-		
-		
-		
-		
-		
-		
-		return arguments;
-	
 		
 	}
 }
