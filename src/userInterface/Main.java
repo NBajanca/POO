@@ -6,8 +6,7 @@ public class Main {
 
 	public static void main(String[] args) {
 		
-//		System.setOut(printStream);
-//        System.setErr(printStream);
+
 		
 		if (args.length < 4){
 			System.out.println("Correct program call has the following arguments: train test score randrest var");

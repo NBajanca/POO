@@ -1,3 +1,6 @@
+/*
+ * 
+ */
 package bayseanNetwork;
 
 import java.util.ArrayList;
@@ -63,9 +66,9 @@ public class DataSet implements EstablishArray{
 		this.ri = master.ri;
 	}
 	
-	//This functions obtains the number of variables based on _0
+	
 	/**
-	 * Obtai num variables.
+	 * This functions obtains the number of variables based on _0
 	 *
 	 * @param line the line
 	 * @return the int
@@ -80,10 +83,14 @@ public class DataSet implements EstablishArray{
 		return counter;
 	}
 	
-	// This function travels the .csv file and calls other functions
-	// to make the correct storage of usefull information in the file
 	/* (non-Javadoc)
 	 * @see bayseanNetwork.EstablishArray#fillArray(java.io.BufferedReader)
+	 */
+	/**
+	 * This function travels the .csv file and calls other functions
+	 *
+	 * @param line the line
+	 * @return the int
 	 */
 	public void fillArray(BufferedReader br){
 		
@@ -101,9 +108,9 @@ public class DataSet implements EstablishArray{
 		}
 	}
 	
-	// This function verifies if the maximum value should be replaced in the stored int []
+
 	/**
-	 * Verify maximum.
+	 *  This function verifies if the maximum value should be replaced in the stored int []
 	 *
 	 * @param generico the generico
 	 */
@@ -113,10 +120,12 @@ public class DataSet implements EstablishArray{
 		}
 	}
 	
-	// This function travels the string[] and stores each 
-	//	group of 2*num_var fields in the array
-	/* (non-Javadoc)
-	 * @see bayseanNetwork.EstablishArray#travelStringAndStore(java.lang.String[])
+
+	/**
+	 *  This function travels the string[] and stores each 
+	 *  group of 2*num_var fields in the array
+	 *
+	 * @param variaveis the String [] variaveis
 	 */
 	public void travelStringAndStore(String[] variaveis){
 		int j=0; 
@@ -153,9 +162,12 @@ public class DataSet implements EstablishArray{
 		}
 		return string.toString();
 	}
-	// Just to print FILE NOT FOUND
-	/* (non-Javadoc)
-	 * @see bayseanNetwork.EstablishArray#print404()
+	
+	/**
+	 *  Just to print FILE NOT FOUND
+	 * 
+	 *
+	 * @param 
 	 */
 	public void print404(){
 		System.out.println("Ficheiro nao existe!");
