@@ -1,5 +1,7 @@
 package bayseanNetwork;
 
+import fileRead.DataSet;
+
 // TODO: Auto-generated Javadoc
 /**
  * The Class DAG.
@@ -65,9 +67,10 @@ public class DAG {
 	 */
 	private String toStringNetwork(int network) {
 		StringBuilder string = new StringBuilder();
+		String[] var_names = data_set.getVar_names();
 		
 		for (int i = 0; i < data_set.getNum_var(); i++) {
-			string.append(i +  " : ");
+			string.append(var_names[i] +  " : ");
 			int num_parents = numParents(i);
 			int first_time = 0;
 			
@@ -81,7 +84,7 @@ public class DAG {
 					if (ri_parents[j][0] < data_set.getNum_var() && network == 1) continue;
 					else first_time ++;
 					if ( (j !=0 && network == 0) || (first_time > 1 && network == 1)) string.append(" , ");
-					string.append(ri_parents[j][0]);
+					string.append(var_names[realNode(ri_parents[j][0])]);
 				}
 				string.append("\n");
 			}
@@ -235,7 +238,7 @@ public class DAG {
 			e.printStackTrace();
 		} catch (NoParent e) {
 			//If there are no parents the calc is direct
-			for (int[] data_line : data_set.data) {
+			for (int[] data_line : data_set.getData()) {
 				counter[1]++;
 				if(data_line[i] == k){
 					counter[0]++;
@@ -246,7 +249,7 @@ public class DAG {
 		int correct_pc = 0;
 		
 		//The trains-set is iterated and the Nijk and Nij are calc
-		for (int[] data_line : data_set.data) {
+		for (int[] data_line : data_set.getData()) {
 			for (int j1 = 0; j1 < parent_configuration.length; j1++) {
 				if (data_line[parent_configuration[j1][0]] == parent_configuration[j1][1]){
 					correct_pc ++;
@@ -394,9 +397,9 @@ public class DAG {
 			if (dag[i][real_node] == true){
 				ri_parents [j][0] = i;
 				if (i < data_set.getNum_var()){
-					ri_parents [j][1] = this.data_set.ri[i];
+					ri_parents [j][1] = this.data_set.getRi()[i];
 				}else{
-					ri_parents [j][1] = this.data_set.ri[i-data_set.getNum_var()];
+					ri_parents [j][1] = this.data_set.getRi()[i-data_set.getNum_var()];
 				}
 				j ++;
 			}

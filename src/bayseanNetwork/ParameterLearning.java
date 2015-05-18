@@ -2,7 +2,9 @@ package bayseanNetwork;
 
 import java.util.ArrayList;
 
-// TODO: Auto-generated Javadoc
+import fileRead.TestData;
+
+
 /**
  * The Class ParameterLearning.
  */
@@ -32,9 +34,9 @@ public class ParameterLearning {
 		for (int i = 0; i < this.dag.data_set.getNum_var(); i++) {
 			double [][] learned_parameter;
 			try {
-				learned_parameter = new double[this.dag.maxq(i + this.dag.data_set.getNum_var())][this.dag.data_set.ri[i]];
+				learned_parameter = new double[this.dag.maxq(i + this.dag.data_set.getNum_var())][this.dag.data_set.getRi()[i]];
 			} catch (NoParent e) {
-				learned_parameter = new double[1][this.dag.data_set.ri[i]];
+				learned_parameter = new double[1][this.dag.data_set.getRi()[i]];
 			}
 			learned_parameters.add(learned_parameter);
 		}
@@ -44,8 +46,7 @@ public class ParameterLearning {
 	
 	/**
 	 * Learn teta for each node combination
-	 * learned_parameter ArrayList is complete after this funtion
-	 * 
+	 * learned_parameter ArrayList is complete after this funtion.
 	 */
 	private void learnTeta(){
 		int i = 0;
@@ -54,7 +55,7 @@ public class ParameterLearning {
 			for (int j = 0; j < learned_node.length; j++) {
 				for (int k = 0; k < learned_node[j].length; k++) {
 					Nijk = dag.calcNijk(i + this.dag.data_set.getNum_var() , j, k);
-					learned_node[j][k] = ((Nijk[0] + 0.5)/(Nijk[1]+dag.data_set.ri[i]*0.5));
+					learned_node[j][k] = ((Nijk[0] + 0.5)/(Nijk[1]+dag.data_set.getRi()[i]*0.5));
 				}
 			}
 			i++;
@@ -70,7 +71,7 @@ public class ParameterLearning {
 	private void predictNode(int node){
 		int [] data_t0 = new int[test_data.getNum_var()];
 		
-		for (int[] data : test_data.data) {
+		for (int[] data : test_data.getData()) {
 			for (int i = 0; i < data_t0.length; i++) {
 				data_t0[i] = data[i];
 				data[node] =  inferNode(data_t0, node);
@@ -90,17 +91,17 @@ public class ParameterLearning {
 	}
 	
 	/**
-	 * Infer node
+	 * Infer node.
 	 *
 	 * @param data_t0 - node values in t=0
-	 * @param node 
+	 * @param node the node
 	 * @return most probable value for node
 	 */
 	private int inferNode(int[] data_t0, int node){
 		int node_value = 0;
 		double max_prob = 0, prob_aux = 0;
 		
-		for (int i = 0; i < dag.data_set.ri[dag.realNode(node)]; i++) {
+		for (int i = 0; i < dag.data_set.getRi()[dag.realNode(node)]; i++) {
 			prob_aux = calcProb(data_t0, node, i);
 			if (max_prob < prob_aux){
 				max_prob = prob_aux;
@@ -151,13 +152,13 @@ public class ParameterLearning {
 		nodes_remaining--;
 		if (nodes_remaining != 0){
 			//if next node is a var t+1
-			for (int i = 0; i < dag.data_set.ri[dag.realNode(actual_node)]; i++) {
+			for (int i = 0; i < dag.data_set.getRi()[dag.realNode(actual_node)]; i++) {
 				data[actual_node] = i;
 				prob += calcProbAux(data, node, nodes_remaining);
 			}
 		}else{
 			//if next node is a leaf
-			for (int i = 0; i < dag.data_set.ri[dag.realNode(actual_node)]; i++) {
+			for (int i = 0; i < dag.data_set.getRi()[dag.realNode(actual_node)]; i++) {
 				data[actual_node] = i;
 				prob += calcProbNode(data, node);
 			}
@@ -166,7 +167,7 @@ public class ParameterLearning {
 	}
 	
 	/**
-	 * Calculates the prob of a node t=1 having a value given all the information (values of t=0 and t=1)
+	 * Calculates the prob of a node t=1 having a value given all the information (values of t=0 and t=1).
 	 *
 	 * @param data - values of t and t+1
 	 * @param node - node
@@ -227,10 +228,13 @@ public class ParameterLearning {
 		return actual_node;
 	}
 	
+	/**
+	 * Prints the inference.
+	 */
 	public void printInference() {
 		predictAll();
 		int i = 1;
-		for (int [] data : test_data.data) {
+		for (int [] data : test_data.getData()) {
 			System.out.print("-> instance " + i + ": ");
 			for (int j = test_data.getNum_var(); j < data.length; j++) {
 				if (j != test_data.getNum_var()) System.out.print(" , ");
@@ -241,10 +245,15 @@ public class ParameterLearning {
 		}
 	}
 
+	/**
+	 * Prints the inference.
+	 *
+	 * @param generalNode the general node
+	 */
 	public void printInference(int generalNode) {
 		predictNode(generalNode);
 		int i = 1;
-		for (int [] data : test_data.data) {
+		for (int [] data : test_data.getData()) {
 			System.out.println("-> instance " + i + ": " + data[generalNode]);
 			i++;
 		}

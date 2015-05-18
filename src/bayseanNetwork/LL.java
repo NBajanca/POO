@@ -23,7 +23,7 @@ public class LL implements Score {
 			//And all Parent Configurations
 			for (int j = 0; j < maxq; j++) {
 				//And all possible values
-				for (int k = 0; k < dag.data_set.ri[dag.realNode(i)]; k++) {
+				for (int k = 0; k < dag.data_set.getRi()[dag.realNode(i)]; k++) {
 					int[] Nijk = dag.calcNijk(i, j, k);
 					//If Nijk or Nij are 0 returns LL  for that equals to 0
 					if (Nijk[0] == 0 || Nijk[1] == 0) continue;

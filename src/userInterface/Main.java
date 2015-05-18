@@ -1,5 +1,7 @@
 package userInterface;
 
+import fileRead.DataSet;
+import fileRead.TestData;
 import bayseanNetwork.*;
 
 public class Main {
@@ -67,6 +69,7 @@ public class Main {
 	//Read Files
 	DataSet data_set= new DataSet(train);
 	TestData test_data = new TestData(test,data_set.getNum_var());
+	data_set.setVar_names(test_data.getVar_names());
 	
 	//Building the DAG
 	long start_time = System.nanoTime();

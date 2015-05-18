@@ -1,7 +1,4 @@
-/*
- * 
- */
-package bayseanNetwork;
+package fileRead;
 
 import java.util.ArrayList;
 import java.io.BufferedReader;
@@ -9,13 +6,14 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 
+
 /**
  * The Class DataSet.
  */
 public class DataSet extends EstablishArray{
 	
 	/** The ri. Maximum value each var take*/
-	protected int[] ri;
+	private int[] ri;
 	
 	/**
 	 * Instantiates a new data set.
@@ -24,7 +22,7 @@ public class DataSet extends EstablishArray{
 	 */
 	public DataSet(String nome_ficheiro){
 
-		this.data = new ArrayList<int[]>();
+		this.setData(new ArrayList<int[]>());
 		BufferedReader br=null;
 		String line= null;
 	
@@ -49,19 +47,7 @@ public class DataSet extends EstablishArray{
 	
 	
 	/**
-	 * Instantiates a new data set.
-	 *
-	 * @param master the master
-	 */
-	protected DataSet(DataSet master){
-		this.data = master.data;
-		this.setNum_var(master.getNum_var());
-		this.ri = master.ri;
-	}
-	
-	
-	/**
-	 * This functions obtains the number of variables based on _0
+	 * This functions obtains the number of variables based on _0.
 	 *
 	 * @param line the line
 	 * @return the int
@@ -70,6 +56,7 @@ public class DataSet extends EstablishArray{
 		int counter = 0;
 		for( int i=0; i<line.length(); i++ ) {
 		    if( line.charAt(i) == '_' && line.charAt(i+1)=='0' ) {
+		    	
 		    	counter++;
 		    }
 		}
@@ -78,7 +65,7 @@ public class DataSet extends EstablishArray{
 	
 
 	/**
-	 *  This function verifies if the maximum value should be replaced in the stored int []
+	 *  This function verifies if the maximum value should be replaced in the stored int [].
 	 *
 	 * @param generico the generico
 	 */
@@ -91,10 +78,11 @@ public class DataSet extends EstablishArray{
 
 	/**
 	 *  This function travels the string[] and stores each 
-	 *  group of 2*num_var fields in the array
+	 *  group of 2*num_var fields in the array.
 	 *
 	 * @param variaveis the String [] variaveis
 	 */
+	@Override
 	protected void travelStringAndStore(String[] variaveis){
 		int j=0; 
 		int k=0;
@@ -109,9 +97,26 @@ public class DataSet extends EstablishArray{
 				generico[i]=Integer.parseInt(variaveis[j]);	
 			}
 			verifyMaximum(generico);
-			this.data.add(generico);
+			this.getData().add(generico);
 		}
 	}
-	
-	
+
+
+	/**
+	 * Gets the ri.
+	 *
+	 * @return the ri
+	 */
+	public int[] getRi() {
+		return ri;
+	}
+
+
+	/**
+	 * @param var_names the var_names to set
+	 */
+	@Override
+	public void setVar_names(String[] var_names) {
+		super.setVar_names(var_names);
+	}
 }

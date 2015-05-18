@@ -10,7 +10,7 @@ public class MDL extends LL {
 	@Override
 	public double compute(DAG dag) {
 		double value, b = 0;
-		int N =  dag.data_set.data.size();
+		int N =  dag.data_set.getData().size();
 		
 		//compute ll
 		value =  super.compute(dag);
@@ -23,7 +23,7 @@ public class MDL extends LL {
 			} catch (NoParent e) {
 				q = 1;
 			}
-			b += (dag.data_set.ri[dag.realNode(i)]-1)*q;
+			b += (dag.data_set.getRi()[dag.realNode(i)]-1)*q;
 		}	
 		
 		//MDL function

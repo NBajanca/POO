@@ -40,7 +40,7 @@ class DAGGHC extends DAG {
 	protected DAGGHC clone() {
 		
 		DAG objecto = new DAG(this);
-		objecto.data_set = new DataSet (this.data_set);
+		objecto.data_set = this.data_set;
 		objecto.dag = new boolean[this.data_set.getNum_var()*2][this.data_set.getNum_var()];
 		for(int n=0; n<objecto.data_set.getNum_var()*2;n++){
 			for(int j=0; j<objecto.data_set.getNum_var();j++){
