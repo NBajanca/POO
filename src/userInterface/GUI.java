@@ -18,7 +18,7 @@ import java.io.PrintStream;
 
 import javax.swing.JFileChooser;
 import javax.swing.JTextArea;
-public class Interface {
+public class GUI {
 
 	private JFrame frame;
 	private JTextField textField;
@@ -35,7 +35,7 @@ public class Interface {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					Interface window = new Interface();
+					GUI window = new GUI();
 					window.frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -47,7 +47,7 @@ public class Interface {
 	/**
 	 * Create the application.
 	 */
-	public Interface() {
+	public GUI() {
 		 initialize();
 	}
 
