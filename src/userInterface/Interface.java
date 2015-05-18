@@ -5,8 +5,11 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JButton;
 import javax.swing.JList;
+import javax.swing.JScrollPane;
 import javax.swing.ListSelectionModel;
 import javax.swing.border.BevelBorder;
+import javax.swing.border.EtchedBorder;
+import javax.swing.border.TitledBorder;
 import javax.swing.text.JTextComponent;
 import javax.swing.JToggleButton;
 import javax.swing.JTextField;
@@ -19,9 +22,11 @@ import java.awt.Font;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.io.File;
+import java.io.PrintStream;
 
 import javax.swing.JFileChooser;
 import javax.swing.JTextArea;
+import javax.swing.JScrollBar;
 public class Interface {
 
 	private JFrame frame;
@@ -30,6 +35,7 @@ public class Interface {
 	protected String[] arguments;
 	private JTextField textField_2;
 	private JTextField textField_3;
+	private JTextArea textArea;
 
 	/**
 	 * Launch the application.
@@ -74,7 +80,7 @@ public class Interface {
 				int returnValue = fileChooserTrain.showOpenDialog(null);
 		        if (returnValue == JFileChooser.APPROVE_OPTION) {
 		          File selectedFileTrain = fileChooserTrain.getSelectedFile();
-		          textField_2.setText(selectedFileTrain.getName()); 
+		          textField_2.setText(selectedFileTrain.getAbsolutePath()); 
 		        }
 		      }
 		});
@@ -88,7 +94,7 @@ public class Interface {
 				int returnValue = fileChooserData.showOpenDialog(null);
 		        if (returnValue == JFileChooser.APPROVE_OPTION) {
 		        	File selectedFileData = fileChooserData.getSelectedFile();
-		          textField_3.setText(selectedFileData.getName());
+		          textField_3.setText(selectedFileData.getAbsolutePath());
 		        }
 			}
 		});
@@ -108,6 +114,30 @@ public class Interface {
 		textField_1.setBounds(6, 207, 117, 28);
 		frame.getContentPane().add(textField_1);
 		textField_1.setColumns(10);
+		
+		textField_2 = new JTextField();
+		textField_2.setColumns(10);
+		textField_2.setBounds(129, 6, 193, 28);
+		frame.getContentPane().add(textField_2);
+		
+		textField_3 = new JTextField();
+		textField_3.setColumns(10);
+		textField_3.setBounds(129, 38, 193, 28);
+		frame.getContentPane().add(textField_3);
+		
+		JTextArea textArea = new JTextArea();
+		textArea.setBounds(135, 74, 499, 378);
+		textArea.setEditable(false);
+		frame.getContentPane().add(textArea);
+		
+		JScrollPane scrollPane = new JScrollPane(textArea);
+		scrollPane.setBounds(135, 74, 499, 378);
+		frame.getContentPane().add(scrollPane);
+		
+		
+		PrintStream printStream = new PrintStream(new CustomOutputStream(textArea));
+		System.setOut(printStream);
+        System.setErr(printStream);
 		
 		
 		JLabel lblNumberInstances = new JLabel("Number Instances");
@@ -136,10 +166,7 @@ public class Interface {
 			public void actionPerformed(ActionEvent e) {
 				final String score = list_1.getSelectedValue();
 				final String randrest = textField.getText();
-				System.out.println(btnTrain.getText());
-				System.out.println(btnData.getText());
-				System.out.println(score);
-				System.out.println(randrest);
+				textArea.setText(null);
 				if(textField_1.getText().isEmpty()) Main.main(new String[] {textField_2.getText(), textField_3.getText(), score, randrest});
 				else {
 					final String var = textField_1.getText();
@@ -154,19 +181,9 @@ public class Interface {
 		btnRun.setBounds(370, 17, 200, 50);
 		frame.getContentPane().add(btnRun);
 		
-		textField_2 = new JTextField();
-		textField_2.setColumns(10);
-		textField_2.setBounds(129, 6, 193, 28);
-		frame.getContentPane().add(textField_2);
 		
-		textField_3 = new JTextField();
-		textField_3.setColumns(10);
-		textField_3.setBounds(129, 38, 193, 28);
-		frame.getContentPane().add(textField_3);
 		
-		JTextArea textArea = new JTextArea();
-		textArea.setBounds(135, 74, 499, 378);
-		frame.getContentPane().add(textArea);
+		
 		
 		
 		return arguments;

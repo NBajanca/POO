@@ -1,10 +1,15 @@
 package userInterface;
 
+import java.io.PrintStream;
+
 import bayseanNetwork.*;
 
 public class Main {
 
 	public static void main(String[] args) {
+		
+//		System.setOut(printStream);
+//        System.setErr(printStream);
 		
 		if (args.length < 4){
 			System.out.println("Correct program call has the following arguments: train test score randrest var");
@@ -116,7 +121,7 @@ public class Main {
 	//Printing DAG Time
 	System.out.println("Infering with DBN: " + (end_time - start_time)/1000000 + "ms");
 	
-	System.exit(0);
+	
 	}
 
 	private static void printInference(TestData test_data) {
