@@ -2,21 +2,39 @@ package bayseanNetwork;
 
 import java.util.Random;
 
-public class DAGGHC extends DAG {
+/**
+ * The Class DAGGHC.
+ * Extends Dag. Changes: Has score (double), Overrides clone(method), Implements random(method)
+ */
+class DAGGHC extends DAG {
+	
+	/** The score. */
 	double score;
 
-	public DAGGHC(DAG master, Score score) {
+	/**
+	 * Instantiates a new DAG and computes it's score
+	 *
+	 * @param master the master
+	 * @param score the score
+	 */
+	DAGGHC(DAG master, Score score) {
 		super(master);
 		this.score = score.compute(this);
 	}
 	
-	public DAGGHC(DAG master, double score) {
+	/**
+	 * Instantiates a new DAG and saves it's score
+	 *
+	 * @param master the master
+	 * @param score the score
+	 */
+	DAGGHC(DAG master, double score) {
 		super(master);
 		this.score = score;
 	}
 
 	/* (non-Javadoc)
-	 * @see bayseanNetwork.DAG#clone()
+	 * @see java.lang.Object#clone()
 	 */
 	@Override
 	protected DAGGHC clone() {
@@ -34,7 +52,15 @@ public class DAGGHC extends DAG {
 		return dag_test;
 	}
 	
-	protected void random() {
+	/**
+	 * Executes random operations to this DAG
+	 * 
+	 * Description:
+	 * Goes to all nodes of the DAG and randomly choses to do add, remove, reverse or nothing to the nodes selected.
+	 * The Probability of one of the operations being done is lesser as the DAG gets bigger.
+	 * 
+	 */
+	void random() {
 		Random random = new Random();
 		for (int i = 0; i < data_set.num_var*2; i++) {
 			for (int j = 0; j < data_set.num_var; j++) {

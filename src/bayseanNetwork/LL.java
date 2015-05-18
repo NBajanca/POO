@@ -5,6 +5,7 @@ public class LL implements Score {
 	public double compute(DAG dag) {
 		double ll = 0;
 		for (int i = 0; i < dag.data_set.num_var * 2; i++) {
+			//System.out.println("i= " + i);
 			int maxq;
 			try {
 				maxq = dag.maxq(i);
@@ -16,6 +17,7 @@ public class LL implements Score {
 					int[] Nijk = dag.calcNijk(i, j, k);
 					if (Nijk[0] == 0 || Nijk[1] == 0) continue;
 					ll += Nijk[0] * (Math.log((double)Nijk[0]/Nijk[1])/Math.log(2));
+					
 				}
 			}
 		}

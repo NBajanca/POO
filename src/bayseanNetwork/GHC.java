@@ -3,16 +3,43 @@ package bayseanNetwork;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+/**
+ * The Class GHC.
+ */
 public class GHC {
+	
+	/** The dag - DAG from where inference is going to be done */
 	private DAG dag;
+	
+	/** The randrest - Number of Random Restarts. Inserted by the user */
 	private int randrest = 0;
+	
+	/** The dag_randrest - Best DAG from the several Random Restart done */
 	private DAGGHC dag_randrest;
+	
+	/** The dag_best - Best DAG since the last Random Restart */
 	private DAGGHC dag_best;
+	
+	/** The dag_best_iteration - Best DAG from the neigbouthood being evaluated */
 	private DAGGHC dag_best_iteration;
+	
+	/** The dag_test - DAG being tested */
 	private DAGGHC dag_test;
+	
+	/** The TABU - list with the hash of DAGs visited */
 	private ArrayList<Integer> TABU = new ArrayList<Integer>();
+	
+	/** The score - Score to use. Inserted by the user */
 	private Score score;
 	
+	/**
+	 * Instantiates a new ghc.
+	 * Creates a DAGGHC for randrest and clones this object for each one of the other DAGGHC
+	 *
+	 * @param dag the dag
+	 * @param score the score
+	 * @param randrest the randrest
+	 */
 	GHC(DAG dag, Score score, int randrest){
 		this.dag = dag;
 		this.randrest = randrest;
@@ -25,7 +52,11 @@ public class GHC {
 		calcGHC(score);
 	}
 	
-	//Perform Algorathim 2 - GHC algorithm for learning DBN's, with TABU list and random restarts
+	/**
+	 * Performs Algorathim 2 - GHC algorithm for learning DBN's, with TABU list and random restarts
+	 *
+	 * @param score the score
+	 */
 	private void calcGHC(Score score) {
 		
 		//While C is not satisfied
@@ -54,6 +85,13 @@ public class GHC {
 		}	
 	}
 	
+	/**
+	 * Stop condition function
+	 * If local optima is reached calls random.
+	 * If random restarts maximum number is reached the stop condition is reached.
+	 *
+	 * @return true, if successful
+	 */
 	private boolean stopCondition() {
 		
 		if(dag_best_iteration.score > dag_best.score){
@@ -71,6 +109,12 @@ public class GHC {
 	}
 
 	
+	/**
+	 * Random restart.
+	 * Creates a random DAG from best DAG until now
+	 *
+	 * @return true, if successful
+	 */
 	private boolean randomRestart(){
 		if (dag_randrest.score < dag_best.score){
 			dag_randrest = dag_best;
@@ -86,8 +130,13 @@ public class GHC {
 		return false;
 	}
 	
-	//Calls Score Verification of N(dag_test) - that belongs to the neighbourhood of N'(dag_best)
-	//If N is not in the TABU list
+	/**
+	 * Calls Score Verification of N(dag_test) - that belongs to the neighbourhood of N'(dag_best)
+	 * If N is not in the TABU list
+	 * 
+	 * Details:
+	 * TABU list is implement thrue an hash of the DAG
+	 */
 	private void TABUVerify() {
 		int hash_dag_test = Arrays.deepHashCode(dag_test.dag);
 		for (Integer hash_dag_tabu : TABU) {
@@ -97,8 +146,13 @@ public class GHC {
 		return;
 	}
 	
-	//Verifies if N(dag_test) has better score than N''(dag_best_iteration)
-	//Clones N' to test next neighbour
+	
+	/**
+	 * Verifies if N(dag_test) has better score than N''(dag_best_iteration)
+	 * Clones N' to test next neighbour
+	 *
+	 * @param score the score
+	 */
 	private void scoreVerify(double score) {
 		dag_test.score = score;
 		if (score > dag_best_iteration.score){

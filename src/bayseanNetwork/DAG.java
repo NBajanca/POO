@@ -132,7 +132,7 @@ public class DAG {
 				if(data_line[i] == k){
 					counter[0]++;
 				}
-			}
+			}				
 			return counter;
 		}
 		int correct_pc = 0;
@@ -153,8 +153,7 @@ public class DAG {
 				}
 			}
 			correct_pc = 0;
-		}
-		
+		}		
 		return counter;
 	}
 	
