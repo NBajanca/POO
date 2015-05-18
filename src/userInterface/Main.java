@@ -119,7 +119,6 @@ public class Main {
 	//Printing DAG Time
 	System.out.println("Infering with DBN: " + (end_time - start_time)/1000000 + "ms");
 	
-	
 	}
 
 	private static void printInference(TestData test_data) {

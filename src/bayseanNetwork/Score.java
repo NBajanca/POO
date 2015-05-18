@@ -1,6 +1,16 @@
 package bayseanNetwork;
 
+/**
+ * The Interface Score.
+ */
 public interface Score {
-	double compute(DAG dag); //Para implementar no MDL e LL
+	
+	/**
+	 * Compute the score of the DAG
+	 *
+	 * @param dag the dag
+	 * @return the double
+	 */
+	double compute(DAG dag);
 
 }

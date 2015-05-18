@@ -255,9 +255,9 @@ public class DAG {
 				}
 			}
 			if (correct_pc == parent_configuration.length){
-				counter[1]++;
+				counter[1]++; //Nij
 				if(data_line[i] == k){
-					counter[0]++;
+					counter[0]++; //Nijk
 				}
 			}
 			correct_pc = 0;
