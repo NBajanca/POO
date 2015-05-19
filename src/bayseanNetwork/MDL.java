@@ -2,6 +2,8 @@ package bayseanNetwork;
 
 /**
  * The Class MDL.
+ * Implements Score;
+ * Minimum description lenght algorithm correctly implemented
  */
 public class MDL extends LL {
 	/* (non-Javadoc)

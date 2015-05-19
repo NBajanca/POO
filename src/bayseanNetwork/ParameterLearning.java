@@ -7,6 +7,7 @@ import fileRead.TestData;
 
 /**
  * The Class ParameterLearning.
+ * Implements the necessary methods to infer samples future value.
  */
 public class ParameterLearning {
 	

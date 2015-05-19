@@ -3,7 +3,9 @@ package userInterface;
 import fileRead.DataSet;
 import fileRead.TestData;
 import bayseanNetwork.*;
-
+/**
+* The Class Main runs the program
+*/
 public class Main {
 
 	public static void main(String[] args) {

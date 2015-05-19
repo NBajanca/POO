@@ -2,9 +2,11 @@ package bayseanNetwork;
 
 import fileRead.DataSet;
 
-// TODO: Auto-generated Javadoc
+
 /**
- * The Class DAG.
+ * The Class DAG 
+ * Provides the proper methods to create a Directed Acyclic Graph regarding some restrictions, namely the parent number each node can take  
+ * 
  */
 public class DAG {
 	/** The dag - Adjacency Matrix. Only the nodes t+1 are in the collums because there can't be any connection reaching t nodes */
@@ -165,7 +167,7 @@ public class DAG {
 	 *
 	 * @param origin the origin
 	 * @param destiny the destiny
-	 * @return true, if successful
+	 * 
 	 * @throws IlegalOperation the ilegal operation
 	 */
 	private void verifyIlegalOperationsAdd(int origin, int destiny) throws IlegalOperation {
@@ -186,7 +188,7 @@ public class DAG {
 	 *
 	 * @param origin the origin
 	 * @param destiny the destiny
-	 * @return true, if Ilegal
+	 * 
 	 * @throws IlegalOperation the ilegal operation
 	 */
 	private void verifiesIlegalOperationReverse(int origin, int destiny) throws IlegalOperation {
@@ -210,7 +212,7 @@ public class DAG {
 	 *
 	 * @param origin the origin
 	 * @param destiny the destiny
-	 * @return true, if Ilegal
+	 * 
 	 * @throws IlegalOperation the ilegal operation
 	 */
 	private void verifyIlegal(int origin, int destiny) throws IlegalOperation {

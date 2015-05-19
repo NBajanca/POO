@@ -1,5 +1,9 @@
 package bayseanNetwork;
 
+/**
+* The Class NoParent 
+* Implements exception if ParentConfiguration is invalid.
+*/
 @SuppressWarnings("serial")
 public class PCInvalid extends Exception {
 	//Parent Configuration Invalid

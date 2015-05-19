@@ -1,5 +1,8 @@
 package bayseanNetwork;
-
+/**
+* The Class NoParent 
+* Implements exception for DAG methods namely calcNijk, maxq, fromParentConfiguration
+*/
 @SuppressWarnings("serial")
 public class NoParent extends Exception {
 	

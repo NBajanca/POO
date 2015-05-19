@@ -1,7 +1,8 @@
 package bayseanNetwork;
 
 /**
- * The Interface Score.
+ * The Interface Score
+ * Provides a method to compute DAG scores.
  */
 public interface Score {
 	

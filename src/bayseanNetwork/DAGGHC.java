@@ -3,7 +3,8 @@ package bayseanNetwork;
 import java.util.Random;
 
 /**
- * The Class DAGGHC.
+ * The Class DAGGHC 
+ * Contains a DAG and also a score value associated, very useful to construct the DBN.
  * Extends Dag. Changes: Has score (double), Overrides clone(method), Implements random(method)
  */
 class DAGGHC extends DAG {

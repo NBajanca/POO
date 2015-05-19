@@ -2,7 +2,8 @@ package bayseanNetwork;
 
 /**
  * The Class LL
- * Implements Score
+ * Implements Score;
+ * The log-likehood algorithm correctly implemented
  */
 public class LL implements Score {
 	

@@ -2,6 +2,7 @@ package userInterface;
 
 import java.awt.EventQueue;
 
+
 import javax.swing.JFrame;
 import javax.swing.JButton;
 import javax.swing.JList;
@@ -18,6 +19,11 @@ import java.io.PrintStream;
 
 import javax.swing.JFileChooser;
 import javax.swing.JTextArea;
+
+
+/**
+* The Class GUI implements as the name suggest a Graphical user interface.
+*/
 public class GUI {
 
 	private JFrame frame;
@@ -30,6 +36,7 @@ public class GUI {
 
 	/**
 	 * Launch the application.
+	 * @param args the args
 	 */
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
@@ -53,7 +60,7 @@ public class GUI {
 
 	/**
 	 * Initialize the contents of the frame.
-	 * @return 
+	 *  
 	 */
 	
 	@SuppressWarnings("serial")

@@ -8,7 +8,8 @@ import java.io.IOException;
 
 
 /**
- * The Class DataSet.
+ * The Class DataSet
+ * Implements the necessary methods to correctly read and store the information provided in the .csv containing the MTS.
  */
 public class DataSet extends EstablishArray{
 	

@@ -7,9 +7,10 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 
-// TODO: Auto-generated Javadoc
+
 /**
- * The Class TestData.
+ * The Class TestData
+ * Implements the correct reading and storing of the variables in the .csv file containing the samples that will be used to infer its future value
  */
 public class TestData extends EstablishArray {
 
@@ -61,7 +62,7 @@ public class TestData extends EstablishArray {
 	 * This functions obtains the name of var.
 	 *
 	 * @param line the line
-	 * @return the int
+	 * 
 	 */
 	private void obtaiNameVariables(String line){
 		String csvSplitBy = ",";

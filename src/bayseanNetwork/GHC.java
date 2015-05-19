@@ -4,7 +4,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 /**
- * The Class GHC.
+ * The Class GHC 
+ * Implements the algorithm 2, using TABU list and random restarts in order obtain the DBN
  */
 public class GHC {
 	
